@@ -242,19 +242,19 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
   }
 </style>
 <script>
-  const btn        = document.getElementById('asistente-btn');
-  const panel      = document.getElementById('asistente-panel');
-  const cerrar     = document.getElementById('asistente-cerrar');
-  const input      = document.getElementById('asistente-input') as HTMLTextAreaElement | null;
-  const enviar     = document.getElementById('asistente-enviar');
-  const mensajes   = document.getElementById('asistente-mensajes');
-  const WHATSAPP   = '598099000000';
+  const btn      = document.getElementById('asistente-btn');
+  const panel    = document.getElementById('asistente-panel');
+  const cerrar   = document.getElementById('asistente-cerrar');
+  const input    = document.getElementById('asistente-input') as HTMLTextAreaElement | null;
+  const enviar   = document.getElementById('asistente-enviar');
+  const mensajes = document.getElementById('asistente-mensajes');
+  const WHATSAPP = '598099000000';
 
-  // Abrir / cerrar panel
   btn?.addEventListener('click', () => {
     panel?.classList.toggle('open');
     panel?.setAttribute('aria-hidden', panel.classList.contains('open') ? 'false' : 'true');
   });
+
   cerrar?.addEventListener('click', () => {
     panel?.classList.remove('open');
     panel?.setAttribute('aria-hidden', 'true');
@@ -289,25 +289,27 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
       cargando.remove();
 
       const respuesta: string = data.respuesta ?? '';
+      const esPregunta = respuesta.startsWith('PREGUNTA:');
 
-      // Extraer MENSAJE_WA del formato estructurado
-      const matchWA = respuesta.match(/MENSAJE_WA:\s*(.+?)(?:\n|$)/s);
-      const mensajeWA = matchWA ? matchWA[1].trim() : texto;
+      if (esPregunta) {
+        const pregunta = respuesta.replace('PREGUNTA:', '').trim();
+        agregarMensaje(pregunta, 'bot');
+      } else {
+        const matchWA      = respuesta.match(/MENSAJE_WA:\s*(.+?)(?:\n\n|$)/s);
+        const mensajeWA    = matchWA ? matchWA[1].trim() : texto;
+        const matchResumen = respuesta.match(/RESUMEN:\s*(.+?)(?:\n|$)/);
+        const resumen      = matchResumen ? matchResumen[1].trim() : 'Consulta procesada';
+        const waUrl        = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(mensajeWA)}`;
 
-      // Extraer RESUMEN para mostrar
-      const matchResumen = respuesta.match(/RESUMEN:\s*(.+?)(?:\n|$)/);
-      const resumen = matchResumen ? matchResumen[1].trim() : 'Consulta procesada';
-
-      const waUrl = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(mensajeWA)}`;
-
-      agregarMensaje(
-        `✅ <strong>${resumen}</strong><br/><br/>
-         <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn-wa-chat">
-           Enviar por WhatsApp
-         </a>`,
-        'bot',
-        true
-      );
+        agregarMensaje(
+          `✅ <strong>${resumen}</strong><br/><br/>
+           <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn-wa-chat">
+             Enviar por WhatsApp
+           </a>`,
+          'bot',
+          true
+        );
+      }
 
     } catch {
       cargando.remove();
