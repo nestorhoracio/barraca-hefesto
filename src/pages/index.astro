@@ -7,6 +7,7 @@ import bannerImg from '../assets/images/banner.jpg';
 import Servicios from '../components/Servicios.astro';
 import Calculadora from '../components/Calculadora.astro';
 import Alquiler from '../components/Alquiler.astro';
+import Galeria from '../components/Galeria.astro';
 
 const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
 ---
@@ -65,14 +66,7 @@ Cotizá por WhatsApp
    <Alquiler />
 
     <!-- ==================== GALERÍA ==================== -->
-    <section id="galeria" class="section section--gray">
-      <div class="container">
-        <h2 class="section-title">Galería</h2>
-        <p class="section-subtitle">Productos y obras realizadas con materiales Hefesto.</p>
-        <!-- TODO: <Galeria /> -->
-        <p style="margin-top:2rem; color: var(--color-gray-4);">[Componente Galería — próxima iteración]</p>
-      </div>
-    </section>
+    <Galeria />
 
     <!-- ==================== NOSOTROS ==================== -->
     <section id="nosotros" class="section">
