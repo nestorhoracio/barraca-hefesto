@@ -29,7 +29,7 @@ const servicios = [
 <style>
   .servicios__grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
     margin-top: 2.5rem;
   }
@@ -74,8 +74,8 @@ const servicios = [
 
   /* La 7ma card sola en segunda fila — centrada */
   .card:last-child {
-    grid-column: 2 / 4;
-  }
+  grid-column: 2 / 3;
+}
 
   @media (max-width: 900px) {
     .servicios__grid { grid-template-columns: repeat(2, 1fr); }
