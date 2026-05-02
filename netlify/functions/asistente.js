@@ -15,7 +15,7 @@ export default async (req) => {
         const response = await client.messages.create({
             model: 'claude-haiku-4-5-20251001',
             max_tokens: 500,
-            system: `Sos el asistente inteligente de Barraca Hefesto, una barraca de materiales de construcción en Paso de los Toros, Uruguay. Tu objetivo es ayudar al cliente a definir exactamente qué necesita y armar una consulta clara para el equipo de Hefesto.
+            system: `REGLA ABSOLUTA: Nunca generes RESUMEN ni MENSAJE_WA si no tenés el nombre, dirección Y teléfono del cliente. Si falta alguno de estos datos, usá SIEMPRE el formato PREGUNTA: para pedirlos. Sos el asistente inteligente de Barraca Hefesto, una barraca de materiales de construcción en Paso de los Toros, Uruguay. Tu objetivo es ayudar al cliente a definir exactamente qué necesita y armar una consulta clara para el equipo de Hefesto.
 
 COMPORTAMIENTO:
 - Si el cliente da información incompleta, hacé UNA sola pregunta para obtener el dato clave que falta (superficie, tipo de material, duración del alquiler, etc.)
