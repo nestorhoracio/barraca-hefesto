@@ -1,0 +1,88 @@
+---
+import { Package, Layers, DoorOpen, Paintbrush, Wrench, Tent, Construction } from 'lucide-astro';
+const servicios = [
+  { titulo: 'Materiales de construcción', desc: 'Todo lo necesario para tu obra, desde los cimientos.', icono: Package },
+  { titulo: 'Chapas y caños', desc: 'Variedad de medidas y espesores para techos y estructuras.', icono: Layers },
+  { titulo: 'Aberturas', desc: 'Puertas y ventanas para todo tipo de proyecto.', icono: DoorOpen },
+  { titulo: 'Pinturería', desc: 'Pinturas, esmaltes y accesorios de las mejores marcas.', icono: Paintbrush },
+  { titulo: 'Alquiler de herramientas', desc: 'Herramientas profesionales disponibles por día o semana.', icono: Wrench },
+  { titulo: 'Alquiler de carpas', desc: 'Carpas de distintos tamaños para eventos y obras.', icono: Tent },
+  { titulo: 'Andamios', desc: 'Andamios seguros en alquiler para trabajos en altura.', icono: Construction },
+];
+---
+
+<section id="servicios" class="section">
+  <div class="container">
+    <h2 class="section-title">Nuestros servicios</h2>
+    <p class="section-subtitle">Todo lo que necesitás para tu proyecto, en un solo lugar.</p>
+    <div class="servicios__grid">
+      {servicios.map(s => (
+        <div class="card">
+          <div class="card__icon"><s.icono size={24} /></div>
+          <h3 class="card__title">{s.titulo}</h3>
+          <p class="card__desc">{s.desc}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .servicios__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+  }
+
+  .card {
+    background: var(--color-gray-1);
+    border: 1px solid var(--color-gray-2);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-brand-light);
+  }
+
+  .card__icon {
+    width: 48px;
+    height: 48px;
+    background: var(--color-brand-bg);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    color: var(--color-brand);
+  }
+
+  .card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-black);
+    margin-bottom: 0.4rem;
+  }
+
+  .card__desc {
+    font-size: 0.875rem;
+    color: var(--color-gray-4);
+    line-height: 1.5;
+  }
+
+  /* La 7ma card sola en segunda fila — centrada */
+  .card:last-child {
+    grid-column: 2 / 4;
+  }
+
+  @media (max-width: 900px) {
+    .servicios__grid { grid-template-columns: repeat(2, 1fr); }
+    .card:last-child  { grid-column: auto; }
+  }
+
+  @media (max-width: 520px) {
+    .servicios__grid { grid-template-columns: 1fr; }
+  }
+</style>
