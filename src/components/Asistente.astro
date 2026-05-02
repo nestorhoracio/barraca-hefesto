@@ -276,6 +276,7 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
       cargando.remove();
 
       const respuesta: string = data.respuesta ?? '';
+      console.log('RESPUESTA CLAUDE:', respuesta);
       historial.push({ role: 'assistant', content: respuesta });
 
       const esPregunta = respuesta.startsWith('PREGUNTA:');
