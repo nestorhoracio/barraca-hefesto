@@ -1,0 +1,326 @@
+---
+const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
+---
+
+<!-- Botón flotante -->
+<button class="asistente__btn" id="asistente-btn" aria-label="Abrir asistente">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.046 21.953a.75.75 0 0 0 .916.916l4.785-1.392A9.954 9.954 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a7.95 7.95 0 0 1-4.053-1.107l-.29-.174-2.991.87.87-2.99-.174-.291A7.95 7.95 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z"/>
+    <path d="M8 11h8v2H8zm0-4h8v2H8zm0 8h5v2H8z"/>
+  </svg>
+</button>
+
+<!-- Panel del chat -->
+<div class="asistente__panel" id="asistente-panel" aria-hidden="true">
+  <div class="asistente__header">
+    <div class="asistente__header-info">
+      <div class="asistente__avatar">H</div>
+      <div>
+        <p class="asistente__nombre">Asistente Hefesto</p>
+        <p class="asistente__estado">En línea</p>
+      </div>
+    </div>
+    <button class="asistente__cerrar" id="asistente-cerrar" aria-label="Cerrar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="asistente__mensajes" id="asistente-mensajes">
+    <div class="mensaje mensaje--bot">
+      <p>¡Hola! Soy el asistente de Barraca Hefesto. Contame qué necesitás y te armo la consulta para enviarnos por WhatsApp. 🏗️</p>
+    </div>
+  </div>
+
+  <div class="asistente__input-area">
+    <textarea
+      class="asistente__input"
+      id="asistente-input"
+      placeholder="Ej: Necesito chapas para un techo de 40m²..."
+      rows="2"
+    ></textarea>
+    <button class="asistente__enviar" id="asistente-enviar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="22" y1="2" x2="11" y2="13"/>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+    </button>
+  </div>
+</div>
+<style>
+  /* Botón flotante */
+  .asistente__btn {
+    position: fixed;
+    bottom: 1.75rem;
+    right: 1.75rem;
+    z-index: 200;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--color-brand);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(204, 51, 204, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .asistente__btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 24px rgba(204, 51, 204, 0.5);
+  }
+
+  /* Panel */
+  .asistente__panel {
+    position: fixed;
+    bottom: 5.5rem;
+    right: 1.75rem;
+    z-index: 200;
+    width: 340px;
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-2);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: scale(0.95) translateY(10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .asistente__panel.open {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* Header */
+  .asistente__header {
+    background: var(--color-brand);
+    color: white;
+    padding: 0.85rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .asistente__header-info {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  .asistente__avatar {
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .asistente__nombre {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  .asistente__estado {
+    font-size: 0.75rem;
+    opacity: 0.85;
+  }
+  .asistente__cerrar {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 4px;
+    opacity: 0.8;
+    transition: opacity 0.15s;
+  }
+  .asistente__cerrar:hover { opacity: 1; }
+
+  /* Mensajes */
+  .asistente__mensajes {
+    padding: 1rem;
+    height: 240px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    background: var(--color-gray-1);
+  }
+  .mensaje {
+    max-width: 85%;
+    padding: 0.65rem 0.9rem;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  .mensaje--bot {
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-2);
+    align-self: flex-start;
+    color: var(--color-black);
+  }
+  .mensaje--usuario {
+    background: var(--color-brand);
+    color: white;
+    align-self: flex-end;
+  }
+  .mensaje--cargando {
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-2);
+    align-self: flex-start;
+    color: var(--color-gray-4);
+    font-style: italic;
+  }
+
+  /* Input */
+  .asistente__input-area {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-top: 1px solid var(--color-gray-2);
+    background: var(--color-white);
+    align-items: flex-end;
+  }
+  .asistente__input {
+    flex: 1;
+    border: 1px solid var(--color-gray-2);
+    border-radius: var(--radius-md);
+    padding: 0.6rem 0.75rem;
+    font-size: 0.875rem;
+    resize: none;
+    font-family: var(--font-sans);
+    color: var(--color-black);
+    background: var(--color-white);
+    transition: border-color 0.15s;
+  }
+  .asistente__input:focus {
+    outline: none;
+    border-color: var(--color-brand);
+  }
+  .asistente__enviar {
+    width: 36px;
+    height: 36px;
+    background: var(--color-brand);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .asistente__enviar:hover { background: var(--color-brand-dark); }
+
+  /* Botón WhatsApp dentro del chat */
+  .btn-wa-chat {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #25D366;
+    color: white;
+    padding: 0.5rem 0.85rem;
+    border-radius: var(--radius-md);
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .btn-wa-chat:hover { opacity: 0.85; }
+
+  @media (max-width: 400px) {
+    .asistente__panel { width: calc(100vw - 2rem); right: 1rem; }
+  }
+</style>
+<script>
+  const btn        = document.getElementById('asistente-btn');
+  const panel      = document.getElementById('asistente-panel');
+  const cerrar     = document.getElementById('asistente-cerrar');
+  const input      = document.getElementById('asistente-input') as HTMLTextAreaElement | null;
+  const enviar     = document.getElementById('asistente-enviar');
+  const mensajes   = document.getElementById('asistente-mensajes');
+  const WHATSAPP   = '598099000000';
+
+  // Abrir / cerrar panel
+  btn?.addEventListener('click', () => {
+    panel?.classList.toggle('open');
+    panel?.setAttribute('aria-hidden', panel.classList.contains('open') ? 'false' : 'true');
+  });
+  cerrar?.addEventListener('click', () => {
+    panel?.classList.remove('open');
+    panel?.setAttribute('aria-hidden', 'true');
+  });
+
+  function agregarMensaje(texto: string, tipo: 'bot' | 'usuario' | 'cargando', html = false): HTMLDivElement {
+    const div = document.createElement('div');
+    div.className = `mensaje mensaje--${tipo}`;
+    if (html) div.innerHTML = texto;
+    else div.textContent = texto;
+    mensajes?.appendChild(div);
+    mensajes?.scrollTo({ top: mensajes.scrollHeight, behavior: 'smooth' });
+    return div;
+  }
+
+  async function enviarMensaje() {
+    const texto = input?.value.trim();
+    if (!texto) return;
+
+    agregarMensaje(texto, 'usuario');
+    if (input) input.value = '';
+
+    const cargando = agregarMensaje('Analizando tu consulta...', 'cargando');
+
+    try {
+      const res  = await fetch('/api/asistente', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mensaje: texto }),
+      });
+      const data = await res.json();
+      cargando.remove();
+
+      const respuesta: string = data.respuesta ?? '';
+
+      // Extraer MENSAJE_WA del formato estructurado
+      const matchWA = respuesta.match(/MENSAJE_WA:\s*(.+?)(?:\n|$)/s);
+      const mensajeWA = matchWA ? matchWA[1].trim() : texto;
+
+      // Extraer RESUMEN para mostrar
+      const matchResumen = respuesta.match(/RESUMEN:\s*(.+?)(?:\n|$)/);
+      const resumen = matchResumen ? matchResumen[1].trim() : 'Consulta procesada';
+
+      const waUrl = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(mensajeWA)}`;
+
+      agregarMensaje(
+        `✅ <strong>${resumen}</strong><br/><br/>
+         <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn-wa-chat">
+           Enviar por WhatsApp
+         </a>`,
+        'bot',
+        true
+      );
+
+    } catch {
+      cargando.remove();
+      agregarMensaje('Hubo un error. Intentá de nuevo o escribinos directamente por WhatsApp.', 'bot');
+    }
+  }
+
+  enviar?.addEventListener('click', enviarMensaje);
+
+  input?.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      enviarMensaje();
+    }
+  });
+</script>

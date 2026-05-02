@@ -10,6 +10,7 @@ import Alquiler from '../components/Alquiler.astro';
 import Galeria from '../components/Galeria.astro';
 import Contacto from '../components/Contacto.astro';
 import Nosotros from '../components/Nosotros.astro';
+import Asistente from '../components/Asistente.astro';
 
 const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
 ---
@@ -77,8 +78,7 @@ Cotizá por WhatsApp
     <Contacto />
 
     <!-- ==================== ASISTENTE IA ==================== -->
-    <!-- Widget flotante — se monta vía script -->
-    <!-- TODO: <Asistente /> -->
+   <Asistente />
 
   </main>
 
