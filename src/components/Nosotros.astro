@@ -1,0 +1,119 @@
+---
+---
+
+<section id="nosotros" class="section">
+  <div class="container nosotros__grid">
+
+    <div class="nosotros__texto">
+      <h2 class="section-title">¿Quiénes somos?</h2>
+      <p class="nosotros__lead">
+        Barraca Hefesto es una empresa familiar con años de experiencia en materiales de construcción en Paso de los Toros.
+      </p>
+      <p class="nosotros__parrafo">
+        Nacimos con el objetivo de ofrecer a los vecinos y constructores de la región un lugar de confianza donde encontrar todo lo necesario para sus proyectos. Desde materiales básicos hasta soluciones de alquiler de equipos y carpas, trabajamos cada día para estar a la altura de las necesidades de nuestros clientes.
+      </p>
+      <p class="nosotros__parrafo">
+        Nuestro compromiso es la atención personalizada, los precios justos y la calidad en cada producto que ofrecemos. Construimos junto a vos.
+      </p>
+
+      <div class="nosotros__stats">
+        <div class="stat">
+          <span class="stat__num">+10</span>
+          <span class="stat__label">Años de experiencia</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num">+500</span>
+          <span class="stat__label">Clientes atendidos</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num">7</span>
+          <span class="stat__label">Categorías de productos</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="nosotros__imagen">
+      <div class="imagen__placeholder">
+        <span>Foto del local o equipo</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+<style>
+  .nosotros__grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .nosotros__lead {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--color-black);
+    margin: 1.25rem 0 1rem;
+    line-height: 1.6;
+  }
+
+  .nosotros__parrafo {
+    font-size: 0.95rem;
+    color: var(--color-gray-4);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+
+  .nosotros__stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-gray-2);
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .stat__num {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--color-brand);
+    line-height: 1;
+  }
+
+  .stat__label {
+    font-size: 0.8rem;
+    color: var(--color-gray-4);
+    font-weight: 500;
+  }
+
+  .nosotros__imagen {
+    display: flex;
+    justify-content: center;
+  }
+
+  .imagen__placeholder {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: var(--color-gray-1);
+    border-radius: var(--radius-lg);
+    border: 2px dashed var(--color-gray-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gray-4);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 768px) {
+    .nosotros__grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .nosotros__imagen { order: -1; }
+    .nosotros__stats { gap: 1.25rem; }
+  }
+</style>

@@ -8,6 +8,8 @@ import Servicios from '../components/Servicios.astro';
 import Calculadora from '../components/Calculadora.astro';
 import Alquiler from '../components/Alquiler.astro';
 import Galeria from '../components/Galeria.astro';
+import Contacto from '../components/Contacto.astro';
+import Nosotros from '../components/Nosotros.astro';
 
 const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
 ---
@@ -69,22 +71,10 @@ Cotizá por WhatsApp
     <Galeria />
 
     <!-- ==================== NOSOTROS ==================== -->
-    <section id="nosotros" class="section">
-      <div class="container">
-        <h2 class="section-title">¿Quiénes somos?</h2>
-        <!-- TODO: <Nosotros /> -->
-        <p style="margin-top:2rem; color: var(--color-gray-4);">[Componente Nosotros — próxima iteración]</p>
-      </div>
-    </section>
+   <Nosotros />
 
     <!-- ==================== CONTACTO ==================== -->
-    <section id="contacto" class="section section--gray">
-      <div class="container">
-        <h2 class="section-title">Contacto y ubicación</h2>
-        <!-- TODO: <Contacto /> -->
-        <p style="margin-top:2rem; color: var(--color-gray-4);">[Componente Contacto — próxima iteración]</p>
-      </div>
-    </section>
+    <Contacto />
 
     <!-- ==================== ASISTENTE IA ==================== -->
     <!-- Widget flotante — se monta vía script -->
