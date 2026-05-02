@@ -5,6 +5,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import bannerImg from '../assets/images/banner.jpg';
 import Servicios from '../components/Servicios.astro';
+import Calculadora from '../components/Calculadora.astro';
 
 const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
 ---
@@ -57,14 +58,7 @@ Cotizá por WhatsApp
     <Servicios />
 
     <!-- ==================== CALCULADORA ==================== -->
-    <section id="calculadora" class="section section--gray">
-      <div class="container">
-        <h2 class="section-title">Calculadora de materiales</h2>
-        <p class="section-subtitle">Calculá exactamente cuánto necesitás antes de venir.</p>
-        <!-- TODO: <Calculadora /> -->
-        <p style="margin-top:2rem; color: var(--color-gray-4);">[Componente Calculadora — próxima iteración]</p>
-      </div>
-    </section>
+    <Calculadora />
 
     <!-- ==================== ALQUILER ==================== -->
     <section id="alquiler" class="section">

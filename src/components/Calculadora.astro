@@ -1,0 +1,247 @@
+---
+// src/components/Calculadora.astro
+const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
+---
+
+<section id="calculadora" class="section section--gray">
+  <div class="container">
+
+    <div class="calc__header">
+      <h2 class="section-title">Calculadora de materiales</h2>
+      <p class="section-subtitle">
+        Calculá cuánto necesitás antes de venir. Valores de referencia — consultá por precio.
+      </p>
+    </div>
+
+    <div class="calc__card">
+
+      <!-- Paso 1: elegir material -->
+      <div class="calc__step">
+        <label class="calc__label">¿Qué material necesitás?</label>
+        <div class="calc__tabs" id="tabs">
+          <button class="tab active" data-material="chapas">Chapas</button>
+          <button class="tab" data-material="ladrillos">Ladrillos</button>
+          <button class="tab" data-material="pintura">Pintura</button>
+        </div>
+      </div>
+
+      <!-- Paso 2: elegir tipo -->
+      <div class="calc__step">
+        <label class="calc__label" id="label-tipo">Tipo de chapa</label>
+        <select class="calc__select" id="select-tipo"></select>
+      </div>
+
+      <!-- Paso 3: ingresar metros cuadrados -->
+      <div class="calc__step">
+        <label class="calc__label">Superficie en m²</label>
+        <input class="calc__input" type="number" id="input-m2"
+               min="1" max="9999" placeholder="Ej: 45" />
+      </div>
+
+      <!-- Botón calcular -->
+      <button class="btn btn-primary calc__btn" id="btn-calcular">
+        Calcular
+      </button>
+
+      <!-- Resultado -->
+      <div class="calc__resultado" id="resultado" hidden>
+        <p class="resultado__texto" id="resultado-texto"></p>
+        <a class="btn btn-whatsapp calc__wa" id="btn-wa"
+           target="_blank" rel="noopener noreferrer">
+          Consultar precio por WhatsApp
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+<style>
+  .calc__header { margin-bottom: 2.5rem; }
+
+  .calc__card {
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-2);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem;
+    max-width: 620px;
+    margin: 0 auto;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .calc__step {
+    margin-bottom: 1.75rem;
+  }
+
+  .calc__label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-gray-5);
+    margin-bottom: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Tabs de material */
+  .calc__tabs {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .tab {
+    flex: 1;
+    padding: 0.65rem 1rem;
+    border: 2px solid var(--color-gray-2);
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--color-gray-4);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .tab:hover {
+    border-color: var(--color-brand-light);
+    color: var(--color-brand);
+  }
+  .tab.active {
+    border-color: var(--color-brand);
+    color: var(--color-brand);
+    background: var(--color-brand-bg);
+  }
+
+  /* Select y input */
+  .calc__select,
+  .calc__input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--color-gray-2);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    color: var(--color-black);
+    background: var(--color-white);
+    transition: border-color 0.15s;
+    appearance: none;
+  }
+  .calc__select:focus,
+  .calc__input:focus {
+    outline: none;
+    border-color: var(--color-brand);
+  }
+
+  .calc__btn { width: 100%; justify-content: center; }
+
+  /* Resultado */
+  .calc__resultado {
+    margin-top: 1.75rem;
+    padding: 1.5rem;
+    background: var(--color-brand-bg);
+    border: 1.5px solid var(--color-brand-light);
+    border-radius: var(--radius-md);
+  }
+  .resultado__texto {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-brand-dark);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  .calc__wa { width: 100%; justify-content: center; }
+</style>
+<script>
+  type Opcion = { nombre: string; cobertura: number };
+  type Material = {
+    label: string;
+    opciones: Opcion[];
+    calcular: (m2: number, op: Opcion) => string;
+  };
+  type Datos = Record<string, Material>;
+
+  const datos: Datos = {
+    chapas: {
+      label: 'Tipo de chapa',
+      opciones: [
+        { nombre: 'Chapa acanalada 0.60m', cobertura: 0.50 },
+        { nombre: 'Chapa acanalada 0.80m', cobertura: 0.68 },
+        { nombre: 'Chapa trapezoidal 1.00m', cobertura: 0.85 },
+      ],
+      calcular: (m2: number, op: Opcion) => {
+        const cantidad = Math.ceil(m2 / op.cobertura);
+        return `Necesitás aproximadamente ${cantidad} chapas (${op.nombre}) para cubrir ${m2} m².`;
+      }
+    },
+    ladrillos: {
+      label: 'Tipo de ladrillo',
+      opciones: [
+        { nombre: 'Ladrillo común 12x18x6', cobertura: 65 },
+        { nombre: 'Ladrillo hueco 8x18x33', cobertura: 18 },
+        { nombre: 'Ladrillo hueco 12x18x33', cobertura: 18 },
+        { nombre: 'Bloque de hormigón 15x20x40', cobertura: 12 },
+      ],
+      calcular: (m2: number, op: Opcion) => {
+        const cantidad = Math.ceil(m2 * op.cobertura);
+        return `Necesitás aproximadamente ${cantidad} unidades de ${op.nombre} para ${m2} m² de pared.`;
+      }
+    },
+    pintura: {
+      label: 'Tipo de pintura',
+      opciones: [
+        { nombre: 'Interior lisa', cobertura: 12 },
+        { nombre: 'Exterior rugosa', cobertura: 8 },
+        { nombre: 'Látex techos', cobertura: 10 },
+      ],
+      calcular: (m2: number, op: Opcion) => {
+        const litros = Math.ceil(m2 / op.cobertura);
+        return `Necesitás aproximadamente ${litros} litros de pintura ${op.nombre} para cubrir ${m2} m² (dos manos).`;
+      }
+    },
+  };
+
+  let materialActivo = 'chapas';
+
+  const tabs       = document.querySelectorAll<HTMLButtonElement>('.tab');
+  const selectTipo = document.getElementById('select-tipo') as HTMLSelectElement | null;
+  const labelTipo  = document.getElementById('label-tipo') as HTMLLabelElement | null;
+  const inputM2    = document.getElementById('input-m2') as HTMLInputElement | null;
+  const btnCalc    = document.getElementById('btn-calcular') as HTMLButtonElement | null;
+  const resultado  = document.getElementById('resultado') as HTMLElement | null;
+  const resTxt     = document.getElementById('resultado-texto') as HTMLElement | null;
+  const btnWa      = document.getElementById('btn-wa') as HTMLAnchorElement | null;
+
+  function cargarOpciones(material: string): void {
+    const d = datos[material];
+    if (!labelTipo || !selectTipo || !resultado) return;
+    labelTipo.textContent = d.label;
+    selectTipo.innerHTML  = d.opciones
+      .map((op: Opcion, i: number) => `<option value="${i}">${op.nombre}</option>`)
+      .join('');
+    resultado.hidden = true;
+  }
+
+  cargarOpciones(materialActivo);
+
+  tabs.forEach((tab: HTMLButtonElement) => {
+    tab.addEventListener('click', () => {
+      tabs.forEach((t: HTMLButtonElement) => t.classList.remove('active'));
+      tab.classList.add('active');
+      materialActivo = tab.dataset.material ?? 'chapas';
+      cargarOpciones(materialActivo);
+      if (inputM2) inputM2.value = '';
+    });
+  });
+
+  btnCalc?.addEventListener('click', () => {
+    if (!inputM2 || !selectTipo || !resultado || !resTxt || !btnWa) return;
+    const m2 = parseFloat(inputM2.value);
+    if (!m2 || m2 <= 0) { inputM2.focus(); return; }
+    const d       = datos[materialActivo];
+    const opIdx   = parseInt(selectTipo.value);
+    const op      = d.opciones[opIdx];
+    const texto   = d.calcular(m2, op);
+    const waTexto = encodeURIComponent(`Hola Hefesto! ${texto} ¿Me podés dar un precio?`);
+    const WA      = '598099000000';
+    resTxt.textContent = texto;
+    btnWa.href         = `https://wa.me/${WA}?text=${waTexto}`;
+    resultado.hidden   = false;
+    resultado.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+</script>
