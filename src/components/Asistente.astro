@@ -284,7 +284,7 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
         const pregunta = respuesta.replace('PREGUNTA:', '').trim();
         agregarMensaje(pregunta, 'bot');
       } else {
-        const matchWA      = respuesta.match(/MENSAJE_WA:\s*([\s\S]+?)(?=\n\nRESUMEN:|$)/);
+        const matchWA = respuesta.match(/MENSAJE_WA:\s*([\s\S]+?)(?=\nRESUMEN:|\nDETALLE:|\nPREGUNTA:|$)/);
         const mensajeWA    = matchWA ? matchWA[1].trim() : texto;
         const matchResumen = respuesta.match(/RESUMEN:\s*(.+?)(?:\n|$)/);
         const resumen      = matchResumen ? matchResumen[1].trim() : 'Consulta procesada';
