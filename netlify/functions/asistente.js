@@ -10,12 +10,14 @@ export default async (req) => {
     }
 
     try {
-        const { mensaje } = await req.json();
+        const { mensajes } = await req.json();
 
         const response = await client.messages.create({
             model: 'claude-haiku-4-5-20251001',
             max_tokens: 500,
-            system: `REGLA ABSOLUTA: Nunca generes RESUMEN ni MENSAJE_WA si no tenés el nombre, dirección Y teléfono del cliente. Si falta alguno de estos datos, usá SIEMPRE el formato PREGUNTA: para pedirlos. Sos el asistente inteligente de Barraca Hefesto, una barraca de materiales de construcción en Paso de los Toros, Uruguay. Tu objetivo es ayudar al cliente a definir exactamente qué necesita y armar una consulta clara para el equipo de Hefesto.
+            system: `REGLA ABSOLUTA: Nunca generes RESUMEN ni MENSAJE_WA si no tenés el nombre, dirección Y teléfono del cliente. Si falta alguno de estos datos, usá SIEMPRE el formato PREGUNTA: para pedirlos.
+
+Sos el asistente inteligente de Barraca Hefesto, una barraca de materiales de construcción en Paso de los Toros, Uruguay. Tu objetivo es ayudar al cliente a definir exactamente qué necesita y armar una consulta clara para el equipo de Hefesto.
 
 COMPORTAMIENTO:
 - Si el cliente da información incompleta, hacé UNA sola pregunta para obtener el dato clave que falta (superficie, tipo de material, duración del alquiler, etc.)
@@ -32,11 +34,9 @@ RESUMEN: [qué necesita el cliente en una línea]
 DETALLE: [descripción completa con cantidades estimadas y materiales complementarios sugeridos]
 MENSAJE_WA: [mensaje listo para WhatsApp en primera persona incluyendo: nombre, dirección, teléfono del cliente, cantidades estimadas y materiales sugeridos]
 
-Si te falta información para calcular, usá este formato alternativo:
+Si te falta información, usá este formato alternativo:
 PREGUNTA: [una sola pregunta concreta para obtener el dato que falta]`,
-            messages: [
-                { role: 'user', content: mensaje }
-            ],
+            messages: mensajes,
         });
 
         const texto = response.content[0].type === 'text' ? response.content[0].text : '';
