@@ -276,16 +276,17 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
       cargando.remove();
 
       const respuesta: string = data.respuesta ?? '';
-      console.log('RESPUESTA CLAUDE:', respuesta);
       historial.push({ role: 'assistant', content: respuesta });
 
-      const esPregunta = respuesta.startsWith('PREGUNTA:');
+      const esPregunta  = respuesta.startsWith('PREGUNTA:');
+      const tieneResumen = respuesta.includes('RESUMEN:');
 
       if (esPregunta) {
         const pregunta = respuesta.replace('PREGUNTA:', '').trim();
         agregarMensaje(pregunta, 'bot');
-      } else {
-        const matchWA = respuesta.match(/MENSAJE_WA:\s*([\s\S]+?)(?=\nRESUMEN:|\nDETALLE:|\nPREGUNTA:|$)/);
+
+      } else if (tieneResumen) {
+        const matchWA      = respuesta.match(/MENSAJE_WA:\s*([\s\S]+?)(?=\nRESUMEN:|\nDETALLE:|$)/);
         const mensajeWA    = matchWA ? matchWA[1].trim() : texto;
         const matchResumen = respuesta.match(/RESUMEN:\s*(.+?)(?:\n|$)/);
         const resumen      = matchResumen ? matchResumen[1].trim() : 'Consulta procesada';
@@ -303,6 +304,9 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
           'bot',
           true
         );
+
+      } else {
+        agregarMensaje(respuesta, 'bot');
       }
 
     } catch {
