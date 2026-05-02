@@ -6,6 +6,7 @@ import Footer from '../components/Footer.astro';
 import bannerImg from '../assets/images/banner.jpg';
 import Servicios from '../components/Servicios.astro';
 import Calculadora from '../components/Calculadora.astro';
+import Alquiler from '../components/Alquiler.astro';
 
 const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
 ---
@@ -61,14 +62,7 @@ Cotizá por WhatsApp
     <Calculadora />
 
     <!-- ==================== ALQUILER ==================== -->
-    <section id="alquiler" class="section">
-      <div class="container">
-        <h2 class="section-title">Alquiler</h2>
-        <p class="section-subtitle">Herramientas y carpas disponibles para alquilar.</p>
-        <!-- TODO: <Alquiler /> -->
-        <p style="margin-top:2rem; color: var(--color-gray-4);">[Componente Alquiler — próxima iteración]</p>
-      </div>
-    </section>
+   <Alquiler />
 
     <!-- ==================== GALERÍA ==================== -->
     <section id="galeria" class="section section--gray">
@@ -182,15 +176,7 @@ Cotizá por WhatsApp
     background: rgba(255,255,255,0.25);
     border-color: var(--color-white);
   }
-  .btn-whatsapp {
-  background: #25D366;
-  color: #ffffff;
-  border: none;
-}
-.btn-whatsapp:hover {
-  background: #1ebe5d;
-  box-shadow: var(--shadow-md);
-}
+ 
   .hero__badges {
     display: flex;
     gap: 0.5rem;

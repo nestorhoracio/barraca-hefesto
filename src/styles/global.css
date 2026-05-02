@@ -106,6 +106,17 @@ a {
   background: var(--color-brand-bg);
 }
 
+.btn-whatsapp {
+  background: #25D366;
+  color: #ffffff;
+  border: none;
+}
+
+.btn-whatsapp:hover {
+  background: #1ebe5d;
+  box-shadow: var(--shadow-md);
+}
+
 .section-title {
   font-size: clamp(1.6rem, 4vw, 2.2rem);
   font-weight: 700;
