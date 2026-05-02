@@ -1,0 +1,180 @@
+---
+// src/components/Footer.astro
+const currentYear = new Date().getFullYear();
+const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
+---
+
+<footer class="footer">
+  <div class="container footer__grid">
+
+    <div class="footer__brand">
+      <div class="footer__logo">
+        <div class="logo-mark">H</div>
+        <span class="logo-text">HEFESTO</span>
+      </div>
+      <p class="footer__tagline">
+        Materiales de construcción,<br />alquiler y asesoramiento<br />en Paso de los Toros.
+      </p>
+      <a
+        href={`https://wa.me/${WHATSAPP}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="footer__wa"
+      >
+        WhatsApp
+      </a>
+    </div>
+
+    <div class="footer__col">
+      <h3 class="footer__heading">Servicios</h3>
+      <ul>
+        <li><a href="#servicios">Materiales de construcción</a></li>
+        <li><a href="#servicios">Chapas y caños</a></li>
+        <li><a href="#servicios">Aberturas</a></li>
+        <li><a href="#servicios">Pinturería</a></li>
+        <li><a href="#alquiler">Alquiler de herramientas</a></li>
+        <li><a href="#alquiler">Alquiler de carpas</a></li>
+        <li><a href="#servicios">Andamios</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h3 class="footer__heading">Contacto</h3>
+      <ul>
+        <li>18 de Julio esq. Pedro María Chiesa</li>
+        <li>Paso de los Toros, Tacuarembó</li>
+        <li>Uruguay</li>
+      </ul>
+      <h3 class="footer__heading" style="margin-top: 1.25rem;">Seguinos</h3>
+      <ul>
+        <li>
+          <a href="https://www.instagram.com/barraca.hefesto/" target="_blank" rel="noopener noreferrer">
+            @barraca.hefesto
+          </a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="footer__bottom">
+    <div class="container">
+      <span>© {currentYear} Barraca Hefesto. Todos los derechos reservados.</span>
+      <span class="footer__credit">
+        Sitio desarrollado por <a href="https://nestorhoracio.com" target="_blank" rel="noopener noreferrer">Néstor Horacio</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-black);
+    color: var(--color-gray-3);
+    padding-top: 3.5rem;
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 2.5rem;
+    padding-bottom: 3rem;
+  }
+
+  /* Brand col */
+  .footer__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+  .logo-mark {
+    width: 36px;
+    height: 36px;
+    background: var(--color-brand);
+    border-radius: 50%;
+    color: var(--color-white);
+    font-size: 1.2rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .logo-text {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--color-white);
+  }
+  .footer__tagline {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-gray-4);
+    margin-bottom: 1.25rem;
+  }
+  .footer__wa {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #25D366;
+    color: var(--color-white);
+    padding: 0.5rem 1.1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: opacity 0.15s;
+  }
+  .footer__wa:hover { opacity: 0.85; }
+
+  /* Links cols */
+  .footer__heading {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-white);
+    margin-bottom: 0.75rem;
+  }
+  .footer__col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .footer__col li, .footer__col a {
+    font-size: 0.9rem;
+    color: var(--color-gray-4);
+    transition: color 0.15s;
+  }
+  .footer__col a:hover { color: var(--color-brand-light); }
+
+  /* Bottom bar */
+  .footer__bottom {
+    border-top: 1px solid #222;
+    padding: 1.25rem 0;
+  }
+  .footer__bottom .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--color-gray-5);
+  }
+  .footer__credit a {
+    color: var(--color-brand-light);
+  }
+  .footer__credit a:hover { color: var(--color-brand); }
+
+  @media (max-width: 768px) {
+    .footer__grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .footer__bottom .container {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>

@@ -1,0 +1,219 @@
+---
+// src/pages/index.astro
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// Secciones — cada una será su propio componente
+// import Hero        from '../components/Hero.astro';
+// import Servicios   from '../components/Servicios.astro';
+// import Calculadora from '../components/Calculadora.astro';
+// import Alquiler    from '../components/Alquiler.astro';
+// import Galeria     from '../components/Galeria.astro';
+// import Nosotros    from '../components/Nosotros.astro';
+// import Contacto    from '../components/Contacto.astro';
+// import Asistente   from '../components/Asistente.astro';
+
+const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
+---
+
+<Layout>
+  <Header />
+
+  <main>
+
+    <!-- ==================== HERO ==================== -->
+    <section id="hero" class="hero">
+      <div class="container hero__inner">
+        <div class="hero__content">
+          <p class="hero__eyebrow">Paso de los Toros, Uruguay</p>
+          <h1 class="hero__title">
+            Todo para<br />
+            <span class="hero__highlight">tu obra.</span>
+          </h1>
+          <p class="hero__sub">
+            Materiales de construcción, chapas, aberturas, pinturería
+            y alquiler de herramientas y carpas.
+          </p>
+          <div class="hero__actions">
+            <a
+              href={`https://wa.me/${WHATSAPP}?text=Hola%20Hefesto%2C%20quiero%20cotizar.`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-primary"
+            >
+              Cotizá por WhatsApp
+            </a>
+            <a href="#calculadora" class="btn btn-outline">
+              Calculadora de materiales
+            </a>
+          </div>
+          <div class="hero__badges">
+            <span class="badge">Alquiler de herramientas</span>
+            <span class="badge">Alquiler de carpas</span>
+            <span class="badge">Andamios</span>
+          </div>
+        </div>
+        <div class="hero__visual">
+          <!-- Placeholder — reemplazar con foto real de la barraca -->
+          <div class="hero__img-placeholder">
+            <span>Foto barraca</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SERVICIOS ==================== -->
+    <section id="servicios" class="section">
+      <div class="container">
+        <h2 class="section-title">Nuestros servicios</h2>
+        <p class="section-subtitle">Todo lo que necesitás para tu proyecto, en un solo lugar.</p>
+        <!-- TODO: <Servicios /> -->
+        <p style="margin-top:2rem; color: var(--color-gray-4);">[Componente Servicios — próxima iteración]</p>
+      </div>
+    </section>
+
+    <!-- ==================== CALCULADORA ==================== -->
+    <section id="calculadora" class="section section--gray">
+      <div class="container">
+        <h2 class="section-title">Calculadora de materiales</h2>
+        <p class="section-subtitle">Calculá exactamente cuánto necesitás antes de venir.</p>
+        <!-- TODO: <Calculadora /> -->
+        <p style="margin-top:2rem; color: var(--color-gray-4);">[Componente Calculadora — próxima iteración]</p>
+      </div>
+    </section>
+
+    <!-- ==================== ALQUILER ==================== -->
+    <section id="alquiler" class="section">
+      <div class="container">
+        <h2 class="section-title">Alquiler</h2>
+        <p class="section-subtitle">Herramientas y carpas disponibles para alquilar.</p>
+        <!-- TODO: <Alquiler /> -->
+        <p style="margin-top:2rem; color: var(--color-gray-4);">[Componente Alquiler — próxima iteración]</p>
+      </div>
+    </section>
+
+    <!-- ==================== GALERÍA ==================== -->
+    <section id="galeria" class="section section--gray">
+      <div class="container">
+        <h2 class="section-title">Galería</h2>
+        <p class="section-subtitle">Productos y obras realizadas con materiales Hefesto.</p>
+        <!-- TODO: <Galeria /> -->
+        <p style="margin-top:2rem; color: var(--color-gray-4);">[Componente Galería — próxima iteración]</p>
+      </div>
+    </section>
+
+    <!-- ==================== NOSOTROS ==================== -->
+    <section id="nosotros" class="section">
+      <div class="container">
+        <h2 class="section-title">¿Quiénes somos?</h2>
+        <!-- TODO: <Nosotros /> -->
+        <p style="margin-top:2rem; color: var(--color-gray-4);">[Componente Nosotros — próxima iteración]</p>
+      </div>
+    </section>
+
+    <!-- ==================== CONTACTO ==================== -->
+    <section id="contacto" class="section section--gray">
+      <div class="container">
+        <h2 class="section-title">Contacto y ubicación</h2>
+        <!-- TODO: <Contacto /> -->
+        <p style="margin-top:2rem; color: var(--color-gray-4);">[Componente Contacto — próxima iteración]</p>
+      </div>
+    </section>
+
+    <!-- ==================== ASISTENTE IA ==================== -->
+    <!-- Widget flotante — se monta vía script -->
+    <!-- TODO: <Asistente /> -->
+
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  /* Hero */
+  .hero {
+    background: var(--color-white);
+    padding: 4rem 0 5rem;
+    overflow: hidden;
+  }
+  .hero__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .hero__eyebrow {
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-brand);
+    margin-bottom: 0.75rem;
+  }
+  .hero__title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 900;
+    line-height: 1.08;
+    color: var(--color-black);
+  }
+  .hero__highlight { color: var(--color-brand); }
+  .hero__sub {
+    font-size: 1.1rem;
+    color: var(--color-gray-5);
+    margin: 1.25rem 0 2rem;
+    max-width: 420px;
+    line-height: 1.6;
+  }
+  .hero__actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .hero__badges {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .badge {
+    display: inline-block;
+    padding: 0.3rem 0.85rem;
+    background: var(--color-brand-bg);
+    color: var(--color-brand-dark);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: 1px solid var(--color-brand-light);
+  }
+
+  /* Hero visual placeholder */
+  .hero__visual { display: flex; justify-content: center; }
+  .hero__img-placeholder {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: var(--color-gray-1);
+    border-radius: var(--radius-lg);
+    border: 2px dashed var(--color-gray-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gray-4);
+    font-size: 0.9rem;
+  }
+
+  /* Sections */
+  .section { padding: var(--section-py) 0; }
+  .section--gray { background: var(--color-gray-1); }
+
+  @media (max-width: 768px) {
+    .hero__inner {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .hero__visual { order: -1; }
+    .hero__img-placeholder { aspect-ratio: 16/9; }
+    .hero__actions { flex-direction: column; }
+    .hero__actions .btn { justify-content: center; }
+  }
+</style>
