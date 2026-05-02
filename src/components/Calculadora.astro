@@ -1,6 +1,6 @@
 ---
 // src/components/Calculadora.astro
-const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
+const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598543876';
 ---
 
 <section id="calculadora" class="section section--gray">
@@ -238,7 +238,7 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
     const op      = d.opciones[opIdx];
     const texto   = d.calcular(m2, op);
     const waTexto = encodeURIComponent(`Hola Hefesto! ${texto} ¿Me podés dar un precio?`);
-    const WA      = '598099000000';
+    const WA      = '598543876';
     resTxt.textContent = texto;
     btnWa.href         = `https://wa.me/${WA}?text=${waTexto}`;
     resultado.hidden   = false;
