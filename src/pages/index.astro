@@ -3,16 +3,7 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-
-// Secciones — cada una será su propio componente
-// import Hero        from '../components/Hero.astro';
-// import Servicios   from '../components/Servicios.astro';
-// import Calculadora from '../components/Calculadora.astro';
-// import Alquiler    from '../components/Alquiler.astro';
-// import Galeria     from '../components/Galeria.astro';
-// import Nosotros    from '../components/Nosotros.astro';
-// import Contacto    from '../components/Contacto.astro';
-// import Asistente   from '../components/Asistente.astro';
+import bannerImg from '../assets/images/banner.jpg';
 
 const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
 ---
@@ -23,7 +14,8 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
   <main>
 
     <!-- ==================== HERO ==================== -->
-    <section id="hero" class="hero">
+    <section id="hero" class="hero" style={`background-image: url(${bannerImg.src})`}>
+      <div class="hero__overlay"></div>
       <div class="container hero__inner">
         <div class="hero__content">
           <p class="hero__eyebrow">Paso de los Toros, Uruguay</p>
@@ -44,7 +36,7 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
             >
               Cotizá por WhatsApp
             </a>
-            <a href="#calculadora" class="btn btn-outline">
+            <a href="#calculadora" class="btn btn-white">
               Calculadora de materiales
             </a>
           </div>
@@ -52,12 +44,6 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
             <span class="badge">Alquiler de herramientas</span>
             <span class="badge">Alquiler de carpas</span>
             <span class="badge">Andamios</span>
-          </div>
-        </div>
-        <div class="hero__visual">
-          <!-- Placeholder — reemplazar con foto real de la barraca -->
-          <div class="hero__img-placeholder">
-            <span>Foto barraca</span>
           </div>
         </div>
       </div>
@@ -133,73 +119,84 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
 <style>
   /* Hero */
   .hero {
-    background: var(--color-white);
-    padding: 4rem 0 5rem;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 6rem 0 7rem;
     overflow: hidden;
   }
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(160, 20, 160, 0.82) 0%,
+      rgba(180, 30, 180, 0.70) 50%,
+      rgba(140, 10, 140, 0.60) 100%
+    );
+  }
   .hero__inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: center;
+    position: relative;
+    z-index: 1;
+    max-width: 620px;
   }
   .hero__eyebrow {
     font-size: 0.85rem;
     font-weight: 500;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--color-brand);
+    color: rgba(255,255,255,0.85);
     margin-bottom: 0.75rem;
   }
   .hero__title {
-    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-size: clamp(2.8rem, 7vw, 4.5rem);
     font-weight: 900;
-    line-height: 1.08;
-    color: var(--color-black);
+    line-height: 1.05;
+    color: var(--color-white);
   }
-  .hero__highlight { color: var(--color-brand); }
+  .hero__highlight {
+    color: var(--color-white);
+    text-shadow: 0 0 40px rgba(255,255,255,0.3);
+  }
   .hero__sub {
     font-size: 1.1rem;
-    color: var(--color-gray-5);
+    color: rgba(255,255,255,0.88);
     margin: 1.25rem 0 2rem;
-    max-width: 420px;
-    line-height: 1.6;
+    max-width: 440px;
+    line-height: 1.65;
   }
   .hero__actions {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
   }
+  .btn-white {
+    background: rgba(255,255,255,0.15);
+    color: var(--color-white);
+    border: 2px solid rgba(255,255,255,0.6);
+    backdrop-filter: blur(4px);
+  }
+  .btn-white:hover {
+    background: rgba(255,255,255,0.25);
+    border-color: var(--color-white);
+  }
   .hero__badges {
     display: flex;
     gap: 0.5rem;
-    margin-top: 1.5rem;
+    margin-top: 1.75rem;
     flex-wrap: wrap;
   }
   .badge {
     display: inline-block;
     padding: 0.3rem 0.85rem;
-    background: var(--color-brand-bg);
-    color: var(--color-brand-dark);
+    background: rgba(255,255,255,0.15);
+    color: var(--color-white);
     border-radius: 999px;
     font-size: 0.8rem;
     font-weight: 500;
-    border: 1px solid var(--color-brand-light);
-  }
-
-  /* Hero visual placeholder */
-  .hero__visual { display: flex; justify-content: center; }
-  .hero__img-placeholder {
-    width: 100%;
-    aspect-ratio: 4/3;
-    background: var(--color-gray-1);
-    border-radius: var(--radius-lg);
-    border: 2px dashed var(--color-gray-3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-gray-4);
-    font-size: 0.9rem;
+    border: 1px solid rgba(255,255,255,0.4);
+    backdrop-filter: blur(4px);
   }
 
   /* Sections */
@@ -207,12 +204,7 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '598099000000';
   .section--gray { background: var(--color-gray-1); }
 
   @media (max-width: 768px) {
-    .hero__inner {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-    .hero__visual { order: -1; }
-    .hero__img-placeholder { aspect-ratio: 16/9; }
+    .hero { padding: 4rem 0 5rem; }
     .hero__actions { flex-direction: column; }
     .hero__actions .btn { justify-content: center; }
   }
