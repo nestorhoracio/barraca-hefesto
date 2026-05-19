@@ -83,8 +83,8 @@ const WA_URL   = `https://wa.me/${WHATSAPP}?text=Hola%20Hefesto%2C%20quisiera%20
     flex-shrink: 0;
   }
   .logo-img {
-  width: 48px;
-  height: 48px;
+  width: 72px;
+  height: 72px;
   border-radius: 8px;
   object-fit: cover;
 }
@@ -96,14 +96,9 @@ const WA_URL   = `https://wa.me/${WHATSAPP}?text=Hola%20Hefesto%2C%20quisiera%20
   display: none;
 }
 [data-theme="dark"] .logo-color { display: none; }
-[data-theme="dark"] .logo-blanco { display: block; }
-  .logo-text {
-    font-size: 1.15rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    color: var(--color-brand);
-    font-family: Georgia, 'Times New Roman', serif;
-  }
+[data-theme="dark"] .logo-blanco { display: block;
+ mix-blend-mode: screen; }
+  
 
   /* Nav */
   .header__nav {
