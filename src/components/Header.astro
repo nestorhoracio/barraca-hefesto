@@ -19,10 +19,8 @@ const WA_URL   = `https://wa.me/${WHATSAPP}?text=Hola%20Hefesto%2C%20quisiera%20
   <div class="container header__inner">
 
     <a href="/" class="header__logo" aria-label="Barraca Hefesto — inicio">
-  <img src={logoColor.src} alt="Logo Barraca Hefesto" class="logo-img logo-color" width="48" height="48" />
-  <img src={logoBlanco.src} alt="Logo Barraca Hefesto" class="logo-img logo-blanco" width="48" height="48" />
+  <img src={logoColor.src} alt="Logo Barraca Hefesto" class="logo-img" width="80" height="80" />
 </a>
-
     <nav class="header__nav" aria-label="Navegación principal">
       {navLinks.map(link => (
         <a href={link.href} class="nav-link">{link.label}</a>
@@ -77,16 +75,20 @@ const WA_URL   = `https://wa.me/${WHATSAPP}?text=Hola%20Hefesto%2C%20quisiera%20
   }
 
   .header__logo {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    flex-shrink: 0;
-  }
-  .logo-img {
-  width: 72px;
-  height: 72px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+.logo-img {
+  width: 80px;
+  height: 80px;
   border-radius: 8px;
-  object-fit: cover;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+:global([data-theme="dark"]) .logo-img {
+  mix-blend-mode: normal;
 }
 .logo-color {
   display: block;
@@ -95,8 +97,8 @@ const WA_URL   = `https://wa.me/${WHATSAPP}?text=Hola%20Hefesto%2C%20quisiera%20
 .logo-blanco {
   display: none;
 }
-[data-theme="dark"] .logo-color { display: none; }
-[data-theme="dark"] .logo-blanco {
+:global([data-theme="dark"]) .logo-color { display: none; }
+:global([data-theme="dark"]) .logo-blanco {
   display: block;
   background: #ffffff;
   border-radius: 8px;

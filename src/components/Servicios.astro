@@ -1,13 +1,19 @@
 ---
-import { Package, Layers, DoorOpen, Paintbrush, Wrench, Tent, Construction } from 'lucide-astro';
+import ParedSvg     from '../assets/icons/Pared.svg?raw';
+import CamionSvg    from '../assets/icons/Camion.svg?raw';
+import PuertaSvg    from '../assets/icons/Puerta.svg?raw';
+import RodilloSvg   from '../assets/icons/Rodillo.svg?raw';
+import MartilloSvg  from '../assets/icons/Martillo.svg?raw';
+import TrabajadorSvg from '../assets/icons/Trabajador.svg?raw';
+import AndamioSvg   from '../assets/icons/Andamio.svg?raw';
 const servicios = [
-  { titulo: 'Materiales de construcción', desc: 'Todo lo necesario para tu obra, desde los cimientos.', icono: Package },
-  { titulo: 'Chapas y caños', desc: 'Variedad de medidas y espesores para techos y estructuras.', icono: Layers },
-  { titulo: 'Aberturas', desc: 'Puertas y ventanas para todo tipo de proyecto.', icono: DoorOpen },
-  { titulo: 'Pinturería', desc: 'Pinturas, esmaltes y accesorios de las mejores marcas.', icono: Paintbrush },
-  { titulo: 'Alquiler de herramientas', desc: 'Herramientas profesionales disponibles por día o semana.', icono: Wrench },
-  { titulo: 'Alquiler de carpas', desc: 'Carpas de distintos tamaños para eventos y obras.', icono: Tent },
-  { titulo: 'Andamios', desc: 'Andamios seguros en alquiler para trabajos en altura.', icono: Construction },
+  { titulo: 'Materiales de construcción', desc: 'Todo lo necesario para tu obra, desde los cimientos.', icono: ParedSvg },
+  { titulo: 'Chapas y caños', desc: 'Variedad de medidas y espesores para techos y estructuras.', icono: CamionSvg },
+  { titulo: 'Aberturas', desc: 'Puertas y ventanas para todo tipo de proyecto.', icono: PuertaSvg },
+  { titulo: 'Pinturería', desc: 'Pinturas, esmaltes y accesorios de las mejores marcas.', icono: RodilloSvg },
+  { titulo: 'Alquiler de herramientas', desc: 'Herramientas profesionales disponibles por día o semana.', icono: MartilloSvg },
+  { titulo: 'Alquiler de carpas', desc: 'Carpas de distintos tamaños para eventos y obras.', icono: TrabajadorSvg },
+  { titulo: 'Andamios', desc: 'Andamios seguros en alquiler para trabajos en altura.', icono: AndamioSvg },
 ];
 ---
 
@@ -18,7 +24,7 @@ const servicios = [
     <div class="servicios__grid">
       {servicios.map(s => (
         <div class="card">
-          <div class="card__icon"><s.icono size={24} /></div>
+          <div class="card__icon" set:html={s.icono}></div>
           <h3 class="card__title">{s.titulo}</h3>
           <p class="card__desc">{s.desc}</p>
         </div>
