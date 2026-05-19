@@ -4,10 +4,14 @@
    =========================== */
 
 :root {
-  --color-brand: #CC33CC;
-  --color-brand-dark: #A828A8;
-  --color-brand-light: #E8A0E8;
-  --color-brand-bg: #FAF0FA;
+  --color-brand: #D55CE7;
+  --color-brand-dark: #B844CC;
+  --color-brand-light: #EAA0F0;
+  --color-brand-bg: #FBF0FD;
+
+  --color-yellow: #F6E209;
+  --color-yellow-dark: #D4C008;
+  --color-yellow-bg: #FEFDE6;
 
   --color-white: #FFFFFF;
   --color-black: #111111;
@@ -154,9 +158,9 @@ a {
    Dark mode tokens
    =========================== */
 [data-theme="dark"] {
-  --color-brand: #DD44DD;
-  --color-brand-dark: #CC33CC;
-  --color-brand-bg: #2a1a2a;
+  --color-brand: #E070F0;
+  --color-brand-dark: #D55CE7;
+  --color-brand-bg: #2D1A30;
 
   --color-white: #1a1a1a;
   --color-black: #f0f0f0;
