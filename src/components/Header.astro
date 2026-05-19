@@ -1,6 +1,7 @@
 ---
 // src/components/Header.astro
-import logoImg from '../assets/images/logo.jpg';
+import logoColor from '../assets/images/Hefesto_Logo.png';
+import logoBlanco from '../assets/images/Hefesto_LogoBlanco.png';
 
 const navLinks = [
   { href: '#servicios',    label: 'Servicios' },
@@ -18,9 +19,9 @@ const WA_URL   = `https://wa.me/${WHATSAPP}?text=Hola%20Hefesto%2C%20quisiera%20
   <div class="container header__inner">
 
     <a href="/" class="header__logo" aria-label="Barraca Hefesto — inicio">
-      <img src={logoImg.src} alt="Logo Barraca Hefesto" class="logo-img" width="44" height="44" />
-      <span class="logo-text">HEFESTO</span>
-    </a>
+  <img src={logoColor.src} alt="Logo Barraca Hefesto" class="logo-img logo-color" width="48" height="48" />
+  <img src={logoBlanco.src} alt="Logo Barraca Hefesto" class="logo-img logo-blanco" width="48" height="48" />
+</a>
 
     <nav class="header__nav" aria-label="Navegación principal">
       {navLinks.map(link => (
@@ -82,11 +83,20 @@ const WA_URL   = `https://wa.me/${WHATSAPP}?text=Hola%20Hefesto%2C%20quisiera%20
     flex-shrink: 0;
   }
   .logo-img {
-    width: 44px;
-    height: 44px;
-    border-radius: 8px;
-    object-fit: cover;
-  }
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+.logo-color {
+  display: block;
+  mix-blend-mode: multiply;
+}
+.logo-blanco {
+  display: none;
+}
+[data-theme="dark"] .logo-color { display: none; }
+[data-theme="dark"] .logo-blanco { display: block; }
   .logo-text {
     font-size: 1.15rem;
     font-weight: 700;
