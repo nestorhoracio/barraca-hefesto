@@ -2,6 +2,29 @@
    Barraca Hefesto — Global CSS
    NH Freelance · 2026
    =========================== */
+/* ===========================
+   Fuentes locales
+   =========================== */
+@font-face {
+  font-family: 'Impact';
+  src: url('../assets/fonts/impact.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Calibri';
+  src: url('../assets/fonts/calibri.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Calibri';
+  src: url('../assets/fonts/calibrib.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
 
 :root {
   --color-brand: #D55CE7;
@@ -32,6 +55,8 @@
 
   --max-w: 1100px;
   --section-py: 5rem;
+  --font-impact: 'Impact', sans-serif;
+  --font-calibri: 'Calibri', 'Inter', sans-serif;
 }
 
 *,
@@ -48,7 +73,7 @@ html {
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-calibri);
   color: var(--color-black);
   background: var(--color-white);
   line-height: 1.6;
@@ -146,6 +171,7 @@ a {
   font-weight: 700;
   line-height: 1.2;
   color: var(--color-black);
+  font-family: var(--font-impact);
 }
 
 .section-subtitle {
