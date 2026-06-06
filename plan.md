@@ -64,7 +64,7 @@ Sitio web oficial de **Barraca Hefesto**, barraca de materiales de construcción
 17. **Sistema de íconos unificado** — todos los SVG vienen de `src/assets/icons/` importados con `?raw` y renderizados con `set:html`. `lucide-astro` eliminado.
 18. **Footer** — crédito completo: "Diseño & Desarrollo Frontend por Néstor Horacio" con link a nestorhoracio.com
 19. **Calculadora** — mensajes WhatsApp en primera persona ("Necesito") para los tres materiales (chapas, ladrillos, pintura). Texto en pantalla mantiene "Necesitás". Cada `calcular()` devuelve `{ display, wa }`.
-20. **WhatsApp unificado** — número `59899096947` en todos los componentes incluyendo la calculadora (que tenía el demo hardcodeado)
+20. **WhatsApp unificado** — número `59899096947` en todos los componentes: Header, Footer, Contacto, Alquiler, Asistente, Calculadora. El número demo `59899543876` fue eliminado del proyecto completo.
 
 ### Assets del cliente
 - Logo color: `src/assets/images/Hefesto_Logo.png`
