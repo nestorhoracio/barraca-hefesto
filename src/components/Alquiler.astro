@@ -1,26 +1,27 @@
 ---
-import { Wrench, Tent, Construction } from 'lucide-astro';
+import AndamioSvg from '../assets/icons/Andamio.svg?raw';
+import CarpaSvg   from '../assets/icons/Carpa.svg?raw';
 
-const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899543876';
+const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
 
 const items = [
   {
-    icono: Wrench,
+    icono: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
     titulo: 'Herramientas',
     desc: 'Taladros, amoladoras, hormigoneras, compresores y más. Disponibles por día o semana.',
     wa: 'Hola Hefesto, quiero consultar por alquiler de herramientas.',
   },
   {
-    icono: Tent,
+    icono: CarpaSvg,
     titulo: 'Carpas',
     desc: 'Carpas de distintos tamaños para eventos, fiestas y obras. Consulte disponibilidad.',
-   wa: 'Hola Hefesto, quiero consultar por alquiler de carpas.',
+    wa: 'Hola Hefesto, quiero consultar por alquiler de carpas.',
   },
   {
-    icono: Construction,
+    icono: AndamioSvg,
     titulo: 'Andamios',
     desc: 'Andamios seguros y certificados para trabajos en altura. Armado y desarmado incluido.',
-   wa: 'Hola Hefesto, quiero consultar por alquiler de andamios.',
+    wa: 'Hola Hefesto, quiero consultar por alquiler de andamios.',
   },
 ];
 
@@ -40,9 +41,7 @@ const pasos = [
     <div class="alquiler__grid">
       {items.map(item => (
         <div class="alq-card">
-          <div class="alq-card__icon">
-            <item.icono size={28} />
-          </div>
+          <div class="alq-card__icon" set:html={item.icono}></div>
           <h3 class="alq-card__title">{item.titulo}</h3>
           <p class="alq-card__desc">{item.desc}</p>
           

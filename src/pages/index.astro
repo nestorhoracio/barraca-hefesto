@@ -13,7 +13,7 @@ import Contacto from '../components/Contacto.astro';
 import Nosotros from '../components/Nosotros.astro';
 import Asistente from '../components/Asistente.astro';
 
-const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899543876';
+const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
 ---
 
 <Layout>
@@ -31,6 +31,7 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899543876';
             Todo para<br />
             <span class="hero__highlight">tu obra.</span>
           </h1>
+          <p class="hero__slogan">Construyendo ideas</p>
           <p class="hero__sub">
             Materiales de construcción, chapas, aberturas, pinturería
             y alquiler de herramientas y carpas.
@@ -138,6 +139,15 @@ Cotizá por WhatsApp
   .hero__highlight {
     color: var(--color-white);
     text-shadow: 0 0 40px rgba(255,255,255,0.3);
+  }
+  .hero__slogan {
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-top: 0.6rem;
+    opacity: 0.9;
   }
   .hero__sub {
     font-size: 1.1rem;
