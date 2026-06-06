@@ -286,10 +286,11 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
         agregarMensaje(pregunta, 'bot');
 
       } else if (tieneResumen) {
-        const matchWA      = respuesta.match(/MENSAJE_WA:\s*([\s\S]+?)(?=\nRESUMEN:|\nDETALLE:|$)/);
-        const mensajeWA    = matchWA ? matchWA[1].trim() : texto;
+        const matchWA      = respuesta.match(/MENSAJE_WA:\s*([\s\S]+)/);
+        const mensajeWA    = matchWA ? matchWA[1].trim() : '';
         const matchResumen = respuesta.match(/RESUMEN:\s*(.+?)(?:\n|$)/);
         const resumen      = matchResumen ? matchResumen[1].trim() : 'Consulta procesada';
+        if (!mensajeWA) { agregarMensaje('No pude armar el mensaje. Intentá de nuevo.', 'bot'); return; }
         const waUrl        = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(mensajeWA)}`;
 
         agregarMensaje(
