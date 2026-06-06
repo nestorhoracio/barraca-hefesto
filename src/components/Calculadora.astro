@@ -148,10 +148,11 @@
 </style>
 <script>
   type Opcion = { nombre: string; cobertura: number };
+  type Resultado = { display: string; wa: string };
   type Material = {
     label: string;
     opciones: Opcion[];
-    calcular: (m2: number, op: Opcion) => string;
+    calcular: (m2: number, op: Opcion) => Resultado;
   };
   type Datos = Record<string, Material>;
 
@@ -165,7 +166,10 @@
       ],
       calcular: (m2: number, op: Opcion) => {
         const cantidad = Math.ceil(m2 / op.cobertura);
-        return `Necesitás aproximadamente ${cantidad} chapas (${op.nombre}) para cubrir ${m2} m².`;
+        return {
+          display: `Necesitás aproximadamente ${cantidad} chapas (${op.nombre}) para cubrir ${m2} m².`,
+          wa:      `Necesito aproximadamente ${cantidad} chapas (${op.nombre}) para cubrir ${m2} m².`,
+        };
       }
     },
     ladrillos: {
@@ -178,7 +182,10 @@
       ],
       calcular: (m2: number, op: Opcion) => {
         const cantidad = Math.ceil(m2 * op.cobertura);
-        return `Necesitás aproximadamente ${cantidad} unidades de ${op.nombre} para ${m2} m² de pared.`;
+        return {
+          display: `Necesitás aproximadamente ${cantidad} unidades de ${op.nombre} para ${m2} m² de pared.`,
+          wa:      `Necesito aproximadamente ${cantidad} unidades de ${op.nombre} para ${m2} m² de pared.`,
+        };
       }
     },
     pintura: {
@@ -190,7 +197,10 @@
       ],
       calcular: (m2: number, op: Opcion) => {
         const litros = Math.ceil(m2 / op.cobertura);
-        return `Necesitás aproximadamente ${litros} litros de pintura ${op.nombre} para cubrir ${m2} m² (dos manos).`;
+        return {
+          display: `Necesitás aproximadamente ${litros} litros de pintura ${op.nombre} para cubrir ${m2} m² (dos manos).`,
+          wa:      `Necesito aproximadamente ${litros} litros de pintura ${op.nombre} para cubrir ${m2} m² (dos manos).`,
+        };
       }
     },
   };
@@ -235,10 +245,10 @@
     const d       = datos[materialActivo];
     const opIdx   = parseInt(selectTipo.value);
     const op      = d.opciones[opIdx];
-    const texto   = d.calcular(m2, op);
-    const waTexto = encodeURIComponent(`Hola Hefesto! ${texto} ¿Me podés dar un precio?`);
+    const resultado_  = d.calcular(m2, op);
+    const waTexto = encodeURIComponent(`Hola Hefesto! ${resultado_.wa} ¿Me podés dar un precio?`);
     const WA      = '59899096947';
-    resTxt.textContent = texto;
+    resTxt.textContent = resultado_.display;
     btnWa.href         = `https://wa.me/${WA}?text=${waTexto}`;
     resultado.hidden   = false;
     resultado.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
