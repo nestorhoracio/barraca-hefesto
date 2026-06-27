@@ -1,11 +1,11 @@
 ---
 // src/components/Marcas.astro
+// Logos pendientes: charrua.png/svg y emtop.png/svg — bajar y agregar a public/marcas/
 const marcas = [
-  { nombre: 'Equus',      src: '/marcas/equus.svg',      alt: 'Equus Pinturas' },
-  { nombre: 'Urumix',     src: '/marcas/urumix.svg',     alt: 'Urumix Morteros' },
   { nombre: 'Sinteplast', src: '/marcas/sinteplast.png', alt: 'Sinteplast Pinturas' },
-  { nombre: 'Crisoles',   src: '/marcas/crisoles.png',   alt: 'Crisoles Pinturas' },
-  { nombre: 'Qualyvinil', src: '/marcas/qualyvinil.png', alt: 'Qualyvinil' },
+  { nombre: 'Urumix',     src: '/marcas/urumix.svg',     alt: 'Urumix Morteros' },
+  { nombre: 'Becam',      src: '/marcas/becam.svg',      alt: 'Becam Chapas' },
+  { nombre: 'Truper',     src: '/marcas/truper.svg',     alt: 'Truper Herramientas' },
 ];
 ---
 
@@ -29,7 +29,7 @@ const marcas = [
 <style>
   .marcas__grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
     margin-top: 2.5rem;
     align-items: center;

@@ -30,6 +30,12 @@
         <select class="calc__select" id="select-tipo"></select>
       </div>
 
+      <!-- Paso 2b: elegir longitud (solo chapas) -->
+      <div class="calc__step" id="step-longitud" hidden>
+        <label class="calc__label">Longitud de la chapa</label>
+        <select class="calc__select" id="select-longitud"></select>
+      </div>
+
       <!-- Paso 3: ingresar metros cuadrados -->
       <div class="calc__step">
         <label class="calc__label">Superficie en m²</label>
@@ -147,38 +153,48 @@
   .calc__wa { width: 100%; justify-content: center; }
 </style>
 <script>
-  type Opcion = { nombre: string; cobertura: number };
+  type Opcion = { nombre: string; cobertura: number; longitudes?: number[] };
   type Resultado = { display: string; wa: string };
   type Material = {
     label: string;
     opciones: Opcion[];
-    calcular: (m2: number, op: Opcion) => Resultado;
+    calcular: (m2: number, op: Opcion, longitud?: number) => Resultado;
   };
   type Datos = Record<string, Material>;
+
+  const LONGITUDES_CAL26 = [3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0];
+  const LONGITUDES_CAL30 = [3.0, 3.5, 4.0, 4.5];
 
   const datos: Datos = {
     chapas: {
       label: 'Tipo de chapa',
       opciones: [
-        { nombre: 'Chapa acanalada 0.60m', cobertura: 0.50 },
-        { nombre: 'Chapa acanalada 0.80m', cobertura: 0.68 },
-        { nombre: 'Chapa trapezoidal 1.00m', cobertura: 0.85 },
+        { nombre: 'Ondulada Aluminizada Calibre 26',     cobertura: 1.0, longitudes: LONGITUDES_CAL26 },
+        { nombre: 'Trapezoidal Aluminizada Calibre 26',  cobertura: 1.0, longitudes: LONGITUDES_CAL26 },
+        { nombre: 'Ondulada Aluminizada Calibre 30',     cobertura: 1.0, longitudes: LONGITUDES_CAL30 },
+        { nombre: 'Trapezoidal Aluminizada Calibre 30',  cobertura: 1.0, longitudes: LONGITUDES_CAL30 },
       ],
-      calcular: (m2: number, op: Opcion) => {
-        const cantidad = Math.ceil(m2 / op.cobertura);
+      calcular: (m2: number, op: Opcion, longitud: number = 1) => {
+        const VUELO = 0.40; // 20cm adelante + 20cm atrás
+        const longitudUtil = longitud - VUELO;
+        const areaPorChapa = op.cobertura * longitudUtil;
+        const cantidad = Math.ceil(m2 / areaPorChapa);
+        const longStr = longitud.toFixed(1).replace('.', ',');
+        const utilStr = longitudUtil.toFixed(2).replace('.', ',');
+        const desc = `${op.nombre} de ${longStr} m`;
         return {
-          display: `Necesitás aproximadamente ${cantidad} chapas (${op.nombre}) para cubrir ${m2} m².`,
-          wa:      `Necesito aproximadamente ${cantidad} chapas (${op.nombre}) para cubrir ${m2} m².`,
+          display: `Necesitás aproximadamente ${cantidad} chapas (${desc}) para cubrir ${m2} m².\n⚠️ El cálculo incluye un vuelo de 20 cm adelante y 20 cm atrás — la cobertura útil por chapa es ${utilStr} m.`,
+          wa:      `Necesito aproximadamente ${cantidad} chapas (${desc}) para cubrir ${m2} m² (incluye vuelo de 20 cm en cada extremo).`,
         };
       }
     },
     ladrillos: {
-      label: 'Tipo de ladrillo',
+      label: 'Tipo de ladrillo o bloque',
       opciones: [
-        { nombre: 'Ladrillo común 12x18x6', cobertura: 65 },
-        { nombre: 'Ladrillo hueco 8x18x33', cobertura: 18 },
-        { nombre: 'Ladrillo hueco 12x18x33', cobertura: 18 },
-        { nombre: 'Bloque de hormigón 15x20x40', cobertura: 12 },
+        { nombre: 'Ladrillo de campo 23×11,5×5 cm', cobertura: 173 },
+        { nombre: 'Bloque Común 40×20×12 cm',        cobertura: 12.5 },
+        { nombre: 'Ticholo 25×25×12 cm',             cobertura: 16 },
+        { nombre: 'Ticholo 25×25×17 cm',             cobertura: 16 },
       ],
       calcular: (m2: number, op: Opcion) => {
         const cantidad = Math.ceil(m2 * op.cobertura);
@@ -207,14 +223,25 @@
 
   let materialActivo = 'chapas';
 
-  const tabs       = document.querySelectorAll<HTMLButtonElement>('.tab');
-  const selectTipo = document.getElementById('select-tipo') as HTMLSelectElement | null;
-  const labelTipo  = document.getElementById('label-tipo') as HTMLLabelElement | null;
-  const inputM2    = document.getElementById('input-m2') as HTMLInputElement | null;
-  const btnCalc    = document.getElementById('btn-calcular') as HTMLButtonElement | null;
-  const resultado  = document.getElementById('resultado') as HTMLElement | null;
-  const resTxt     = document.getElementById('resultado-texto') as HTMLElement | null;
-  const btnWa      = document.getElementById('btn-wa') as HTMLAnchorElement | null;
+  const tabs          = document.querySelectorAll<HTMLButtonElement>('.tab');
+  const selectTipo    = document.getElementById('select-tipo') as HTMLSelectElement | null;
+  const labelTipo     = document.getElementById('label-tipo') as HTMLLabelElement | null;
+  const stepLongitud  = document.getElementById('step-longitud') as HTMLElement | null;
+  const selectLongitud = document.getElementById('select-longitud') as HTMLSelectElement | null;
+  const inputM2       = document.getElementById('input-m2') as HTMLInputElement | null;
+  const btnCalc       = document.getElementById('btn-calcular') as HTMLButtonElement | null;
+  const resultado     = document.getElementById('resultado') as HTMLElement | null;
+  const resTxt        = document.getElementById('resultado-texto') as HTMLElement | null;
+  const btnWa         = document.getElementById('btn-wa') as HTMLAnchorElement | null;
+
+  function cargarLongitudes(op: Opcion): void {
+    if (!stepLongitud || !selectLongitud) return;
+    if (!op.longitudes) { stepLongitud.hidden = true; return; }
+    stepLongitud.hidden = false;
+    selectLongitud.innerHTML = op.longitudes
+      .map((l: number) => `<option value="${l}">${l.toFixed(1).replace('.', ',')} m</option>`)
+      .join('');
+  }
 
   function cargarOpciones(material: string): void {
     const d = datos[material];
@@ -224,9 +251,17 @@
       .map((op: Opcion, i: number) => `<option value="${i}">${op.nombre}</option>`)
       .join('');
     resultado.hidden = true;
+    cargarLongitudes(d.opciones[0]);
   }
 
   cargarOpciones(materialActivo);
+
+  selectTipo?.addEventListener('change', () => {
+    if (materialActivo !== 'chapas') return;
+    const opIdx = parseInt(selectTipo!.value);
+    cargarLongitudes(datos['chapas'].opciones[opIdx]);
+    if (resultado) resultado.hidden = true;
+  });
 
   tabs.forEach((tab: HTMLButtonElement) => {
     tab.addEventListener('click', () => {
@@ -242,13 +277,16 @@
     if (!inputM2 || !selectTipo || !resultado || !resTxt || !btnWa) return;
     const m2 = parseFloat(inputM2.value);
     if (!m2 || m2 <= 0) { inputM2.focus(); return; }
-    const d       = datos[materialActivo];
-    const opIdx   = parseInt(selectTipo.value);
-    const op      = d.opciones[opIdx];
-    const resultado_  = d.calcular(m2, op);
-    const waTexto = encodeURIComponent(`Hola Hefesto! ${resultado_.wa} ¿Me podés dar un precio?`);
+    const d     = datos[materialActivo];
+    const opIdx = parseInt(selectTipo.value);
+    const op    = d.opciones[opIdx];
+    const longitud = (materialActivo === 'chapas' && selectLongitud)
+      ? parseFloat(selectLongitud.value)
+      : undefined;
+    const res     = d.calcular(m2, op, longitud);
+    const waTexto = encodeURIComponent(`Hola Hefesto! ${res.wa} ¿Me podés dar un precio?`);
     const WA      = '59899096947';
-    resTxt.textContent = resultado_.display;
+    resTxt.innerHTML = res.display.replace(/\n/g, '<br>');
     btnWa.href         = `https://wa.me/${WA}?text=${waTexto}`;
     resultado.hidden   = false;
     resultado.scrollIntoView({ behavior: 'smooth', block: 'nearest' });

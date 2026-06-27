@@ -51,10 +51,10 @@ Sitio web oficial de **Barraca Hefesto**, barraca de materiales de construcción
 4. **Hero** — banner real como fondo con overlay magenta + slogan "Construyendo ideas"
 5. **Dark mode** — toggle en header, tokens CSS, persistencia localStorage
 6. **Servicios** — 7 cards con íconos SVG reales del cliente (fill:currentColor)
-7. **Calculadora de materiales** — chapas, ladrillos, pintura con tipos y fórmulas, TypeScript tipado
+7. **Calculadora de materiales** — chapas, ladrillos, pintura con tipos y fórmulas, TypeScript tipado. Chapas: select de tipo + select de longitud dinámico por calibre + vuelo 20cm/extremo descontado del cálculo.
 8. **Alquiler** — 3 cards (herramientas, carpas, andamios) + sección ¿Cómo funciona?
 9. **Galería** — fotos reales del Instagram en mosaico (gestión estática)
-10. **Marcas** — logos reales: Equus (SVG), Sinteplast (PNG), Crisoles (PNG), Qualyvinil (PNG), Urumix (SVG tipográfico). Grilla grayscale con hover a color.
+10. **Marcas** — Sinteplast (PNG), Urumix (SVG), Becam (SVG oficial de becam.com.uy), Truper (SVG de worldvectorlogo), EMTOP (PNG de emtop.com). Grilla 4 col grayscale con hover a color. Equus, Crisoles y Qualyvinil eliminados por pedido del cliente.
 11. **Nosotros** — texto placeholder + 3 stats (esperando contenido real)
 12. **Contacto** — dirección real, horarios reales, email, WhatsApp, Instagram, Facebook + mapa Google Maps
 13. **Asistente IA** — widget flotante, historial multi-turno, calcula cantidades, pide datos del cliente, arma mensaje WhatsApp
@@ -78,13 +78,47 @@ Sitio web oficial de **Barraca Hefesto**, barraca de materiales de construcción
 - Logo blanco: `src/assets/images/Hefesto_LogoBlanco.png`
 - Íconos SVG propios: `src/assets/icons/` — Andamio, Camion, Carpa, Excavadora, Forma_Hefesto, Martillo, Mezcladora, Pared, Puerta, Rodillo, Trabajador
 - Tipografías: `src/assets/fonts/` (impact.woff2, calibri.woff2, calibrib.woff2)
-- Logos de marcas: `public/marcas/` (equus.svg, urumix.svg, sinteplast.png, crisoles.png, qualyvinil.png)
+- Logos de marcas: `public/marcas/` (sinteplast.png, urumix.svg, becam.svg, truper.svg, emtop.png)
 
 ### Pendiente ⏳ — esperando contenido del cliente
-- **Confirmar si "Crisoleco" es "Crisoles Pinturas"** (crisoles.com.uy) — usamos ese logo
-- **Foto y texto real** en sección Nosotros
+- **Foto y texto real** en sección Nosotros (historia, fundadores, diferencial — sin datos aún)
+- **Pintura** — marcas y rendimientos reales (sin datos aún; tipos actuales son genéricos)
+- **Alquiler** — herramientas, carpas, condiciones (sin datos aún)
+- **Políticas del asistente** — envíos, precios, crédito, tarjeta (sin datos aún)
+- **Quiénes somos** — año de fundación, fundadores, historia
+- **Charrúa** — marca mencionada por el cliente; sin presencia online identificable; pedir logo directamente
 - **Número WhatsApp real** ya actualizado (`59899096947`) — confirmar en Netlify Environment Variables
 - **Conectar dominio hefesto.com.uy** (ver instrucciones abajo)
+- **Marcas grid** — cuando llegue logo Charrúa: agregar al array en `Marcas.astro` y pasar grid a 5 columnas
+
+### Implementado en sesión junio 2026 ✅
+
+#### Calculadora — Chapas (datos reales del cliente)
+- 4 tipos reales: Ondulada/Trapezoidal × Calibre 26/30
+- Select de **longitud dinámico** según calibre:
+  - Cal. 26: 3,0 / 3,5 / 4,0 / 4,5 / 5,0 / 5,5 / 6,0 / 6,5 / 7,0 m
+  - Cal. 30: 3,0 / 3,5 / 4,0 / 4,5 m
+- **Vuelo**: se descuentan 40 cm (20 cm cada extremo) de la longitud para el cálculo real
+- Fórmula: `ceil(m² / ((longitud − 0,40) × 1,0))`
+- El resultado muestra nota explicativa del vuelo al usuario
+- Mensaje WA: en primera persona, incluye aclaración del vuelo
+
+#### Calculadora — Ladrillos y bloques (datos reales del cliente)
+| Tipo | Unidades por m² | Nota |
+|---|---|---|
+| Ladrillo de campo 23×11,5×5 cm | 173 u/m² | — |
+| Bloque Común 40×20×12 cm | 12,5 u/m² | — |
+| Ticholo 25×25×12 cm | 16 u/m² | pallet: 384 u |
+| Ticholo 25×25×17 cm | 16 u/m² | pallet: 165 u |
+
+Ticholos: se venden por unidad y por pallet.
+
+#### Marcas (actualizado por pedido del cliente)
+- **Eliminados**: Equus, Crisoles Pinturas, Qualyvinil
+- **Agregados**: Becam (SVG de becam.com.uy), Truper (SVG worldvectorlogo), EMTOP (PNG de emtop.com)
+- **Pendiente**: Charrúa — pedir logo al cliente
+- Grid: 4 columnas mientras falte Charrúa; pasar a 5 cuando llegue
+- Archivos en `public/marcas/`: sinteplast.png, urumix.svg, becam.svg, truper.svg, emtop.png
 
 ---
 
