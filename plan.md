@@ -86,10 +86,8 @@ Sitio web oficial de **Barraca Hefesto**, barraca de materiales de construcción
 - **Alquiler** — herramientas, carpas, condiciones (sin datos aún)
 - **Políticas del asistente** — envíos, precios, crédito, tarjeta (sin datos aún)
 - **Quiénes somos** — año de fundación, fundadores, historia
-- **Charrúa** — marca mencionada por el cliente; sin presencia online identificable; pedir logo directamente
 - **Número WhatsApp real** ya actualizado (`59899096947`) — confirmar en Netlify Environment Variables
 - **Conectar dominio hefesto.com.uy** (ver instrucciones abajo)
-- **Marcas grid** — cuando llegue logo Charrúa: agregar al array en `Marcas.astro` y pasar grid a 5 columnas
 
 ### Implementado en sesión junio 2026 ✅
 
@@ -116,9 +114,8 @@ Ticholos: se venden por unidad y por pallet.
 #### Marcas (actualizado por pedido del cliente)
 - **Eliminados**: Equus, Crisoles Pinturas, Qualyvinil
 - **Agregados**: Becam (SVG de becam.com.uy), Truper (SVG worldvectorlogo), EMTOP (PNG de emtop.com)
-- **Pendiente**: Charrúa — pedir logo al cliente
-- Grid: 4 columnas mientras falte Charrúa; pasar a 5 cuando llegue
-- Archivos en `public/marcas/`: sinteplast.png, urumix.svg, becam.svg, truper.svg, emtop.png
+- Grid: 6 columnas con las 6 marcas completas
+- Archivos en `public/marcas/`: sinteplast.png, urumix.svg, becam.svg, CementoCharrua.png, truper.svg, emtop.png
 
 ---
 
