@@ -55,7 +55,7 @@ Sitio web oficial de **Barraca Hefesto**, barraca de materiales de construcción
 8. **Alquiler** — 3 cards (herramientas, carpas, andamios) + sección ¿Cómo funciona?
 9. **Galería** — fotos reales del Instagram en mosaico (gestión estática)
 10. **Marcas** — Sinteplast (PNG), Urumix (SVG), Becam (SVG oficial de becam.com.uy), Truper (SVG de worldvectorlogo), EMTOP (PNG de emtop.com). Grilla 4 col grayscale con hover a color. Equus, Crisoles y Qualyvinil eliminados por pedido del cliente.
-11. **Nosotros** — texto placeholder + 3 stats (esperando contenido real)
+11. **Nosotros** — foto real del equipo (`equipo.jpg`), texto placeholder con 3 stats. Foto con `object-fit: cover`, `aspect-ratio: 4/3`, bordes redondeados y sombra.
 12. **Contacto** — dirección real, horarios reales, email, WhatsApp, Instagram, Facebook + mapa Google Maps
 13. **Asistente IA** — widget flotante, historial multi-turno, calcula cantidades, pide datos del cliente, arma mensaje WhatsApp
 14. **Logo real** — Hefesto_Logo.png con mix-blend-mode:multiply en light mode
@@ -78,14 +78,14 @@ Sitio web oficial de **Barraca Hefesto**, barraca de materiales de construcción
 - Logo blanco: `src/assets/images/Hefesto_LogoBlanco.png`
 - Íconos SVG propios: `src/assets/icons/` — Andamio, Camion, Carpa, Excavadora, Forma_Hefesto, Martillo, Mezcladora, Pared, Puerta, Rodillo, Trabajador
 - Tipografías: `src/assets/fonts/` (impact.woff2, calibri.woff2, calibrib.woff2)
-- Logos de marcas: `public/marcas/` (sinteplast.png, urumix.svg, becam.svg, truper.svg, emtop.png)
+- Logos de marcas: `public/marcas/` (sinteplast.png, urumix.svg, becam.svg, CementoCharrua.png, truper.svg, emtop.png)
+- Foto equipo: `src/assets/images/equipo.jpg`
 
 ### Pendiente ⏳ — esperando contenido del cliente
-- **Foto y texto real** en sección Nosotros (historia, fundadores, diferencial — sin datos aún)
+- **Texto real** en sección Nosotros (historia, fundadores, diferencial, año de fundación — foto ya colocada, texto sigue siendo placeholder)
 - **Pintura** — marcas y rendimientos reales (sin datos aún; tipos actuales son genéricos)
 - **Alquiler** — herramientas, carpas, condiciones (sin datos aún)
 - **Políticas del asistente** — envíos, precios, crédito, tarjeta (sin datos aún)
-- **Quiénes somos** — año de fundación, fundadores, historia
 - **Número WhatsApp real** ya actualizado (`59899096947`) — confirmar en Netlify Environment Variables
 - **Conectar dominio hefesto.com.uy** (ver instrucciones abajo)
 
