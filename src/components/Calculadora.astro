@@ -36,8 +36,45 @@
         <select class="calc__select" id="select-longitud"></select>
       </div>
 
-      <!-- Paso 3: ingresar metros cuadrados -->
-      <div class="calc__step">
+      <!-- Paso 3 (chapas): dimensiones del techo -->
+      <div class="calc__step" id="step-dimensiones">
+        <label class="calc__label">Dimensiones del techo (m)</label>
+        <div class="calc__dims">
+          <div class="calc__dims-field">
+            <span class="calc__sublabel">Ancho</span>
+            <input class="calc__input" type="number" id="input-ancho"
+                   min="0.5" max="99" step="0.1" placeholder="Ej: 4" />
+          </div>
+          <div class="calc__dims-field">
+            <span class="calc__sublabel">Largo</span>
+            <input class="calc__input" type="number" id="input-largo"
+                   min="0.5" max="99" step="0.1" placeholder="Ej: 10" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Paso 3b (chapas): dirección de caída del agua -->
+      <div class="calc__step" id="step-direccion">
+        <label class="calc__label">¿Hacia dónde cae el agua?</label>
+        <div class="calc__tabs" id="tabs-direccion">
+          <button class="tab active" data-direccion="largo">A lo largo</button>
+          <button class="tab" data-direccion="ancho">A lo ancho</button>
+        </div>
+      </div>
+
+      <!-- Paso 3c (chapas): inclinación, vía altura total de la caída -->
+      <div class="calc__step" id="step-altura">
+        <label class="calc__label">Altura de la caída (opcional)</label>
+        <input class="calc__input" type="number" id="input-altura"
+               min="0" max="20" step="0.05" placeholder="Ej: 1,20" />
+        <p class="calc__hint">
+          Diferencia de altura entre el punto más alto y el más bajo del techo.
+          Si no la sabés, dejalo vacío y calculamos sin inclinación.
+        </p>
+      </div>
+
+      <!-- Paso 3 (ladrillos/pintura): superficie en m² -->
+      <div class="calc__step" id="step-m2" hidden>
         <label class="calc__label">Superficie en m²</label>
         <input class="calc__input" type="number" id="input-m2"
                min="1" max="9999" placeholder="Ej: 45" />
@@ -135,6 +172,30 @@
 
   .calc__btn { width: 100%; justify-content: center; }
 
+  /* Dimensiones ancho/largo (chapas) */
+  .calc__dims {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  .calc__sublabel {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-gray-4);
+    margin-bottom: 0.35rem;
+  }
+  @media (max-width: 480px) {
+    .calc__dims { grid-template-columns: 1fr; }
+  }
+
+  .calc__hint {
+    font-size: 0.8rem;
+    color: var(--color-gray-4);
+    margin-top: 0.5rem;
+    line-height: 1.4;
+  }
+
   /* Resultado */
   .calc__resultado {
     margin-top: 1.75rem;
@@ -143,6 +204,10 @@
     border: 1.5px solid var(--color-brand-light);
     border-radius: var(--radius-md);
   }
+  .calc__resultado--advertencia {
+    background: var(--color-gray-2);
+    border-color: var(--color-gray-3);
+  }
   .resultado__texto {
     font-size: 1.1rem;
     font-weight: 600;
@@ -150,17 +215,33 @@
     margin-bottom: 1rem;
     line-height: 1.5;
   }
+  .calc__resultado--advertencia .resultado__texto {
+    color: var(--color-gray-5);
+  }
   .calc__wa { width: 100%; justify-content: center; }
 </style>
 <script>
   type Opcion = { nombre: string; cobertura: number; longitudes?: number[] };
-  type Resultado = { display: string; wa: string };
+  type Resultado = { display: string; wa: string; nivel?: 'ok' | 'advertencia' };
   type Material = {
     label: string;
     opciones: Opcion[];
-    calcular: (m2: number, op: Opcion, longitud?: number) => Resultado;
+    calcular?: (m2: number, op: Opcion) => Resultado;
   };
   type Datos = Record<string, Material>;
+
+  type DireccionCaida = 'largo' | 'ancho';
+  type ChapasInput = { ancho: number; largo: number; direccion: DireccionCaida; longitud: number; altura: number };
+
+  const fmt = (n: number, dec = 1) => n.toFixed(dec).replace('.', ',');
+
+  const VUELO = 0.40;   // 20cm adelante + 20cm atrás
+  const SOLAPE = 0.30;  // cruce seguro entre chapas empalmadas
+  const MAX_PIEZAS = 3; // más de esto, mejor consultar en persona
+
+  function coberturaConPiezas(n: number, longitud: number): number {
+    return n * longitud - (n - 1) * SOLAPE - VUELO;
+  }
 
   const LONGITUDES_CAL26 = [3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0];
   const LONGITUDES_CAL30 = [3.0, 3.5, 4.0, 4.5];
@@ -174,19 +255,6 @@
         { nombre: 'Ondulada Aluminizada Calibre 30',     cobertura: 1.0, longitudes: LONGITUDES_CAL30 },
         { nombre: 'Trapezoidal Aluminizada Calibre 30',  cobertura: 1.0, longitudes: LONGITUDES_CAL30 },
       ],
-      calcular: (m2: number, op: Opcion, longitud: number = 1) => {
-        const VUELO = 0.40; // 20cm adelante + 20cm atrás
-        const longitudUtil = longitud - VUELO;
-        const areaPorChapa = op.cobertura * longitudUtil;
-        const cantidad = Math.ceil(m2 / areaPorChapa);
-        const longStr = longitud.toFixed(1).replace('.', ',');
-        const utilStr = longitudUtil.toFixed(2).replace('.', ',');
-        const desc = `${op.nombre} de ${longStr} m`;
-        return {
-          display: `Necesitás aproximadamente ${cantidad} chapas (${desc}) para cubrir ${m2} m².\n⚠️ El cálculo incluye un vuelo de 20 cm adelante y 20 cm atrás — la cobertura útil por chapa es ${utilStr} m.`,
-          wa:      `Necesito aproximadamente ${cantidad} chapas (${desc}) para cubrir ${m2} m² (incluye vuelo de 20 cm en cada extremo).`,
-        };
-      }
     },
     ladrillos: {
       label: 'Tipo de ladrillo o bloque',
@@ -221,18 +289,120 @@
     },
   };
 
-  let materialActivo = 'chapas';
+  function calcularChapas(input: ChapasInput, op: Opcion): Resultado {
+    const { ancho, largo, direccion, longitud, altura } = input;
+    const bajadaHorizontal = direccion === 'largo' ? largo : ancho;
+    const perpendicular    = direccion === 'largo' ? ancho : largo;
+    const dirTexto         = direccion === 'largo' ? 'a lo largo' : 'a lo ancho';
+    const techoTexto       = `${fmt(ancho)}×${fmt(largo)} m`;
 
-  const tabs          = document.querySelectorAll<HTMLButtonElement>('.tab');
-  const selectTipo    = document.getElementById('select-tipo') as HTMLSelectElement | null;
-  const labelTipo     = document.getElementById('label-tipo') as HTMLLabelElement | null;
-  const stepLongitud  = document.getElementById('step-longitud') as HTMLElement | null;
+    // Pitágoras: la inclinación alarga la bajada real más allá de la medida horizontal
+    const bajada = altura > 0 ? Math.sqrt(bajadaHorizontal ** 2 + altura ** 2) : bajadaHorizontal;
+    const notaInclinacion = altura > 0
+      ? ` Con la inclinación indicada (sube ${fmt(altura, 2)} m), la bajada real es ${fmt(bajada, 2)} m — la medida horizontal era ${fmt(bajadaHorizontal)} m.`
+      : '';
+
+    // Nivel 1: la longitud elegida alcanza para cubrir la bajada en una sola pieza
+    if (coberturaConPiezas(1, longitud) >= bajada) {
+      const cantidad = Math.ceil(perpendicular / op.cobertura);
+      const desc = `${op.nombre} de ${fmt(longitud)} m`;
+      return {
+        display: `Necesitás aproximadamente ${cantidad} chapas (${desc}) para un techo de ${techoTexto} con caída de agua ${dirTexto}.${notaInclinacion}\n⚠️ Se descuenta un vuelo de 20 cm en cada extremo — la cobertura útil de bajada por chapa es ${fmt(longitud - VUELO, 2)} m.`,
+        wa:      `Necesito aproximadamente ${cantidad} chapas (${desc}) para un techo de ${techoTexto}, caída de agua ${dirTexto} (incluye vuelo de 20 cm en cada extremo).`,
+        nivel: 'ok',
+      };
+    }
+
+    // Nivel 2: no alcanza la elegida, pero otra longitud del mismo tipo/calibre sí
+    // (se recomienda la MÍNIMA longitud suficiente, no la máxima, para no sobrevender)
+    const longitudesTipo = op.longitudes ?? [longitud];
+    const suficientesTipo = longitudesTipo
+      .filter((l) => coberturaConPiezas(1, l) >= bajada)
+      .sort((a, b) => a - b);
+    if (suficientesTipo.length > 0) {
+      const longitudSugerida = suficientesTipo[0];
+      const cantidad = Math.ceil(perpendicular / op.cobertura);
+      const desc = `${op.nombre} de ${fmt(longitudSugerida)} m`;
+      return {
+        display: `La chapa de ${fmt(longitud)} m es corta para esa bajada (${fmt(bajada, 2)} m).${notaInclinacion} Con ${op.nombre} necesitás al menos la de ${fmt(longitudSugerida)} m: aproximadamente ${cantidad} chapas.\n⚠️ Vuelo de 20 cm en cada extremo ya descontado.`,
+        wa:      `Necesito aproximadamente ${cantidad} chapas (${desc}) para un techo de ${techoTexto}, caída de agua ${dirTexto} (bajada de ${fmt(bajada, 2)} m).`,
+        nivel: 'advertencia',
+      };
+    }
+
+    // Nivel 3: no alcanza en este calibre, pero sí en otro tipo del catálogo (1 pieza)
+    // (recomienda la combinación tipo+longitud más chica que alcance, entre todo el catálogo)
+    const candidatosGlobales = datos.chapas.opciones
+      .flatMap((o) => (o.longitudes ?? []).filter((l) => coberturaConPiezas(1, l) >= bajada).map((l) => ({ op: o, l })))
+      .sort((a, b) => a.l - b.l);
+    if (candidatosGlobales.length > 0) {
+      const { op: opSugerida, l: longitudSugerida } = candidatosGlobales[0];
+      return {
+        display: `${op.nombre} no llega para una bajada de ${fmt(bajada, 2)} m.${notaInclinacion} Te recomendamos ${opSugerida.nombre} de ${fmt(longitudSugerida)} m, que sí cubre esa medida en una sola pieza — consultanos para confirmar disponibilidad.`,
+        wa:      `Tengo un techo de ${techoTexto}, caída de agua ${dirTexto} (bajada de ${fmt(bajada, 2)} m). ${op.nombre} no me alcanza en una sola pieza; quisiera averiguar por ${opSugerida.nombre} de ${fmt(longitudSugerida)} m.`,
+        nivel: 'advertencia',
+      };
+    }
+
+    // Nivel 4: empalmar 2 o 3 chapas del calibre elegido, con cruce seguro de 30 cm
+    for (let n = 2; n <= MAX_PIEZAS; n++) {
+      const candidatosEmpalme = longitudesTipo
+        .filter((l) => coberturaConPiezas(n, l) >= bajada)
+        .sort((a, b) => a - b);
+      if (candidatosEmpalme.length > 0) {
+        const longitudSugerida = candidatosEmpalme[0];
+        const filas = Math.ceil(perpendicular / op.cobertura);
+        const totalChapas = n * filas;
+        return {
+          display: `Esa bajada (${fmt(bajada, 2)} m) no entra en una sola chapa.${notaInclinacion} Se puede cubrir empalmando ${n} chapas de ${fmt(longitudSugerida)} m por hilera, con un cruce seguro de 30 cm entre ellas. Necesitás ${totalChapas} chapas en total (${filas} hileras × ${n} chapas empalmadas).\n⚠️ Vuelo de 20 cm en cada extremo y cruce de 30 cm en cada empalme ya descontados.`,
+          wa:      `Necesito cubrir un techo de ${techoTexto}, caída de agua ${dirTexto} (bajada real de ${fmt(bajada, 2)} m). Según el cálculo son ${n} chapas de ${op.nombre} de ${fmt(longitudSugerida)} m empalmadas por hilera (cruce de 30 cm), ${totalChapas} chapas en total. ¿Me confirman el cálculo y el precio?`,
+          nivel: 'advertencia',
+        };
+      }
+    }
+
+    // Nivel 5: ni empalmando hasta 3 piezas alcanza — recomendar consulta directa
+    const maxGlobal = Math.max(...datos.chapas.opciones.flatMap((o) => o.longitudes ?? [longitud]));
+    return {
+      display: `La bajada de ${fmt(bajada, 2)} m es muy grande incluso empalmando varias chapas (máximo disponible ${fmt(maxGlobal)} m por pieza).${notaInclinacion} Te recomendamos consultar directamente por WhatsApp para evaluar una solución a medida.`,
+      wa:      `Tengo un techo de ${techoTexto}, caída de agua ${dirTexto} (bajada de ${fmt(bajada, 2)} m). Es una bajada muy grande, necesito asesoramiento para resolverla.`,
+      nivel: 'advertencia',
+    };
+  }
+
+  let materialActivo = 'chapas';
+  let direccionActiva: DireccionCaida = 'largo';
+
+  const tabs           = document.querySelectorAll<HTMLButtonElement>('#tabs .tab');
+  const tabsDireccion  = document.querySelectorAll<HTMLButtonElement>('#tabs-direccion .tab');
+  const selectTipo     = document.getElementById('select-tipo') as HTMLSelectElement | null;
+  const labelTipo      = document.getElementById('label-tipo') as HTMLLabelElement | null;
+  const stepLongitud   = document.getElementById('step-longitud') as HTMLElement | null;
   const selectLongitud = document.getElementById('select-longitud') as HTMLSelectElement | null;
-  const inputM2       = document.getElementById('input-m2') as HTMLInputElement | null;
-  const btnCalc       = document.getElementById('btn-calcular') as HTMLButtonElement | null;
-  const resultado     = document.getElementById('resultado') as HTMLElement | null;
-  const resTxt        = document.getElementById('resultado-texto') as HTMLElement | null;
-  const btnWa         = document.getElementById('btn-wa') as HTMLAnchorElement | null;
+  const stepDimensiones = document.getElementById('step-dimensiones') as HTMLElement | null;
+  const stepDireccion  = document.getElementById('step-direccion') as HTMLElement | null;
+  const stepAltura     = document.getElementById('step-altura') as HTMLElement | null;
+  const stepM2         = document.getElementById('step-m2') as HTMLElement | null;
+  const inputAncho     = document.getElementById('input-ancho') as HTMLInputElement | null;
+  const inputLargo     = document.getElementById('input-largo') as HTMLInputElement | null;
+  const inputAltura    = document.getElementById('input-altura') as HTMLInputElement | null;
+  const inputM2        = document.getElementById('input-m2') as HTMLInputElement | null;
+  const btnCalc        = document.getElementById('btn-calcular') as HTMLButtonElement | null;
+  const resultado      = document.getElementById('resultado') as HTMLElement | null;
+  const resTxt         = document.getElementById('resultado-texto') as HTMLElement | null;
+  const btnWa          = document.getElementById('btn-wa') as HTMLAnchorElement | null;
+
+  function ocultarResultado(): void {
+    if (resultado) resultado.hidden = true;
+  }
+
+  function mostrarStepsSegunMaterial(material: string): void {
+    const esChapas = material === 'chapas';
+    if (stepDimensiones) stepDimensiones.hidden = !esChapas;
+    if (stepDireccion)   stepDireccion.hidden   = !esChapas;
+    if (stepAltura)      stepAltura.hidden      = !esChapas;
+    if (stepM2)          stepM2.hidden          = esChapas;
+  }
 
   function cargarLongitudes(op: Opcion): void {
     if (!stepLongitud || !selectLongitud) return;
@@ -245,12 +415,13 @@
 
   function cargarOpciones(material: string): void {
     const d = datos[material];
-    if (!labelTipo || !selectTipo || !resultado) return;
+    if (!labelTipo || !selectTipo) return;
     labelTipo.textContent = d.label;
     selectTipo.innerHTML  = d.opciones
       .map((op: Opcion, i: number) => `<option value="${i}">${op.nombre}</option>`)
       .join('');
-    resultado.hidden = true;
+    ocultarResultado();
+    mostrarStepsSegunMaterial(material);
     cargarLongitudes(d.opciones[0]);
   }
 
@@ -260,7 +431,7 @@
     if (materialActivo !== 'chapas') return;
     const opIdx = parseInt(selectTipo!.value);
     cargarLongitudes(datos['chapas'].opciones[opIdx]);
-    if (resultado) resultado.hidden = true;
+    ocultarResultado();
   });
 
   tabs.forEach((tab: HTMLButtonElement) => {
@@ -269,26 +440,60 @@
       tab.classList.add('active');
       materialActivo = tab.dataset.material ?? 'chapas';
       cargarOpciones(materialActivo);
-      if (inputM2) inputM2.value = '';
+      if (inputM2)     inputM2.value = '';
+      if (inputAncho)  inputAncho.value = '';
+      if (inputLargo)  inputLargo.value = '';
+      if (inputAltura) inputAltura.value = '';
     });
   });
 
+  tabsDireccion.forEach((tab: HTMLButtonElement) => {
+    tab.addEventListener('click', () => {
+      tabsDireccion.forEach((t: HTMLButtonElement) => t.classList.remove('active'));
+      tab.classList.add('active');
+      direccionActiva = (tab.dataset.direccion as DireccionCaida) ?? 'largo';
+      ocultarResultado();
+    });
+  });
+
+  inputM2?.addEventListener('input', ocultarResultado);
+  inputAncho?.addEventListener('input', ocultarResultado);
+  inputLargo?.addEventListener('input', ocultarResultado);
+  inputAltura?.addEventListener('input', ocultarResultado);
+  selectLongitud?.addEventListener('change', ocultarResultado);
+
   btnCalc?.addEventListener('click', () => {
-    if (!inputM2 || !selectTipo || !resultado || !resTxt || !btnWa) return;
-    const m2 = parseFloat(inputM2.value);
-    if (!m2 || m2 <= 0) { inputM2.focus(); return; }
+    if (!resultado || !resTxt || !btnWa || !selectTipo) return;
     const d     = datos[materialActivo];
     const opIdx = parseInt(selectTipo.value);
     const op    = d.opciones[opIdx];
-    const longitud = (materialActivo === 'chapas' && selectLongitud)
-      ? parseFloat(selectLongitud.value)
-      : undefined;
-    const res     = d.calcular(m2, op, longitud);
+
+    let res: Resultado | null = null;
+
+    if (materialActivo === 'chapas') {
+      if (!inputAncho || !inputLargo || !selectLongitud) return;
+      const ancho    = parseFloat(inputAncho.value);
+      const largo    = parseFloat(inputLargo.value);
+      const longitud = parseFloat(selectLongitud.value);
+      const altura   = Math.max(0, parseFloat(inputAltura?.value ?? '') || 0);
+      if (!ancho || ancho <= 0) { inputAncho.focus(); return; }
+      if (!largo || largo <= 0) { inputLargo.focus(); return; }
+      res = calcularChapas({ ancho, largo, direccion: direccionActiva, longitud, altura }, op);
+    } else {
+      if (!inputM2) return;
+      const m2 = parseFloat(inputM2.value);
+      if (!m2 || m2 <= 0) { inputM2.focus(); return; }
+      if (d.calcular) res = d.calcular(m2, op);
+    }
+
+    if (!res) return;
+
     const waTexto = encodeURIComponent(`Hola Hefesto! ${res.wa} ¿Me podés dar un precio?`);
     const WA      = '59899096947';
     resTxt.innerHTML = res.display.replace(/\n/g, '<br>');
-    btnWa.href         = `https://wa.me/${WA}?text=${waTexto}`;
-    resultado.hidden   = false;
+    resultado.classList.toggle('calc__resultado--advertencia', res.nivel === 'advertencia');
+    btnWa.href        = `https://wa.me/${WA}?text=${waTexto}`;
+    resultado.hidden  = false;
     resultado.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
 </script>
