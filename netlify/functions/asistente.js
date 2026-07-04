@@ -54,7 +54,8 @@ MENSAJE_WA: Hola Hefesto, soy [nombre] y mi teléfono es [teléfono]. Necesito [
         });
 
     } catch (error) {
-        return new Response(JSON.stringify({ error: 'Error al procesar la consulta' }), {
+        console.error('Error en /api/asistente:', error);
+        return new Response(JSON.stringify({ error: 'Error al procesar la consulta', detalle: error?.message ?? String(error) }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },
         });
