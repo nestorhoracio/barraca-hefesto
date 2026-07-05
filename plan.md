@@ -117,6 +117,28 @@ Ticholos: se venden por unidad y por pallet.
 - Grid: 6 columnas con las 6 marcas completas
 - Archivos en `public/marcas/`: sinteplast.png, urumix.svg, becam.svg, CementoCharrua.png, truper.svg, emtop.png
 
+### Implementado en sesión julio 2026 ✅
+
+#### Calculadora — Chapas: orientación de caída, empalme y pendiente
+El dueño señaló que calcular solo por m² es incorrecto: un techo de 4×10 m (40 m²) da soluciones muy distintas según hacia dónde cae el agua, y a mayor inclinación se necesita más distancia real de chapa.
+- El input de chapas pasó de "Superficie en m²" a **Ancho + Largo + dirección de caída** ("a lo largo" / "a lo ancho"). Ladrillos y Pintura no cambiaron.
+- Fórmula por niveles: 1 pieza con la longitud elegida → 1 pieza con otra longitud del mismo calibre → 1 pieza de otro calibre → **empalme de 2 o 3 chapas con cruce seguro de 30 cm** → si ni así alcanza, deriva a consulta directa por WhatsApp (no inventa una unión más allá de eso)
+- Campo opcional **"Altura de la caída"** (diferencia de altura entre el punto más alto y el más bajo del techo, en metros): con eso se calcula la bajada real por Pitágoras (`√(bajada² + altura²)`) — el cliente da un solo número que mide directo, sin tener que saber % de pendiente
+- Bug de paso corregido: el selector de tabs (`.tab`) no tenía scope y el nuevo toggle de dirección rompía las tabs de material — se separó en `#tabs .tab` / `#tabs-direccion .tab`
+
+#### Asistente IA — misma lógica que la Calculadora + catálogo cerrado
+- El prompt ahora calcula chapas igual que la Calculadora: ancho/largo/dirección, empalme con cruce de 30 cm, altura de caída opcional
+- Se agregó la lista cerrada de los 4 tipos reales (Ondulada/Trapezoidal Aluminizada, Calibre 26/30) con instrucción explícita de no ofrecer ni inventar otras variantes — el asistente había inventado "chapas pintadas" y similares, que Hefesto no vende
+- Fix: el mensaje de WhatsApp a veces incluía markdown (`**MENSAJE_WA:**`) y un comentario de despedida del modelo colado dentro del mensaje real. Se reforzó el prompt (texto plano, nada después de `MENSAJE_WA:`) y se agregó `limpiarTexto()` en el frontend como defensa adicional (corta en separadores tipo `---` y saca asteriscos/backticks sueltos de los bordes)
+- Se agregó `console.error()` en el catch de la function — antes tragaba el error silenciosamente y no había forma de diagnosticar nada desde los logs de Netlify
+
+#### Asistente IA — corte de servicio por facturación (no era bug de código)
+El asistente dejó de responder (error 500) por falta de crédito en la cuenta de Anthropic (`Your credit balance is too low to access the Anthropic API`). Si vuelve a pasar, revisar primero **console.anthropic.com → Plans & Billing** antes de asumir un bug.
+
+#### Widget del Asistente — diferenciación visual de mensajes
+- Se agregó una "cola" de burbuja de chat (izquierda para el asistente, derecha para el usuario) y se reforzó el contraste del borde, para que quede claro de un vistazo quién escribió qué
+- Bug real encontrado en el camino: las burbujas se crean con `document.createElement()` en el script del cliente, pero el CSS *scoped* de Astro solo se aplica a elementos presentes en el template al compilar. Ningún estilo `.mensaje*` se aplicaba nunca a los mensajes reales de la conversación (solo al mensaje de bienvenida estático) — se corrigió envolviendo esos selectores en `:global()`. Ver nota técnica abajo.
+
 ---
 
 ## Modo de trabajo acordado
@@ -133,6 +155,8 @@ Ticholos: se venden por unidad y por pallet.
 - `WHATSAPP_NUMBER` en Netlify Environment Variables → actualizar a `59899096947`
 - Asistente usa `claude-haiku-4-5-20251001`
 - SVGs procesados con `fill:currentColor` o `stroke:currentColor` para responder a CSS
+- **Gotcha de Astro**: el CSS de un `<style>` de componente es *scoped* solo a elementos presentes en el template al compilar. Cualquier elemento creado con `document.createElement()` en un `<script>` del cliente (como los mensajes del Asistente) no recibe ese scope y necesita que sus selectores estén envueltos en `:global(...)` para que el estilo aplique
+- `npm run dev` (Astro dev) **no sirve las Netlify Functions** — para probar el Asistente IA en local hace falta `netlify dev` (netlify-cli), no está instalado por ahora; sin eso, `/api/asistente` da 404 en local aunque funcione en producción
 
 ### Sistema de íconos
 Todos los íconos del sitio usan el mismo patrón:
@@ -176,4 +200,4 @@ Propagación DNS: 1 a 4 horas con ANTEL Uruguay.
 ---
 
 *Proyecto iniciado: mayo 2026 — NH Freelance · Uruguay*
-*Última actualización: junio 2026*
+*Última actualización: julio 2026*

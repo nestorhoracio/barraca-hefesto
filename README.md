@@ -8,9 +8,10 @@ Desarrollado por [NH Freelance](https://nestorhoracio.com) — mayo 2026.
 ## Stack
 
 - **Framework**: [Astro](https://astro.build) v4
-- **Deploy**: [Netlify](https://netlify.com)
+- **Deploy**: [Netlify](https://netlify.com) (autodeploy al hacer push a `main`)
 - **CSS**: Vanilla CSS con custom properties (sin framework)
-- **Fuente**: Inter (Google Fonts)
+- **Fuentes**: Inter (Google Fonts, cuerpo general) + Impact/Calibri locales (`src/assets/fonts/`, marca)
+- **Asistente IA**: Netlify Function v2 (`netlify/functions/asistente.js`) + `@anthropic-ai/sdk`, modelo `claude-haiku-4-5-20251001`
 
 ---
 
@@ -18,8 +19,8 @@ Desarrollado por [NH Freelance](https://nestorhoracio.com) — mayo 2026.
 
 ```bash
 # 1. Clonar repositorio
-git clone https://github.com/tu-usuario/barraca-hefesto.git
-cd barraca-hefesto
+git clone https://github.com/nestorhoracio/barraca-hefesto.git
+cd barraca-hefesto/hefesto
 
 # 2. Instalar dependencias
 npm install
@@ -33,6 +34,8 @@ npm run dev
 # → http://localhost:4321
 ```
 
+> **Asistente IA en local**: `npm run dev` (Astro dev) no sirve las Netlify Functions — `/api/asistente` da 404 así. Para probarlo en local hace falta correr con [`netlify dev`](https://cli.netlify.com/) (netlify-cli) en vez de `npm run dev`. En producción funciona normalmente porque Netlify sí monta la función.
+
 ---
 
 ## Variables de entorno
@@ -42,51 +45,54 @@ npm run dev
 | `ANTHROPIC_API_KEY`| API key de Anthropic (asistente IA)     |
 | `WHATSAPP_NUMBER`  | Número WhatsApp de Hefesto (sin +)      |
 
-> La API key de Anthropic es gestionada por NH y no se comparte con el cliente.
+> La API key de Anthropic es gestionada por NH y no se comparte con el cliente. Si el asistente deja de responder, revisar primero el crédito disponible en [console.anthropic.com → Plans & Billing](https://console.anthropic.com/) antes de asumir un bug de código.
 
 ---
 
 ## Deploy — Netlify
 
-El deploy es automático vía GitHub Actions al hacer push a `main`.
+El deploy es automático: Netlify está conectado directo al repo de GitHub y build+publica en cada push a `main`.
 
-**Configuración manual (primera vez):**
+**Configuración (ya hecha, referencia si hay que rearmarla):**
 1. Conectar repositorio en [app.netlify.com](https://app.netlify.com)
-2. Build command: `npm run build`
-3. Publish directory: `dist`
-4. Agregar variables de entorno en Netlify UI → Site settings → Environment variables
+2. Build command: `npm run build` — Publish directory: `dist` (definido en `netlify.toml`)
+3. Agregar `ANTHROPIC_API_KEY` y `WHATSAPP_NUMBER` en Netlify UI → Site settings → Environment variables
 
 ---
 
 ## Estructura del proyecto
 
 ```
-barraca-hefesto/
+hefesto/
 ├── src/
 │   ├── assets/
-│   │   └── images/          # Imágenes del sitio
+│   │   ├── fonts/            # impact.woff2, calibri.woff2, calibrib.woff2
+│   │   ├── icons/            # SVGs propios del cliente (?raw + set:html)
+│   │   └── images/           # Logo, foto equipo, galería
 │   ├── components/
-│   │   ├── Header.astro     # Navegación principal
-│   │   ├── Footer.astro     # Pie de página
-│   │   ├── Hero.astro       # Sección hero (próximo)
-│   │   ├── Servicios.astro  # Cards de servicios (próximo)
-│   │   ├── Calculadora.astro # Calculadora interactiva (próximo)
-│   │   ├── Alquiler.astro   # Sección alquiler (próximo)
-│   │   ├── Galeria.astro    # Galería de fotos (próximo)
-│   │   ├── Nosotros.astro   # Historia del negocio (próximo)
-│   │   ├── Contacto.astro   # Mapa + WhatsApp (próximo)
-│   │   └── Asistente.astro  # Widget IA flotante (próximo)
+│   │   ├── Header.astro
+│   │   ├── Footer.astro
+│   │   ├── Servicios.astro
+│   │   ├── Calculadora.astro  # Chapas (orientación+empalme+inclinación), ladrillos, pintura
+│   │   ├── Alquiler.astro
+│   │   ├── Galeria.astro
+│   │   ├── Marcas.astro
+│   │   ├── Nosotros.astro
+│   │   ├── Contacto.astro
+│   │   └── Asistente.astro    # Widget IA flotante
 │   ├── layouts/
-│   │   └── Layout.astro     # Layout base (head, meta, fonts)
+│   │   └── Layout.astro      # Head, meta, fonts, dark mode
 │   ├── pages/
-│   │   └── index.astro      # Página principal (one-pager)
+│   │   └── index.astro       # Página principal (one-pager)
 │   └── styles/
-│       └── global.css       # Tokens de marca + utilidades
+│       └── global.css        # Tokens de marca (light/dark) + utilidades
+├── netlify/
+│   └── functions/
+│       └── asistente.js      # Backend del Asistente IA (Anthropic SDK)
 ├── public/
-│   ├── favicon.svg          # Favicon
-│   └── og-image.jpg         # Imagen para redes sociales
-├── .env.example             # Variables de entorno (template)
-├── .gitignore
+│   ├── favicon.svg
+│   └── marcas/                # Logos de marcas (pinturería, etc.)
+├── .env.example
 ├── astro.config.mjs
 ├── netlify.toml
 ├── package.json
@@ -97,16 +103,19 @@ barraca-hefesto/
 
 ## Secciones del sitio
 
-| # | Sección       | Estado      | Notas                          |
-|---|---------------|-------------|--------------------------------|
-| 1 | Hero          | 🔄 En progreso | Mobile-first, fucsia/blanco   |
-| 2 | Servicios     | ⏳ Pendiente | 7 cards de categorías          |
-| 3 | Calculadora   | ⏳ Pendiente | Chapas, pintura, ladrillos     |
-| 4 | Alquiler      | ⏳ Pendiente | Herramientas, carpas, andamios |
-| 5 | Galería       | ⏳ Pendiente | Fotos del Instagram            |
-| 6 | Nosotros      | ⏳ Pendiente | Historia del negocio           |
-| 7 | Contacto      | ⏳ Pendiente | Mapa + horarios + WhatsApp     |
-| 8 | Asistente IA  | ⏳ Pendiente | Widget flotante cotización     |
+Todas las secciones del one-pager están implementadas. Lo que queda pendiente es **contenido real del cliente**, no desarrollo — ver `plan.md` para el detalle actualizado (texto de Nosotros, marcas/rendimientos de pintura, condiciones de alquiler, políticas del asistente).
+
+| # | Sección       | Notas                                              |
+|---|---------------|-----------------------------------------------------|
+| 1 | Hero          | Banner real + overlay de marca                      |
+| 2 | Servicios     | 7 cards, íconos SVG propios                         |
+| 3 | Calculadora   | Chapas (ancho/largo/dirección/empalme/inclinación), ladrillos, pintura |
+| 4 | Alquiler      | Herramientas, carpas, andamios                      |
+| 5 | Galería       | Fotos reales, gestión estática                      |
+| 6 | Marcas        | 6 marcas reales, grid grayscale→color               |
+| 7 | Nosotros      | Foto real, texto placeholder (falta contenido)      |
+| 8 | Contacto      | Dirección, horarios, WhatsApp, mapa                  |
+| 9 | Asistente IA  | Widget flotante, calcula cantidades, arma mensaje WhatsApp |
 
 ---
 
@@ -114,12 +123,15 @@ barraca-hefesto/
 
 | Token                  | Valor     | Uso                        |
 |------------------------|-----------|----------------------------|
-| `--color-brand`        | `#E91E8C` | Fucsia principal           |
-| `--color-brand-dark`   | `#C4177A` | Hover / énfasis            |
-| `--color-brand-light`  | `#F5A8D8` | Bordes y acentos           |
-| `--color-brand-bg`     | `#FDF0F8` | Fondos suaves              |
-| `--color-white`        | `#FFFFFF` | Fondo base                 |
-| `--color-black`        | `#111111` | Texto principal            |
+| `--color-brand`        | `#D55CE7` | Fucsia principal           |
+| `--color-brand-dark`   | `#B844CC` | Hover / énfasis            |
+| `--color-brand-light`  | `#E8A0F0` | Bordes y acentos           |
+| `--color-brand-bg`     | `#FBF0FD` | Fondos suaves              |
+| `--color-yellow`       | `#F6E209` | Amarillo de marca (acentos)|
+| `--color-white`        | `#FFFFFF` | Fondo base (light mode)    |
+| `--color-black`        | `#111111` | Texto principal (light mode)|
+
+Todos los tokens tienen variante para `[data-theme="dark"]` en `global.css` (dark mode con toggle en el header, persistido en `localStorage`).
 
 ---
 
