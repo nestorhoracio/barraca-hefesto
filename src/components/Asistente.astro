@@ -245,6 +245,16 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
     panel?.setAttribute('aria-hidden', 'true');
   });
 
+  function limpiarTexto(s: string): string {
+    // corta en el primer separador markdown (---, ***, ___) en línea propia:
+    // el modelo a veces lo usa para separar un comentario de cierre que no es
+    // parte del mensaje real, y eso nunca aparecería en un mensaje al cliente
+    const soloContenido = s.split(/\n[ \t]*(?:-{3,}|\*{3,}|_{3,})[ \t]*\n/)[0];
+    // saca asteriscos/backticks/guiones bajos sueltos al principio y al final
+    // (ej. si el modelo escribió **MENSAJE_WA:** en vez de MENSAJE_WA: en texto plano)
+    return soloContenido.replace(/^[\s*_`>]+|[\s*_`]+$/g, '');
+  }
+
   function agregarMensaje(texto: string, tipo: 'bot' | 'usuario' | 'cargando', html = false): HTMLDivElement {
     const div = document.createElement('div');
     div.className = `mensaje mensaje--${tipo}`;
@@ -287,9 +297,9 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
 
       } else if (tieneResumen) {
         const matchWA      = respuesta.match(/MENSAJE_WA:\s*([\s\S]+)/);
-        const mensajeWA    = matchWA ? matchWA[1].trim() : '';
+        const mensajeWA    = matchWA ? limpiarTexto(matchWA[1]) : '';
         const matchResumen = respuesta.match(/RESUMEN:\s*(.+?)(?:\n|$)/);
-        const resumen      = matchResumen ? matchResumen[1].trim() : 'Consulta procesada';
+        const resumen      = matchResumen ? limpiarTexto(matchResumen[1]) : 'Consulta procesada';
         if (!mensajeWA) { agregarMensaje('No pude armar el mensaje. Intentá de nuevo.', 'bot'); return; }
         const waUrl        = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(mensajeWA)}`;
 
