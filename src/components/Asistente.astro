@@ -159,22 +159,61 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
     border-radius: var(--radius-md);
     font-size: 0.875rem;
     line-height: 1.5;
+    position: relative;
   }
-  .mensaje--bot {
+  .mensaje--bot,
+  .mensaje--cargando {
     background: var(--color-white);
-    border: 1px solid var(--color-gray-2);
+    border: 1.5px solid var(--color-gray-3);
+    border-bottom-left-radius: 4px;
     align-self: flex-start;
     color: var(--color-black);
+  }
+  /* "cola" de burbuja apuntando a la izquierda, para reforzar de qué lado viene el mensaje */
+  .mensaje--bot::before,
+  .mensaje--cargando::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border: 7px solid transparent;
+    border-right-color: var(--color-gray-3);
+    border-bottom: 0;
+  }
+  .mensaje--bot::after,
+  .mensaje--cargando::after {
+    content: '';
+    position: absolute;
+    left: -5.5px;
+    bottom: 1px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-right-color: var(--color-white);
+    border-bottom: 0;
   }
   .mensaje--usuario {
     background: var(--color-brand);
     color: white;
+    border-bottom-right-radius: 4px;
     align-self: flex-end;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+  /* "cola" de burbuja apuntando a la derecha */
+  .mensaje--usuario::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-left-color: var(--color-brand);
+    border-bottom: 0;
   }
   .mensaje--cargando {
-    background: var(--color-white);
-    border: 1px solid var(--color-gray-2);
-    align-self: flex-start;
     color: var(--color-gray-4);
     font-style: italic;
   }
