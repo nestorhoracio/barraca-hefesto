@@ -5,6 +5,19 @@ Desarrollado por [NH Freelance](https://nestorhoracio.com) — mayo 2026.
 
 ---
 
+## Sobre el negocio
+
+Barraca Hefesto es una barraca de materiales de construcción ubicada en **18 de Julio 1097 y Pedro María Chiesa, Paso de los Toros, Uruguay**.
+
+- **Especialidades**: chapas y caños, aberturas, pinturería, andamios
+- **Servicio adicional**: alquiler de herramientas y de carpas
+- **Clientes**: particulares y constructores de la región
+- **Contacto**: `hefestobarraca@gmail.com` · WhatsApp `59899096947` · Instagram `@barraca.hefesto` · Facebook `Barraca Hefesto`
+- **Horarios**: Lunes a viernes 8:00–18:30 · Sábados 8:00–12:00 · Domingos y feriados no laborables cerrado
+- **Slogan**: "Construyendo ideas"
+
+---
+
 ## Stack
 
 - **Framework**: [Astro](https://astro.build) v4
@@ -103,7 +116,7 @@ hefesto/
 
 ## Secciones del sitio
 
-Todas las secciones del one-pager están implementadas. Lo que queda pendiente es **contenido real del cliente**, no desarrollo — ver `plan.md` para el detalle actualizado (texto de Nosotros, marcas/rendimientos de pintura, condiciones de alquiler, políticas del asistente).
+Todas las secciones del one-pager están implementadas. Lo que queda pendiente es **contenido real del cliente**, no desarrollo — ver [`ROADMAP.md`](ROADMAP.md) para el estado actualizado (texto de Nosotros, marcas/rendimientos de pintura, condiciones de alquiler, políticas del asistente).
 
 | # | Sección       | Notas                                              |
 |---|---------------|-----------------------------------------------------|
@@ -132,6 +145,15 @@ Todas las secciones del one-pager están implementadas. Lo que queda pendiente e
 | `--color-black`        | `#111111` | Texto principal (light mode)|
 
 Todos los tokens tienen variante para `[data-theme="dark"]` en `global.css` (dark mode con toggle en el header, persistido en `localStorage`).
+
+**Tipografías de marca**: Impact (títulos), Calibri (cuerpo), Georgia Bold (logo).
+**Logo**: cuadrado redondeado fucsia con una "H" serif blanca y "HEFESTO" serif blanco debajo.
+
+---
+
+## Más información
+
+Para el estado actual del proyecto, historial de cambios y próximos pasos, ver [`ROADMAP.md`](ROADMAP.md).
 
 ---
 
