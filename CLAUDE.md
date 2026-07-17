@@ -30,6 +30,7 @@ Contexto rápido para trabajar en este repo. Para estado actual y pendientes, ve
 
 - **PowerShell**: usar comandos separados, no `&&`.
 - **CSS scoped de Astro** no se aplica a elementos creados con `document.createElement()` en un `<script>` de cliente (ej. burbujas del Asistente) — hay que envolver esos selectores en `:global(...)`.
+- **Reglas CSS pensadas como globales** (ej. `.section`, `.section-title`) deben vivir en `global.css`, no en el `<style>` de una página o componente. El scoping de Astro le agrega a cada regla un atributo `data-astro-cid-*` que solo matchea elementos del MISMO archivo — si `index.astro` define `.section {...}` pero el `<section class="section">` lo renderiza un componente hijo (`Servicios.astro`, `Alquiler.astro`, etc.), la regla nunca se aplica y el elemento queda con el estilo por defecto, sin avisar de ningún error. Pasó exactamente esto con el padding entre secciones (julio 2026): todas las secciones tenían `padding: 0` porque `.section` estaba en `index.astro` en vez de `global.css`.
 - **Íconos**: todos los SVG propios viven en `src/assets/icons/`, se importan con `?raw` y se renderizan con `set:html`, coloreados con `fill:currentColor` / `stroke:currentColor`:
   ```astro
   import AndamioSvg from '../assets/icons/Andamio.svg?raw';

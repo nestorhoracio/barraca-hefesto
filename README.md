@@ -12,7 +12,7 @@ Barraca Hefesto es una barraca de materiales de construcción ubicada en **18 de
 - **Especialidades**: chapas y caños, aberturas, pinturería, andamios
 - **Servicio adicional**: alquiler de herramientas y de carpas
 - **Clientes**: particulares y constructores de la región
-- **Contacto**: `hefestobarraca@gmail.com` · WhatsApp `59899096947` · Instagram `@barraca.hefesto` · Facebook `Barraca Hefesto`
+- **Contacto**: `hefestobarraca@gmail.com` · WhatsApp `59899096947` · Instagram `@barraca.hefesto` y `@hefesto.alquileres` · Facebook `Barraca Hefesto`
 - **Horarios**: Lunes a viernes 8:00–18:30 · Sábados 8:00–12:00 · Domingos y feriados no laborables cerrado
 - **Slogan**: "Construyendo ideas"
 
@@ -103,7 +103,7 @@ hefesto/
 │   └── functions/
 │       └── asistente.js      # Backend del Asistente IA (Anthropic SDK)
 ├── public/
-│   ├── favicon.svg
+│   ├── favicon.png            # Favicon real (logo de Hefesto); favicon.svg queda sin usar
 │   └── marcas/                # Logos de marcas (pinturería, etc.)
 ├── .env.example
 ├── astro.config.mjs
@@ -116,19 +116,19 @@ hefesto/
 
 ## Secciones del sitio
 
-Todas las secciones del one-pager están implementadas. Lo que queda pendiente es **contenido real del cliente**, no desarrollo — ver [`ROADMAP.md`](ROADMAP.md) para el estado actualizado (texto de Nosotros, marcas/rendimientos de pintura, condiciones de alquiler, políticas del asistente).
+Todas las secciones del one-pager están implementadas, con contenido real del cliente (entrevista a Alejandro Balsamo, julio 2026) — ver [`ROADMAP.md`](ROADMAP.md) para el estado actualizado y los próximos pasos (conexión de dominio, confirmación de variable de entorno en Netlify).
 
 | # | Sección       | Notas                                              |
 |---|---------------|-----------------------------------------------------|
-| 1 | Hero          | Banner real + overlay de marca                      |
+| 1 | Hero          | Banner real + overlay de marca, contenido centrado  |
 | 2 | Servicios     | 7 cards, íconos SVG propios                         |
-| 3 | Calculadora   | Chapas (ancho/largo/dirección/empalme/inclinación), ladrillos, pintura |
-| 4 | Alquiler      | Herramientas, carpas, andamios                      |
+| 3 | Calculadora   | Chapas (ancho/largo/dirección/empalme/inclinación), ladrillos, pintura (Sinteplast, ~10 m²/L/mano) |
+| 4 | Alquiler      | Herramientas, carpas, andamios + catálogo completo por categoría y condiciones reales |
 | 5 | Galería       | Fotos reales, gestión estática                      |
 | 6 | Marcas        | 6 marcas reales, grid grayscale→color               |
-| 7 | Nosotros      | Foto real, texto placeholder (falta contenido)      |
-| 8 | Contacto      | Dirección, horarios, WhatsApp, mapa                  |
-| 9 | Asistente IA  | Widget flotante, calcula cantidades, arma mensaje WhatsApp |
+| 7 | Nosotros      | Foto real + texto real (historia, fundadores, diferenciales) |
+| 8 | Contacto      | Dirección, horarios, WhatsApp, mapa, dos cuentas de Instagram |
+| 9 | Asistente IA  | Widget flotante, calcula cantidades, arma mensaje WhatsApp, políticas reales del negocio, disclaimer de IA |
 
 ---
 
