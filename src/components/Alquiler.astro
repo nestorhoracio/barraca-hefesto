@@ -27,8 +27,68 @@ const items = [
 
 const pasos = [
   { num: '01', titulo: 'Consultá', desc: 'Escribinos por WhatsApp y te confirmamos disponibilidad y precio.' },
-  { num: '02', titulo: 'Reservá', desc: 'Coordinamos la fecha y dejás una seña para asegurar el equipo.' },
+  { num: '02', titulo: 'Reservá', desc: 'Coordinamos la fecha y abonás el total del alquiler en el momento — el precio varía según retirés en la barraca o te lo llevemos y traigamos.' },
   { num: '03', titulo: 'Retirá', desc: 'Pasás por la barraca o coordinamos entrega según el caso.' },
+];
+
+const condiciones = [
+  {
+    titulo: 'Plazos',
+    desc: 'Las herramientas se alquilan por 24 hs. Los andamios, por semana. Las herramientas grandes de construcción se pueden alquilar por mes.',
+  },
+  {
+    titulo: 'Pago',
+    desc: 'Se abona el total del alquiler al momento de retirar, con precio diferenciado entre lo que se retira en la barraca y lo que Hefesto lleva y trae.',
+  },
+  {
+    titulo: 'Requisitos',
+    desc: 'Cédula, teléfono y dirección.',
+  },
+];
+
+const carpasTamanos = ['12 × 6 m', '6 × 8 m (octogonal)', '6 × 3 m'];
+
+const catalogo = [
+  {
+    categoria: 'Demolición y perforación',
+    items: ['Martillo demoledor 15 kg', 'Martillo demoledor 30 kg', 'Rotomartillo', 'Taladros eléctricos', 'Barra'],
+  },
+  {
+    categoria: 'Corte y desbaste',
+    items: ['Amoladora ¼', 'Amoladora 9"', 'Acanaladora', 'Cortadora de metal', 'Cortadora de cerámica', 'Cepillo circular', 'Caladora', 'Fresadora', 'Lijadora'],
+  },
+  {
+    categoria: 'Hormigón y nivelación',
+    items: ['Hormigonera', 'Regla vibradora', 'Vibrador', 'Helicóptero (alisadora)', 'Nivelador de placas', 'Plancha compactadora', 'Pata Pata', 'Nivel láser', 'Nivel óptico'],
+  },
+  {
+    categoria: 'Andamios y trabajo en altura',
+    items: ['Andamios', 'Tirantes', 'Puntales', 'Barandas', 'Escaleras', 'Tablones', 'Cinto de seguridad', 'Casco', 'Nudos móviles', 'Vientos', 'Ruedas', 'Niveladores'],
+  },
+  {
+    categoria: 'Soldadura y terminaciones',
+    items: ['Soldadora', 'Careta de soldador', 'Termofusora', 'Pistola de silicona', 'Pistola de proyectar', 'Pistola de poliuretano', 'Plegadora de canalón', 'Equipo airless'],
+  },
+  {
+    categoria: 'Energía e iluminación',
+    items: ['Generador', 'Compresor', 'Alargues', 'Focos de luz'],
+  },
+  {
+    categoria: 'Transporte y elevación',
+    items: ['Montacargas', 'Lagarto', 'Carretillas', 'Pallets', 'Gatos hidráulicos'],
+  },
+  {
+    categoria: 'Jardín y exteriores',
+    items: ['Desmalezadora', 'Cortacésped', 'Motosierra', 'Multiherramienta 4 en 1', 'Hoyadora', 'Pala poceadora'],
+  },
+  {
+    categoria: 'Eventos',
+    items: ['Carpas', 'Tarimas', 'Escenario', 'Parrillero'],
+  },
+  {
+    categoria: 'Varios de obra',
+    items: ['Chapones', 'Tarrinas', 'Palas', 'Baldes', 'Mangueras', 'Engrapadora', 'Aspiradora', 'Motobomba'],
+  },
 ];
 ---
 
@@ -44,7 +104,7 @@ const pasos = [
           <div class="alq-card__icon" set:html={item.icono}></div>
           <h3 class="alq-card__title">{item.titulo}</h3>
           <p class="alq-card__desc">{item.desc}</p>
-          
+
            <a href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(item.wa)}`}
   target="_blank"
   rel="noopener noreferrer"
@@ -68,6 +128,43 @@ const pasos = [
             <span class="paso__num">{paso.num}</span>
             <h4 class="paso__titulo">{paso.titulo}</h4>
             <p class="paso__desc">{paso.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="condiciones">
+      <h3 class="condiciones__titulo">Condiciones de alquiler</h3>
+      <div class="condiciones__grid">
+        {condiciones.map(c => (
+          <div class="condicion">
+            <h4 class="condicion__titulo">{c.titulo}</h4>
+            <p class="condicion__desc">{c.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="carpas-info">
+      <h3 class="carpas-info__titulo">Tamaños de carpas</h3>
+      <div class="carpas-info__tamanos">
+        {carpasTamanos.map(t => <span class="tamano">{t}</span>)}
+      </div>
+      <p class="carpas-info__desc">
+        El armado, desarmado y traslado dentro de Paso de los Toros están incluidos. Para otras localidades se cobra el costo del viaje. No hace falta reservar con anticipación mínima, aunque por costumbre la mayoría reserva con tiempo.
+      </p>
+    </div>
+
+    <div class="catalogo">
+      <h3 class="catalogo__titulo">Catálogo de herramientas</h3>
+      <p class="catalogo__subtitulo">Más de 80 herramientas y equipos disponibles, organizados por categoría.</p>
+      <div class="catalogo__grid">
+        {catalogo.map(cat => (
+          <div class="catalogo__cat">
+            <h4 class="catalogo__cat-titulo">{cat.categoria}</h4>
+            <div class="catalogo__tags">
+              {cat.items.map(item => <span class="tag">{item}</span>)}
+            </div>
           </div>
         ))}
       </div>
@@ -177,8 +274,151 @@ const pasos = [
     line-height: 1.6;
   }
 
+  /* Condiciones */
+  .condiciones {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--color-gray-2);
+  }
+
+  .condiciones__titulo {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-black);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .condiciones__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .condicion {
+    background: var(--color-gray-1);
+    border: 1px solid var(--color-gray-2);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+  }
+
+  .condicion__titulo {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-brand);
+    margin-bottom: 0.5rem;
+  }
+
+  .condicion__desc {
+    font-size: 0.875rem;
+    color: var(--color-gray-4);
+    line-height: 1.6;
+  }
+
+  /* Carpas info */
+  .carpas-info {
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--color-gray-2);
+  }
+
+  .carpas-info__titulo {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-black);
+    margin-bottom: 1.25rem;
+    text-align: center;
+  }
+
+  .carpas-info__tamanos {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+
+  .tamano {
+    display: inline-block;
+    padding: 0.45rem 1.1rem;
+    background: var(--color-brand-bg);
+    color: var(--color-brand);
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .carpas-info__desc {
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--color-gray-4);
+    line-height: 1.6;
+  }
+
+  /* Catálogo */
+  .catalogo {
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--color-gray-2);
+  }
+
+  .catalogo__titulo {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-black);
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  .catalogo__subtitulo {
+    font-size: 0.9rem;
+    color: var(--color-gray-4);
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .catalogo__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .catalogo__cat {
+    background: var(--color-gray-1);
+    border: 1px solid var(--color-gray-2);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.5rem;
+  }
+
+  .catalogo__cat-titulo {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-black);
+    margin-bottom: 0.75rem;
+  }
+
+  .catalogo__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-2);
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    color: var(--color-gray-5);
+  }
+
   @media (max-width: 768px) {
-    .alquiler__grid  { grid-template-columns: 1fr; }
-    .pasos__grid     { grid-template-columns: 1fr; gap: 1.5rem; }
+    .alquiler__grid       { grid-template-columns: 1fr; }
+    .pasos__grid          { grid-template-columns: 1fr; gap: 1.5rem; }
+    .condiciones__grid    { grid-template-columns: 1fr; }
+    .catalogo__grid       { grid-template-columns: 1fr; }
   }
 </style>

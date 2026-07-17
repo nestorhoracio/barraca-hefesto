@@ -28,6 +28,8 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
     </button>
   </div>
 
+  <p class="asistente__disclaimer">Este asistente usa inteligencia artificial y puede cometer errores.</p>
+
   <div class="asistente__mensajes" id="asistente-mensajes">
     <div class="mensaje mensaje--bot">
       <p>¡Hola! Soy el asistente de Barraca Hefesto. Contame qué necesitás y te armo la consulta para enviarnos por WhatsApp. 🏗️</p>
@@ -142,6 +144,16 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
     transition: opacity 0.15s;
   }
   .asistente__cerrar:hover { opacity: 1; }
+
+  /* Disclaimer IA */
+  .asistente__disclaimer {
+    font-size: 0.7rem;
+    color: var(--color-gray-4);
+    text-align: center;
+    padding: 0.4rem 0.75rem;
+    background: var(--color-gray-1);
+    border-bottom: 1px solid var(--color-gray-2);
+  }
 
   /* Mensajes */
   .asistente__mensajes {

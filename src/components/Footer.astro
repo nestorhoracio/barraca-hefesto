@@ -54,6 +54,11 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
           </a>
         </li>
         <li>
+          <a href="https://www.instagram.com/hefesto.alquileres/" target="_blank" rel="noopener noreferrer">
+            Instagram @hefesto.alquileres (Alquileres)
+          </a>
+        </li>
+        <li>
           <a href="https://www.facebook.com/barracahefesto" target="_blank" rel="noopener noreferrer">
             Facebook Barraca Hefesto
           </a>
@@ -75,9 +80,12 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
 
 <style>
   .footer {
-    background: #111111;
+    background: #161616;
     color: var(--color-gray-3);
     padding-top: 3.5rem;
+  }
+  [data-theme="dark"] .footer {
+    background: #0d0d0d;
   }
 
   .footer__grid {
@@ -151,8 +159,11 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
 
   /* Bottom bar */
   .footer__bottom {
-    border-top: 1px solid #222;
+    border-top: 1px solid #262626;
     padding: 1.25rem 0;
+  }
+  [data-theme="dark"] .footer__bottom {
+    border-top: 1px solid #2a2a2a;
   }
   .footer__bottom .container {
     display: flex;

@@ -17,34 +17,35 @@ One-pager completo: las 9 secciones del sitio están implementadas y funcionando
   - *Ladrillos y bloques*: Ladrillo de campo 23×11,5×5 (173 u/m²), Bloque Común 40×20×12 (12,5 u/m²), Ticholo 25×25×12 (16 u/m², pallet 384 u), Ticholo 25×25×17 (16 u/m², pallet 165 u)
   - *Pintura*: tipos genéricos (rendimientos reales pendientes, ver abajo)
   - Mensajes de WhatsApp en primera persona ("Necesito..."), pantalla mantiene "Necesitás"
-- **Alquiler**: 3 cards (herramientas, carpas, andamios) + sección "¿Cómo funciona?"
+- **Alquiler**: 3 cards (herramientas, carpas, andamios) + sección "¿Cómo funciona?" + condiciones reales (plazos, pago, requisitos) + tamaños de carpas + catálogo completo de ~80 herramientas agrupado por categoría
 - **Galería**: fotos reales del Instagram, gestión estática (ver workflow en CLAUDE.md)
 - **Marcas**: Sinteplast, Urumix, Becam, Truper, EMTOP — grid grayscale→color al hover. Equus, Crisoles y Qualyvinil se sacaron por pedido del cliente
-- **Nosotros**: foto real del equipo (`equipo.jpg`, `object-fit: cover`, `aspect-ratio: 4/3`); texto sigue siendo placeholder
-- **Contacto**: dirección, horarios y contacto reales + mapa de Google Maps
+- **Nosotros**: foto real del equipo (`equipo.jpg`, `object-fit: cover`, `aspect-ratio: 4/3`); texto real con historia, fundadores (hermanos Bálsamo) y diferenciales, basado en entrevista a Alejandro Balsamo
+- **Contacto**: dirección, horarios y contacto reales + mapa de Google Maps + dos cuentas de Instagram (@barraca.hefesto y @hefesto.alquileres)
+- **Pinturería**: marca real (Sinteplast, única marca) y rendimiento real (~10 m²/litro/mano) en Servicios, Calculadora y Asistente IA
+- **Políticas del Asistente IA**: precios aproximados sujetos a confirmación humana, crédito solo empresas/contado el resto, tarjeta sí, envíos sin restricción en Paso de los Toros y Centenario, ya no hace herrería ni vende espuma plast; disclaimer visible de IA en el widget
 - **Asistente IA**: widget flotante con historial multi-turno; flujo en 3 pasos (datos técnicos → nombre y teléfono → RESUMEN + MENSAJE_WA); catálogo cerrado de chapas (no inventa variantes); burbujas de chat diferenciadas visualmente (cola izquierda/derecha)
+- **Favicon**: logo real de Hefesto (antes era un placeholder genérico)
+- **Hero**: contenido centrado, badges de alquiler agrandados
+- **Footer**: fondo y borde ahora reaccionan al cambio de tema claro/oscuro (antes quedaban fijos en hex)
 - **Assets e identidad**: logo real (`Hefesto_Logo.png`, `mix-blend-mode: multiply` en light mode), colores reales (`#D55CE7` / `#F6E209`), tipografías reales (Impact/Calibri locales), sistema de íconos SVG unificado (`lucide-astro` eliminado)
 - **WhatsApp unificado**: `59899096947` en todo el sitio, número demo eliminado por completo
 
 ## En curso / Pendiente
 
-Esperando contenido del cliente:
-
-- **Texto real de "Nosotros"** — historia, fundadores, diferencial, año de fundación (foto ya está, falta el texto)
-- **Pintura** — marcas y rendimientos reales (los tipos actuales en la Calculadora son genéricos)
-- **Alquiler** — condiciones reales de herramientas, carpas y andamios
-- **Políticas del Asistente IA** — envíos, precios, crédito, tarjeta (sin datos aún)
 - **Confirmar `WHATSAPP_NUMBER`** en Netlify Environment Variables (ya actualizado en el código a `59899096947`, falta verificar la variable en Netlify)
+- Confirmar con Alejandro algunos términos ambiguos del catálogo de herramientas transcriptos en la entrevista ("Isadora"→Lijadora, "Airness"→Equipo airless, "pistola froyeciar"→Pistola de proyectar, "pala pocear"→Pala poceadora) — se normalizaron a la interpretación más probable del rubro, fáciles de corregir si alguno no es correcto
 
 ## Próximo (priorizado)
 
-1. **Conseguir contenido del cliente** (texto Nosotros, pintura, alquiler, políticas del asistente) — es lo único que bloquea cerrar el proyecto
-2. **Conectar dominio `hefesto.com.uy`** cuando el cliente lo pida — ver instrucciones completas abajo
-3. **Confirmar `WHATSAPP_NUMBER`** en Netlify Environment Variables
+1. **Conectar dominio `hefesto.com.uy`** cuando el cliente lo pida — ver instrucciones completas abajo
+2. **Confirmar `WHATSAPP_NUMBER`** en Netlify Environment Variables
 
 ## Changelog (resumido)
 
 ### Julio 2026
+- Contenido real de la entrevista a Alejandro Balsamo (titular): historia y fundadores en "Nosotros", marca y rendimiento real de Pinturería (Sinteplast, ~10 m²/L/mano), condiciones y catálogo completo de Alquiler (herramientas, carpas, andamios), políticas del Asistente IA (precios aproximados, crédito, tarjeta, envíos, qué ya no se ofrece)
+- Favicon real (antes era un placeholder genérico), segundo Instagram (@hefesto.alquileres) en Footer y Contacto, disclaimer de IA visible en el widget del Asistente, Hero centrado con badges más grandes, fix de theming del Footer (fondo/borde no cambiaban con el tema)
 - Calculadora de chapas: se pasó de "superficie en m²" a ancho + largo + dirección de caída, con empalme (cruce de 30 cm) y altura de caída opcional por Pitágoras — un techo de 4×10 m da soluciones distintas según hacia dónde cae el agua
 - Asistente IA: misma lógica de cálculo que la Calculadora, catálogo cerrado de los 4 tipos reales de chapa (el asistente había inventado "chapas pintadas" que Hefesto no vende)
 - Fix: markdown y comentarios de despedida del modelo colándose en el mensaje de WhatsApp — prompt reforzado + `limpiarTexto()` en el frontend como defensa adicional; se agregó `console.error()` en el catch de la function (antes tragaba errores en silencio)

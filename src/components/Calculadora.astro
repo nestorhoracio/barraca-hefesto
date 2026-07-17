@@ -273,11 +273,11 @@
       }
     },
     pintura: {
-      label: 'Tipo de pintura',
+      label: 'Tipo de pintura (Sinteplast)',
       opciones: [
-        { nombre: 'Interior lisa', cobertura: 12 },
-        { nombre: 'Exterior rugosa', cobertura: 8 },
-        { nombre: 'Látex techos', cobertura: 10 },
+        { nombre: 'Interior', cobertura: 10 },
+        { nombre: 'Exterior', cobertura: 10 },
+        { nombre: 'Membrana / Texturado', cobertura: 10 },
       ],
       calcular: (m2: number, op: Opcion) => {
         const litros = Math.ceil(m2 / op.cobertura);
