@@ -1,5 +1,5 @@
 ---
-import logoBlanco from '../assets/images/Hefesto_LogoBlanco.png';
+import logoColor from '../assets/images/Hefesto_Logo.png';
 // src/components/Footer.astro
 const currentYear = new Date().getFullYear();
 const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
@@ -10,7 +10,7 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
 
     <div class="footer__brand">
       <div class="footer__logo">
-        <img src={logoBlanco.src} alt="Logo Barraca Hefesto" class="logo-img" width="40" height="40" />
+        <img src={logoColor.src} alt="Logo Barraca Hefesto" class="logo-img" width="40" height="40" />
         <span class="logo-text">HEFESTO</span>
       </div>
       <p class="footer__tagline">
@@ -80,12 +80,9 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
 
 <style>
   .footer {
-    background: #161616;
-    color: var(--color-gray-3);
+    background: var(--color-white);
+    color: var(--color-gray-5);
     padding-top: 3.5rem;
-  }
-  [data-theme="dark"] .footer {
-    background: #0d0d0d;
   }
 
   .footer__grid {
@@ -107,6 +104,10 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
   height: 40px;
   border-radius: 8px;
   object-fit: cover;
+  mix-blend-mode: multiply;
+}
+:global([data-theme="dark"]) .logo-img {
+  mix-blend-mode: normal;
 }
   .logo-text {
     font-size: 1rem;
@@ -126,7 +127,7 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
     align-items: center;
     gap: 0.4rem;
     background: #25D366;
-    color: var(--color-white);
+    color: #ffffff;
     padding: 0.5rem 1.1rem;
     border-radius: var(--radius-md);
     font-size: 0.875rem;
@@ -155,15 +156,12 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
     color: var(--color-gray-4);
     transition: color 0.15s;
   }
-  .footer__col a:hover { color: var(--color-brand-light); }
+  .footer__col a:hover { color: var(--color-brand); }
 
   /* Bottom bar */
   .footer__bottom {
-    border-top: 1px solid #262626;
+    border-top: 1px solid var(--color-gray-2);
     padding: 1.25rem 0;
-  }
-  [data-theme="dark"] .footer__bottom {
-    border-top: 1px solid #2a2a2a;
   }
   .footer__bottom .container {
     display: flex;
@@ -175,9 +173,9 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
     color: var(--color-gray-5);
   }
   .footer__credit a {
-    color: var(--color-brand-light);
+    color: var(--color-brand);
   }
-  .footer__credit a:hover { color: var(--color-brand); }
+  .footer__credit a:hover { color: var(--color-brand-dark); }
 
   @media (max-width: 768px) {
     .footer__grid {
