@@ -41,6 +41,21 @@ Contexto rápido para trabajar en este repo. Para estado actual y pendientes, ve
 - **Asistente IA**: catálogo cerrado de 4 tipos de chapa (Ondulada/Trapezoidal Aluminizada × Calibre 26/30) — no debe ofrecer ni inventar otras variantes.
 - **Regex de extracción del mensaje WhatsApp** en el cliente: `/MENSAJE_WA:\s*([\s\S]+)/` (greedy, captura hasta fin de string). Si falla, se muestra error al usuario — no hay fallback que mande el último mensaje tal cual.
 
+## Rendimiento y SEO (mobile-first)
+
+- **SSG obligatorio**: Astro debe mantenerse en modo estático (sin `output: 'server'` en `astro.config.mjs`) — todo el contenido semántico principal se renderiza en build, sin depender de JS en cliente para que Googlebot lo indexe.
+- **TBT**: JS de cliente mínimo, vanilla y encapsulado por componente (mismo patrón que ya usan el Asistente y el toggle de dark mode) — no sumar librerías pesadas de interactividad.
+- **LCP**: imágenes de producción en WebP/AVIF, no PNG/JPEG pesados en elementos críticos (hero, logo). Preferir `astro:assets` (`<Image>`/`<Picture>`) sobre `<img src={x.src}>` plano para optimización automática.
+  - *Deuda técnica*: hoy las imágenes son `.jpg`/`.png` sin optimizar — pendiente de conversión (ver `ROADMAP.md`).
+- **CLS**: todo `<img>` debe declarar `width`/`height` explícitos para reservar espacio y evitar saltos visuales.
+  - *Deuda técnica*: falta en `Nosotros.astro`, `Marcas.astro` y `Galeria.astro` (sí está en `Header.astro`, `Footer.astro`, `Asistente.astro`).
+
+## Componentes Astro — arquitectura
+
+- Modularizar con `interface Props` tipada cuando el componente reciba datos variables (hoy solo `Layout.astro` la usa — nuevos componentes o refactors que acepten props deben declararla).
+- CSS scoped por componente para evitar fugas de estilo (ver gotcha de reglas globales arriba).
+- Renderizado condicional limpio (`{condicion && <Elemento />}`) para elementos opcionales — ej. futuros badges de certificaciones o marcas.
+
 ## No tocar sin avisar
 
 - **Nameservers DNS de `hefesto.com.uy`** (`ns1`/`ns2.anteldata.com.uy`) — el cliente usa correo `@hefesto.com.uy`. No cambiar nameservers al conectar el dominio (ver pasos en `ROADMAP.md`).

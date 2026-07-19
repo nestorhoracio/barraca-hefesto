@@ -91,6 +91,15 @@ Tipo: CNAME  | Nombre: www | Valor: barraca-hefesto.netlify.app
 ```
 Propagación DNS: 1 a 4 horas con ANTEL Uruguay.
 
+**Paso 3 — Redirección 301 (evitar contenido duplicado)**:
+Crear `public/_redirects` con una regla forzando 301 de `barraca-hefesto.netlify.app/*` → `https://hefesto.com.uy/:splat`.
+
+**Paso 4 — Actualizar canonical**:
+Cambiar `site:` en `astro.config.mjs` de `https://barraca-hefesto.netlify.app` a `https://hefesto.com.uy`. El `<link rel="canonical">` en `Layout.astro` ya se genera a partir de `Astro.site`, así que este es el único cambio de código necesario para que los canonicals apunten al dominio nuevo.
+
+**Paso 5 — SSL**:
+Confirmar en Netlify (Domain management → HTTPS) que el certificado Let's Encrypt se emitió automáticamente para `hefesto.com.uy` antes de dar la migración por cerrada.
+
 ---
 
 *Proyecto iniciado: mayo 2026 — NH Freelance · Uruguay*
