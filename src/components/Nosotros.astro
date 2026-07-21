@@ -46,17 +46,20 @@ import equipoImg from '../assets/images/equipo.jpeg';
 </section>
 <style>
   .nosotros__imagen {
+    width: 100%;
     margin: 2rem 0 2.5rem;
+    aspect-ratio: 3/2;
+    max-height: 520px;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
   }
 
   .equipo__foto {
     display: block;
     width: 100%;
-    aspect-ratio: 3/2;
-    max-height: 520px;
+    height: 100%;
     object-fit: cover;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
   }
 
   .nosotros__texto {
@@ -118,7 +121,7 @@ import equipoImg from '../assets/images/equipo.jpeg';
   }
 
   @media (max-width: 768px) {
-    .equipo__foto { max-height: 320px; }
+    .nosotros__imagen { max-height: 320px; }
     .nosotros__stats { gap: 1.25rem; }
   }
 </style>
