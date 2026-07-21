@@ -1,12 +1,18 @@
 ---
-import equipoImg from '../assets/images/equipo.jpg';
+import { Image } from 'astro:assets';
+import equipoImg from '../assets/images/equipo.jpeg';
 ---
 
 <section id="nosotros" class="section">
-  <div class="container nosotros__grid">
+  <div class="container">
+
+    <h2 class="section-title">¿Quiénes somos?</h2>
+
+    <div class="nosotros__imagen">
+      <Image src={equipoImg} alt="Equipo Barraca Hefesto" class="equipo__foto" format="webp" quality={80} />
+    </div>
 
     <div class="nosotros__texto">
-      <h2 class="section-title">¿Quiénes somos?</h2>
       <p class="nosotros__lead">
         Barraca Hefesto es una empresa familiar fundada en 2016 por los hermanos Bálsamo — Alan, Adrián y Alejandro — en Paso de los Toros.
       </p>
@@ -36,18 +42,26 @@ import equipoImg from '../assets/images/equipo.jpg';
       </div>
     </div>
 
-    <div class="nosotros__imagen">
-      <img src={equipoImg.src} alt="Equipo Barraca Hefesto" class="equipo__foto" />
-    </div>
-
   </div>
 </section>
 <style>
-  .nosotros__grid {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 4rem;
-    align-items: center;
+  .nosotros__imagen {
+    margin: 2rem 0 2.5rem;
+  }
+
+  .equipo__foto {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3/2;
+    max-height: 520px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+  }
+
+  .nosotros__texto {
+    max-width: 780px;
+    margin: 0 auto;
   }
 
   .nosotros__lead {
@@ -103,25 +117,8 @@ import equipoImg from '../assets/images/equipo.jpg';
     font-weight: 500;
   }
 
-  .nosotros__imagen {
-    display: flex;
-    justify-content: center;
-  }
-
-  .equipo__foto {
-    width: 100%;
-    aspect-ratio: 4/3;
-    object-fit: cover;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-  }
-
   @media (max-width: 768px) {
-    .nosotros__grid {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-    .nosotros__imagen { order: -1; }
+    .equipo__foto { max-height: 320px; }
     .nosotros__stats { gap: 1.25rem; }
   }
 </style>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://barraca-hefesto.netlify.app/sitemap-index.xml

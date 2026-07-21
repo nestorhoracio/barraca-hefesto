@@ -25,6 +25,7 @@ Barraca Hefesto es una barraca de materiales de construcción ubicada en **18 de
 - **CSS**: Vanilla CSS con custom properties (sin framework)
 - **Fuentes**: Inter (Google Fonts, cuerpo general) + Impact/Calibri locales (`src/assets/fonts/`, marca)
 - **Asistente IA**: Netlify Function v2 (`netlify/functions/asistente.js`) + `@anthropic-ai/sdk`, modelo `claude-haiku-4-5-20251001`
+- **SEO**: sitemap automático (`@astrojs/sitemap`), JSON-LD `LocalBusiness`, `robots.txt`, canonical dinámico — todo derivado de `site` en `astro.config.mjs`
 
 ---
 
@@ -104,6 +105,8 @@ hefesto/
 │       └── asistente.js      # Backend del Asistente IA (Anthropic SDK)
 ├── public/
 │   ├── favicon.png            # Favicon real (logo de Hefesto); favicon.svg queda sin usar
+│   ├── og-image.jpg           # Placeholder (banner del hero) para compartir en redes
+│   ├── robots.txt
 │   └── marcas/                # Logos de marcas (pinturería, etc.)
 ├── .env.example
 ├── astro.config.mjs

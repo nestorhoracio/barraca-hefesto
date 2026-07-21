@@ -1,12 +1,12 @@
 ---
 // src/components/Marcas.astro
 const marcas = [
-  { nombre: 'Sinteplast', src: '/marcas/sinteplast.png',      alt: 'Sinteplast Pinturas' },
-  { nombre: 'Urumix',     src: '/marcas/urumix.svg',          alt: 'Urumix Morteros' },
-  { nombre: 'Becam',      src: '/marcas/becam.svg',           alt: 'Becam Chapas' },
-  { nombre: 'Charrúa',   src: '/marcas/CementoCharrua.png',  alt: 'Cemento Charrúa' },
-  { nombre: 'Truper',     src: '/marcas/truper.svg',          alt: 'Truper Herramientas' },
-  { nombre: 'EMTOP',      src: '/marcas/emtop.png',           alt: 'EMTOP Herramientas' },
+  { nombre: 'Sinteplast', src: '/marcas/sinteplast.png',      alt: 'Sinteplast Pinturas',   w: 120, h: 34 },
+  { nombre: 'Urumix',     src: '/marcas/urumix.svg',          alt: 'Urumix Morteros',       w: 120, h: 48 },
+  { nombre: 'Becam',      src: '/marcas/becam.svg',           alt: 'Becam Chapas',          w: 120, h: 33 },
+  { nombre: 'Charrúa',   src: '/marcas/CementoCharrua.png',  alt: 'Cemento Charrúa',       w: 120, h: 37 },
+  { nombre: 'Truper',     src: '/marcas/truper.svg',          alt: 'Truper Herramientas',   w: 120, h: 68 },
+  { nombre: 'EMTOP',      src: '/marcas/emtop.png',           alt: 'EMTOP Herramientas',    w: 120, h: 50 },
 ];
 ---
 
@@ -19,7 +19,7 @@ const marcas = [
       {marcas.map(marca => (
         <div class="marca__item">
           <div class="marca__logo">
-            <img src={marca.src} alt={marca.alt} loading="lazy" />
+            <img src={marca.src} alt={marca.alt} width={marca.w} height={marca.h} loading="lazy" decoding="async" />
           </div>
         </div>
       ))}

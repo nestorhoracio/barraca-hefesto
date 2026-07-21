@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import foto01 from '../assets/images/galeria/foto-01.jpg';
 import foto02 from '../assets/images/galeria/foto-02.jpg';
 import foto03 from '../assets/images/galeria/foto-03.jpg';
@@ -9,14 +10,14 @@ import foto07 from '../assets/images/galeria/foto-07.jpg';
 import foto08 from '../assets/images/galeria/foto-08.jpg';
 
 const fotos = [
-  { src: foto01.src, alt: 'Materiales de construcción Hefesto' },
-  { src: foto02.src, alt: 'Chapas y caños Hefesto' },
-  { src: foto03.src, alt: 'Aberturas Hefesto' },
-  { src: foto04.src, alt: 'Pinturería Hefesto' },
-  { src: foto05.src, alt: 'Alquiler de herramientas Hefesto' },
-  { src: foto06.src, alt: 'Alquiler de carpas Hefesto' },
-  { src: foto07.src, alt: 'Andamios Hefesto' },
-  { src: foto08.src, alt: 'Barraca Hefesto' },
+  { img: foto01, alt: 'Materiales de construcción Hefesto' },
+  { img: foto02, alt: 'Chapas y caños Hefesto' },
+  { img: foto03, alt: 'Aberturas Hefesto' },
+  { img: foto04, alt: 'Pinturería Hefesto' },
+  { img: foto05, alt: 'Alquiler de herramientas Hefesto' },
+  { img: foto06, alt: 'Alquiler de carpas Hefesto' },
+  { img: foto07, alt: 'Andamios Hefesto' },
+  { img: foto08, alt: 'Barraca Hefesto' },
 ];
 ---
 
@@ -28,7 +29,7 @@ const fotos = [
     <div class="galeria__grid">
       {fotos.map(foto => (
         <div class="galeria__item">
-          <img src={foto.src} alt={foto.alt} loading="lazy" />
+          <Image src={foto.img} alt={foto.alt} loading="lazy" format="webp" quality={75} />
         </div>
       ))}
     </div>

@@ -4,7 +4,7 @@ Este archivo se actualiza al final de cada sesión de trabajo. Para stack/conven
 
 ## Estado actual
 
-One-pager completo: las 9 secciones del sitio están implementadas, con contenido real del cliente (entrevista a Alejandro Balsamo, julio 2026) y funcionando en producción (`barraca-hefesto.netlify.app`). Lo que queda son ajustes menores — ver "En curso / Pendiente" abajo.
+One-pager completo: las 9 secciones del sitio están implementadas, con contenido real del cliente (entrevista a Alejandro Balsamo, julio 2026) y funcionando en producción (`barraca-hefesto.netlify.app`). Además del contenido, el sitio ya tiene un lote de mejoras técnicas de SEO/performance (JSON-LD, sitemap, robots.txt, `astro:assets`) para llegar más preparado a la migración de dominio. Lo que queda son ajustes menores — ver "En curso / Pendiente" abajo.
 
 ## Hecho
 
@@ -17,10 +17,10 @@ One-pager completo: las 9 secciones del sitio están implementadas, con contenid
   - *Ladrillos y bloques*: Ladrillo de campo 23×11,5×5 (173 u/m²), Bloque Común 40×20×12 (12,5 u/m²), Ticholo 25×25×12 (16 u/m², pallet 384 u), Ticholo 25×25×17 (16 u/m², pallet 165 u)
   - *Pintura*: marca Sinteplast, ~10 m²/litro/mano en general (ver detalle en Pinturería, abajo)
   - Mensajes de WhatsApp en primera persona ("Necesito..."), pantalla mantiene "Necesitás"
-- **Alquiler**: 3 cards (herramientas, carpas, andamios) + sección "¿Cómo funciona?" + condiciones reales (plazos, pago, requisitos) + tamaños de carpas + catálogo completo de ~80 herramientas agrupado por categoría
-- **Galería**: fotos reales del Instagram, gestión estática (ver workflow en CLAUDE.md)
-- **Marcas**: Sinteplast, Urumix, Becam, Truper, EMTOP — grid grayscale→color al hover. Equus, Crisoles y Qualyvinil se sacaron por pedido del cliente
-- **Nosotros**: foto real del equipo (`equipo.jpg`, `object-fit: cover`, `aspect-ratio: 4/3`); texto real con historia, fundadores (hermanos Bálsamo) y diferenciales, basado en entrevista a Alejandro Balsamo
+- **Alquiler**: 3 cards (herramientas, carpas, andamios) + sección "¿Cómo funciona?" en 4 pasos (Consultá/Reservá/Retirá/**Devolvé**) con el texto igualado palabra por palabra a la gráfica de referencia que pidió Alejandro + condiciones reales (plazos, pago, requisitos) + tamaños de carpas + catálogo completo de ~80 herramientas agrupado por categoría
+- **Galería**: fotos reales del Instagram, gestión estática (ver workflow en CLAUDE.md), migrada a `astro:assets` (WebP automático)
+- **Marcas**: Sinteplast, Urumix, Becam, Truper, EMTOP — grid grayscale→color al hover. Equus, Crisoles y Qualyvinil se sacaron por pedido del cliente. `width`/`height` explícitos por logo (CLS)
+- **Nosotros**: foto real del equipo (`equipo.jpeg`, actualizada 20/7/2026) como banner de ancho completo arriba del texto — el layout original en 2 columnas (foto en columna angosta) recortaba a los integrantes de los costados en una foto grupal de 9 personas; se rediseñó a foto de ancho completo + texto debajo, con `aspect-ratio: 3/2` (la relación real de la foto, sin crop). Migrada a `astro:assets`. Texto real con historia, fundadores (hermanos Bálsamo) y diferenciales, basado en entrevista a Alejandro Balsamo
 - **Contacto**: dirección, horarios y contacto reales + mapa de Google Maps + dos cuentas de Instagram (@barraca.hefesto y @hefesto.alquileres)
 - **Pinturería**: marca real (Sinteplast, única marca) y rendimiento real (~10 m²/litro/mano) en Servicios, Calculadora y Asistente IA
 - **Políticas del Asistente IA**: precios aproximados sujetos a confirmación humana, crédito solo empresas/contado el resto, tarjeta sí, envíos sin restricción en Paso de los Toros y Centenario, ya no hace herrería ni vende espuma plast; disclaimer visible de IA en el widget
@@ -31,20 +31,31 @@ One-pager completo: las 9 secciones del sitio están implementadas, con contenid
 - **Espaciado entre secciones**: fix de un bug real donde `.section` (el padding vertical de 80px entre secciones) vivía en el `<style>` de `index.astro` y por el scoping de Astro nunca se aplicaba a las secciones (que son componentes separados) — todas tenían `padding: 0` y los títulos quedaban pegados. Se movió a `global.css` (ver gotcha en `CLAUDE.md`)
 - **Assets e identidad**: logo real (`Hefesto_Logo.png`, `mix-blend-mode: multiply` en light mode), colores reales (`#D55CE7` / `#F6E209`), tipografías reales (Impact/Calibri locales), sistema de íconos SVG unificado (`lucide-astro` eliminado)
 - **WhatsApp unificado**: `59899096947` en todo el sitio, número demo eliminado por completo
+- **SEO técnico** (preparación pre-migración de dominio, sin depender de info nueva del cliente):
+  - JSON-LD `LocalBusiness` en `Layout.astro` (dirección, geo, horarios, redes — mismos datos que `Contacto.astro`)
+  - Meta tags completos: `og:url` (faltaba) + `twitter:title`/`twitter:description`/`twitter:image` (faltaban) + `og:image`/`twitter:image` ahora en URL absoluta
+  - `public/og-image.jpg` — antes la referencia apuntaba a un archivo inexistente (imagen rota en cualquier share social); se resolvió reutilizando el banner del hero como placeholder hasta que haya uno oficial 1200×630
+  - `public/robots.txt` (no existía)
+  - Sitemap automático vía `@astrojs/sitemap`, **pinneado a la versión `3.2.1`** (no `^`) — ver gotcha en `CLAUDE.md`
+  - `Nosotros.astro` y `Galeria.astro` migrados a `astro:assets` (`<Image>`) — conversión automática a WebP + `width`/`height` inferidos (resuelve deuda técnica de LCP/CLS documentada en `CLAUDE.md`)
 
 ## En curso / Pendiente
 
 - **Confirmar `WHATSAPP_NUMBER`** en Netlify Environment Variables (ya actualizado en el código a `59899096947`, falta verificar la variable en Netlify)
 - Confirmar con Alejandro algunos términos ambiguos del catálogo de herramientas transcriptos en la entrevista ("Isadora"→Lijadora, "Airness"→Equipo airless, "pistola froyeciar"→Pistola de proyectar, "pala pocear"→Pala poceadora) — se normalizaron a la interpretación más probable del rubro, fáciles de corregir si alguno no es correcto
+- **Bug de contenido en Galería**: `foto-06.jpg` y `foto-07.jpg` son el mismo archivo (hash idéntico) — el ítem etiquetado "Andamios Hefesto" en realidad muestra la foto de carpas. Detectado 20/7/2026 durante el build (`astro:assets` optimizó 7 archivos únicos en vez de 8). Falta que el cliente/NH consiga una foto real de andamios para reemplazar `foto-07.jpg` (ver workflow "Agregar fotos a la galería" en `CLAUDE.md`)
+- `public/og-image.jpg` es un placeholder (banner del hero reutilizado) — no bloquea nada, pero un diseño dedicado 1200×630 se vería mejor al compartir el link
 
 ## Próximo (priorizado)
 
 1. **Conectar dominio `hefesto.com.uy`** cuando el cliente lo pida — ver instrucciones completas abajo
 2. **Confirmar `WHATSAPP_NUMBER`** en Netlify Environment Variables
+3. Reemplazar `foto-07.jpg` en la Galería (actualmente duplicada de `foto-06.jpg`) por una foto real de andamios
 
 ## Changelog (resumido)
 
 ### Julio 2026
+- **Sesión 20/7**: foto nueva del equipo (`equipo.jpeg`) — el import apuntaba al `equipo.jpg` viejo (ya borrado), rompía el build; se corrigió. Alquiler: 4to paso "Devolvé" agregado y los 4 textos de "¿Cómo funciona?" igualados palabra por palabra a la gráfica de referencia de Alejandro. Nosotros: rediseño a foto banner de ancho completo (el layout de 2 columnas recortaba a los integrantes de los costados en la foto grupal de 9 personas). Batch de SEO técnico (JSON-LD, sitemap, robots.txt, meta tags completos, `astro:assets` en Nosotros/Galería) — ver detalle en "Hecho" arriba. Detectado (no corregido): `foto-06`/`foto-07` de la Galería son el mismo archivo
 - Contenido real de la entrevista a Alejandro Balsamo (titular): historia y fundadores en "Nosotros", marca y rendimiento real de Pinturería (Sinteplast, ~10 m²/L/mano), condiciones y catálogo completo de Alquiler (herramientas, carpas, andamios), políticas del Asistente IA (precios aproximados, crédito, tarjeta, envíos, qué ya no se ofrece)
 - Favicon real (antes era un placeholder genérico), segundo Instagram (@hefesto.alquileres) en Footer y Contacto, disclaimer de IA visible en el widget del Asistente, Hero centrado con badges más grandes
 - Footer, segunda vuelta: el primer fix solo cambiaba el fondo a un hex ligeramente distinto por tema (cambio real pero casi imperceptible). A pedido de NH, se rehizo para que el footer siga literalmente la misma paleta que el Header (`var(--color-white)`), con el logo a color (mismo truco de `mix-blend-mode` que ya usaba el Header) y ajuste de los colores de link/hover que estaban pensados solo para fondo oscuro. De paso se corrigió el botón de WhatsApp del footer, que usaba `var(--color-white)` para el texto y se volvía casi negro en modo oscuro — se cambió a blanco fijo, como el resto de los botones de WhatsApp del sitio
@@ -95,7 +106,7 @@ Propagación DNS: 1 a 4 horas con ANTEL Uruguay.
 Crear `public/_redirects` con una regla forzando 301 de `barraca-hefesto.netlify.app/*` → `https://hefesto.com.uy/:splat`.
 
 **Paso 4 — Actualizar canonical**:
-Cambiar `site:` en `astro.config.mjs` de `https://barraca-hefesto.netlify.app` a `https://hefesto.com.uy`. El `<link rel="canonical">` en `Layout.astro` ya se genera a partir de `Astro.site`, así que este es el único cambio de código necesario para que los canonicals apunten al dominio nuevo.
+Cambiar `site:` en `astro.config.mjs` de `https://barraca-hefesto.netlify.app` a `https://hefesto.com.uy`. El `<link rel="canonical">`, el JSON-LD `LocalBusiness` y el sitemap (`@astrojs/sitemap`) en `Layout.astro`/`astro.config.mjs` ya se generan a partir de `Astro.site`, así que ese es el único cambio de código necesario para que apunten al dominio nuevo — **excepto** `public/robots.txt`, que referencia el sitemap con la URL hardcodeada (no se genera dinámicamente); hay que actualizarla a mano al mismo tiempo.
 
 **Paso 5 — SSL**:
 Confirmar en Netlify (Domain management → HTTPS) que el certificado Let's Encrypt se emitió automáticamente para `hefesto.com.uy` antes de dar la migración por cerrada.

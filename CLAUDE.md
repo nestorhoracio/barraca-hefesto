@@ -40,15 +40,18 @@ Contexto rápido para trabajar en este repo. Para estado actual y pendientes, ve
 - **`npm run dev` no sirve las Netlify Functions** — `/api/asistente` da 404 en local. Para probar el Asistente IA local hace falta [`netlify dev`](https://cli.netlify.com/) (netlify-cli).
 - **Asistente IA**: catálogo cerrado de 4 tipos de chapa (Ondulada/Trapezoidal Aluminizada × Calibre 26/30) — no debe ofrecer ni inventar otras variantes.
 - **Regex de extracción del mensaje WhatsApp** en el cliente: `/MENSAJE_WA:\s*([\s\S]+)/` (greedy, captura hasta fin de string). Si falla, se muestra error al usuario — no hay fallback que mande el último mensaje tal cual.
+- **`@astrojs/sitemap` pinneado a `3.2.1` exacto (sin `^`)** en `package.json` — versiones más nuevas (3.3.0+) se compilan contra Astro 5/6 y usan el hook de integración `astro:routes:resolved`, que no dispara igual en Astro 4.16 (versión actual del proyecto): rompe el build en `astro:build:done` con `Cannot read properties of undefined (reading 'reduce')`. No correr `npm update`/`npm install @astrojs/sitemap` sin fijar la versión, salvo que se suba Astro a la vez.
+- **`astro:assets` (`<Image>`) vs `<img>` plano**: usar `<Image>` para fotos importadas desde `src/assets/images/` (ya migrado en `Nosotros.astro`, `Galeria.astro`). **Excepción**: `Marcas.astro` usa logos en `public/marcas/` referenciados por string (`/marcas/x.png`) — `astro:assets` no optimiza archivos de `public/` (no pasan por el pipeline de build), así que ahí el fix de CLS es `width`/`height` explícitos por logo en vez de migrar a `<Image>`. No mover esos archivos a `src/` sin necesidad — son assets de marca provistos por terceros.
 
 ## Rendimiento y SEO (mobile-first)
 
-- **SSG obligatorio**: Astro debe mantenerse en modo estático (sin `output: 'server'` en `astro.config.mjs`) — todo el contenido semántico principal se renderiza en build, sin depender de JS en cliente para que Googlebot lo indexe.
+- **SSG obligatorio**: Astro debe mantenerse en modo estático (sin `output: 'server'` en `astro.config.mjs`) — todo el contenido semántico principal se renderiza en build, sin depender de JS en cliente para que Googlebot lo indexe. Motivo puntual: Googlebot indexa en dos fases (HTML crudo primero, renderizado JS después, con cola y demora) — depender del CSR arriesga contenido no indexado o indexado tarde.
 - **TBT**: JS de cliente mínimo, vanilla y encapsulado por componente (mismo patrón que ya usan el Asistente y el toggle de dark mode) — no sumar librerías pesadas de interactividad.
 - **LCP**: imágenes de producción en WebP/AVIF, no PNG/JPEG pesados en elementos críticos (hero, logo). Preferir `astro:assets` (`<Image>`/`<Picture>`) sobre `<img src={x.src}>` plano para optimización automática.
-  - *Deuda técnica*: hoy las imágenes son `.jpg`/`.png` sin optimizar — pendiente de conversión (ver `ROADMAP.md`).
+  - `Nosotros.astro` y `Galeria.astro` ya usan `astro:assets` (`<Image>`, conversión automática a WebP). Pendiente: hero (`banner.jpg` en `index.astro`) y logo (`Header.astro`/`Footer.astro`), que siguen en `.jpg`/`.png` sin convertir.
 - **CLS**: todo `<img>` debe declarar `width`/`height` explícitos para reservar espacio y evitar saltos visuales.
-  - *Deuda técnica*: falta en `Nosotros.astro`, `Marcas.astro` y `Galeria.astro` (sí está en `Header.astro`, `Footer.astro`, `Asistente.astro`).
+  - Ya resuelto en `Nosotros.astro`/`Galeria.astro` (vía `astro:assets`, que los infiere) y en `Marcas.astro` (`width`/`height` explícitos por logo, calculados a partir de las dimensiones reales de cada imagen). Sigue así en `Header.astro`, `Footer.astro`, `Asistente.astro`.
+- **SEO técnico ya implementado** (`Layout.astro` / `astro.config.mjs`): canonical dinámico vía `Astro.site`, JSON-LD `HardwareStore`/`LocalBusiness` (dirección, geo, horarios, redes — hardcodeado ahí mismo, mismo patrón que `Contacto.astro`, sin archivo de datos separado), `og:image`/`twitter:image` en URL absoluta, sitemap automático (`@astrojs/sitemap`, ver gotcha de versión arriba), `public/robots.txt`. Todo deriva de `Astro.site`, así que la migración de dominio (ver `ROADMAP.md`) solo requiere cambiar ese valor — **excepto `robots.txt`**, que tiene la URL del sitemap hardcodeada a mano.
 
 ## Componentes Astro — arquitectura
 
