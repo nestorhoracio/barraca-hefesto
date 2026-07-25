@@ -4,13 +4,64 @@ const client = new Anthropic({
     apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
+const ALLOWED_ORIGINS = ['https://hefesto.com.uy', 'https://www.hefesto.com.uy'];
+const MAX_MENSAJES = 20;
+const MAX_CONTENT_LENGTH = 2000;
+
+function esOrigenValido(origin) {
+    if (ALLOWED_ORIGINS.includes(origin)) return true;
+    if (origin.endsWith('.netlify.app')) return true; // previews y deploys de Netlify
+    if (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:')) return true; // netlify dev
+    return false;
+}
+
+function origenPermitido(req) {
+    const origin = req.headers.get('origin');
+    if (origin) return esOrigenValido(origin);
+    const referer = req.headers.get('referer');
+    if (referer) {
+        try {
+            return esOrigenValido(new URL(referer).origin);
+        } catch {
+            return false;
+        }
+    }
+    return true; // sin Origin ni Referer (ej. curl directo) — no lo bloqueamos
+}
+
+function mensajesValidos(mensajes) {
+    if (!Array.isArray(mensajes) || mensajes.length === 0) return null;
+    const limpios = [];
+    for (const m of mensajes) {
+        if (!m || (m.role !== 'user' && m.role !== 'assistant') || typeof m.content !== 'string') {
+            return null;
+        }
+        limpios.push({ role: m.role, content: m.content.slice(0, MAX_CONTENT_LENGTH) });
+    }
+    return limpios.slice(-MAX_MENSAJES);
+}
+
 export default async (req) => {
     if (req.method !== 'POST') {
         return new Response('Method not allowed', { status: 405 });
     }
 
+    if (!origenPermitido(req)) {
+        return new Response(JSON.stringify({ error: 'Origen no permitido' }), {
+            status: 403,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+
     try {
-        const { mensajes } = await req.json();
+        const body = await req.json();
+        const mensajes = mensajesValidos(body.mensajes);
+        if (!mensajes) {
+            return new Response(JSON.stringify({ error: 'Solicitud inválida' }), {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
 
         const response = await client.messages.create({
             model: 'claude-haiku-4-5-20251001',
@@ -40,6 +91,21 @@ REGLAS ABSOLUTAS:
 - Chapas — si ninguna longitud cubre la bajada real en una sola pieza, se puede empalmar 2 o 3 chapas por hilera con un cruce seguro de 0,30 m entre ellas: cobertura con n piezas de longitud L = n×L − (n−1)×0,30 − 0,40. Elegí el menor n (2 o 3) y la menor L que alcancen
 - Chapas — hileras = redondear hacia arriba (perpendicular ÷ 1,0 m); cantidad total de chapas = hileras × piezas por hilera (1 si no hizo falta empalmar)
 - Chapas — si ni empalmando 3 chapas alcanza la bajada real, NO inventes más allá: avisá que es una bajada muy grande y recomendá consultar directamente con Hefesto para una solución a medida
+- Sinónimos de "caños y perfiles de hierro" (mapear todos a esta categoría): "caño", "perfil", "caño perfil", "hierro", "caño de hierro", "tubular"
+- Caños y perfiles — para esta categoría no hay que calcular nada: preguntá qué tipo/medida necesita y cuántas barras, no superficie ni cantidades
+- Caños y perfiles — se vende SOLO por barra entera de 6 metros, no se corta ni se vende fraccionado por el momento: si el cliente pide una medida cortada o menor a 6m, aclarale que por ahora Hefesto vende la barra completa
+- Caños y perfiles — NUNCA des precios, ni siquiera aproximados, para esta categoría (a diferencia de pintura/portland/ladrillos): el precio del hierro cambia con mucha frecuencia, derivá siempre la consulta de precio al local
+- Caño cuadrado, medida x espesor en mm (todo x barra de 6m): 15x15x1,6 — 20x20x1,6 y x2 — 25x25x1,6 y x2 — 30x30x1,6 y x2 — 40x40x1,6 y x2 — 50x50x1,6 y x2 — 60x60x1,6 y x2 — 80x80x1,6 y x2 — 100x100x1,6 y x2
+- Caño rectangular, medida x espesor en mm (todo x barra de 6m): 30x20x1,6 y x2 — 40x20x1,6 y x2 — 50x30x1,6 y x2 — 60x40x1,6 y x2 — 80x40x1,6 y x2 — 100x50x2 — 150x50x2
+- Caño redondo, en pulgadas con equivalente en mm x espesor (todo x barra de 6m): 5/8" (16mm) x1,5 — 3/4" (19mm) x1,5 — 1" (25mm) x1,5 y x2 — 1 1/4" (32mm) x1,5 y x2 — 1 1/2" (38mm) x1,5 y x2 — 2" x2
+- Perfil C, medida en mm (todo x barra de 6m): 80x40x15 — 100x41x15 — 120x51x15
+- Ángulos, medida en mm con equivalente en pulgadas (todo x barra de 6m): 12x3 (1/2"x1/8") — 16x3 (5/8"x1/8") — 19x3 (3/4"x1/8") — 22x3 (7/8"x1/8") — 25x3 y 25x5 (1"x1/8" y 1"x3/16") — 32x3 y 32x5 (1 1/4"x1/8" y 1 1/4"x3/16") — 38x3 y 38x5 (1 1/2"x1/8" y 1 1/2"x3/16") — 50x3 y 50x5 (2"x1/8" y 2"x3/16")
+- Planchuela lisa, medida en mm (todo x barra de 6m): 12x3 — 16x3 — 19x3 — 22x3 — 25x3, 25x5 y 25x6 — 32x3 y 32x5 — 38x3 y 38x5 — 50x3 y 50x5
+- Planchuela perforada, medida en mm (todo x barra de 6m): 25x5x10 y 25x5x12 — 32x5x10, 32x5x14 y 32x5x16 — 38x5x12, 38x5x14 y 38x5x16
+- Varilla lisa, diámetro en mm (todo x barra de 6m): 6 — 8 — 10 — 12 — 14 — 16 — 19
+- Varilla tratada, diámetro en mm (todo x barra de 6m): 6 — 8 — 10 — 12
+- Caños y perfiles — Hefesto también maneja Teé pero no hay medidas específicas relevadas: si preguntan por Teé, decí que confirmen medidas y disponibilidad en el local
+- Caños y perfiles — no asumas ni inventes marca, procedencia, certificaciones, ni si hay stock inmediato o es a pedido: si preguntan, derivá esa consulta puntual al local
 - Escribí RESUMEN: y MENSAJE_WA: en texto plano, sin markdown (nada de **negrita**, backticks ni guiones bajos) en esas líneas ni en su contenido
 - La línea MENSAJE_WA: debe ser lo ÚLTIMO que escribís en toda tu respuesta — no agregues ningún texto, comentario, despedida ni emoji de cierre después de ella
 - Usá tono cercano y uruguayo
@@ -71,4 +137,9 @@ MENSAJE_WA: Hola Hefesto, soy [nombre] y mi teléfono es [teléfono]. Necesito [
 
 export const config = {
     path: '/api/asistente',
+    rateLimit: {
+        windowLimit: 15,
+        windowSize: 180, // segundos — 180 es el máximo que permite Netlify
+        aggregateBy: ['ip', 'domain'],
+    },
 };

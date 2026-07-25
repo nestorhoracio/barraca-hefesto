@@ -82,7 +82,7 @@ hefesto/
 │   ├── assets/
 │   │   ├── fonts/            # impact.woff2, calibri.woff2, calibrib.woff2
 │   │   ├── icons/            # SVGs propios del cliente (?raw + set:html)
-│   │   └── images/           # Logo, foto equipo, galería
+│   │   └── images/           # Logo, isotipo, foto equipo, galería
 │   ├── components/
 │   │   ├── Header.astro
 │   │   ├── Footer.astro
@@ -131,7 +131,7 @@ Todas las secciones del one-pager están implementadas, con contenido real del c
 | 6 | Marcas        | 6 marcas reales, grid grayscale→color               |
 | 7 | Nosotros      | Foto real + texto real (historia, fundadores, diferenciales) |
 | 8 | Contacto      | Dirección, horarios, WhatsApp, mapa, dos cuentas de Instagram |
-| 9 | Asistente IA  | Widget flotante, calcula cantidades, arma mensaje WhatsApp, políticas reales del negocio, disclaimer de IA |
+| 9 | Asistente IA  | Widget flotante, calcula cantidades, arma mensaje WhatsApp, catálogo cerrado de chapas y caños/perfiles, políticas reales del negocio, disclaimer de IA — endpoint con validación de origen/input, rate limiting y sanitización de salida |
 
 ---
 
@@ -149,8 +149,8 @@ Todas las secciones del one-pager están implementadas, con contenido real del c
 
 Todos los tokens tienen variante para `[data-theme="dark"]` en `global.css` (dark mode con toggle en el header, persistido en `localStorage`).
 
-**Tipografías de marca**: Impact (títulos), Calibri (cuerpo), Georgia Bold (logo).
-**Logo**: cuadrado redondeado fucsia con una "H" serif blanca y "HEFESTO" serif blanco debajo.
+**Tipografías de marca**: Impact (títulos y wordmark del footer), Calibri (cuerpo), Georgia Bold (logo).
+**Logo**: cuadrado redondeado fucsia con una "H" serif blanca y "HEFESTO" serif blanco debajo. El isotipo usado en el botón del Asistente (`src/assets/images/Hefesto_Isotipo.png`) es un recorte de la "H" sola, sin el wordmark.
 
 ---
 

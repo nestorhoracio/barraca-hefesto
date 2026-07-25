@@ -23,12 +23,12 @@ import equipoImg from '../assets/images/equipo.jpeg';
         Lo que nos distingue es la cantidad de servicios que ofrecemos: atención personalizada, envío de pedidos a cualquier hora, venta de bolsas de arena por ¼, ½ y 1 m³ según la necesidad de cada cliente (únicos en Paso de los Toros con esta modalidad) y venta de ticholos, con una cartera de clientes fidelizados por ser los primeros en ofrecerlos en la ciudad. Además, somos los únicos que alquilamos herramientas, carpas, escenarios, podios y montacargas, y contamos con taller propio de reparación de maquinaria y venta de repuestos.
       </p>
       <p class="nosotros__cita">
-        "Una empresa basada en el valor de generar la confianza que los clientes nos tienen."
+        "Una empresa basada en generar el valor y la confianza que los clientes nos tienen."
       </p>
 
       <div class="nosotros__stats">
         <div class="stat">
-          <span class="stat__num">+10</span>
+          <span class="stat__num" id="stat-anios">+10</span>
           <span class="stat__label">Años de experiencia</span>
         </div>
         <div class="stat">
@@ -53,6 +53,13 @@ import equipoImg from '../assets/images/equipo.jpeg';
     overflow: hidden;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
+    outline: 3px solid transparent;
+    outline-offset: 3px;
+    transition: outline-color 0.2s ease;
+  }
+
+  .nosotros__imagen:hover {
+    outline-color: var(--color-brand);
   }
 
   .equipo__foto {
@@ -125,3 +132,13 @@ import equipoImg from '../assets/images/equipo.jpeg';
     .nosotros__stats { gap: 1.25rem; }
   }
 </style>
+<script>
+  const FUNDACION = 2016;
+  const statAnios = document.getElementById('stat-anios');
+  if (statAnios) {
+    const hoy = new Date();
+    // getMonth() es 0-indexado: 0 = enero (todavía no llegó febrero → no sumar)
+    const anios = hoy.getFullYear() - FUNDACION - (hoy.getMonth() < 1 ? 1 : 0);
+    statAnios.textContent = `+${anios}`;
+  }
+</script>

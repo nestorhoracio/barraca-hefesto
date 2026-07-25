@@ -170,8 +170,10 @@ a {
   font-size: clamp(1.6rem, 4vw, 2.2rem);
   font-weight: 700;
   line-height: 1.2;
+  letter-spacing: 0.04em;
   color: var(--color-black);
   font-family: var(--font-impact);
+  -webkit-text-stroke: 1px var(--color-brand);
 }
 
 .section-subtitle {
