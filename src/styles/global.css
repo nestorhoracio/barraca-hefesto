@@ -173,7 +173,7 @@ a {
   letter-spacing: 0.04em;
   color: var(--color-black);
   font-family: var(--font-impact);
-  -webkit-text-stroke: 1px var(--color-brand);
+  -webkit-text-stroke: 0.5px color-mix(in srgb, var(--color-brand) 22%, transparent);
 }
 
 .section-subtitle {

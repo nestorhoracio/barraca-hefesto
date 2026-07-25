@@ -10,8 +10,7 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
 
     <div class="footer__brand">
       <div class="footer__logo">
-        <img src={logoColor.src} alt="Logo Barraca Hefesto" class="logo-img" width="40" height="40" />
-        <span class="logo-text">HEFESTO</span>
+        <img src={logoColor.src} alt="Logo Barraca Hefesto" class="logo-img" width="64" height="64" />
       </div>
       <p class="footer__tagline">
         Materiales de construcción,<br />alquiler y asesoramiento<br />en Paso de los Toros.
@@ -100,8 +99,8 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
     margin-bottom: 1rem;
   }
   .logo-img {
-  width: 40px;
-  height: 40px;
+  width: 64px;
+  height: 64px;
   border-radius: 8px;
   object-fit: cover;
   mix-blend-mode: multiply;
@@ -109,14 +108,6 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
 :global([data-theme="dark"]) .logo-img {
   mix-blend-mode: normal;
 }
-  .logo-text {
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: var(--color-brand);
-    font-family: var(--font-impact);
-    -webkit-text-stroke: 1px #FFFFFF;
-  }
   .footer__tagline {
     font-size: 0.9rem;
     line-height: 1.6;

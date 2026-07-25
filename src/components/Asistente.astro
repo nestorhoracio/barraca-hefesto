@@ -300,15 +300,25 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
 
   const historial: { role: 'user' | 'assistant'; content: string }[] = [];
 
+  let userInteracted = false;
+
   btn?.addEventListener('click', () => {
+    userInteracted = true;
     panel?.classList.toggle('open');
     panel?.setAttribute('aria-hidden', panel.classList.contains('open') ? 'false' : 'true');
   });
 
   cerrar?.addEventListener('click', () => {
+    userInteracted = true;
     panel?.classList.remove('open');
     panel?.setAttribute('aria-hidden', 'true');
   });
+
+  setTimeout(() => {
+    if (userInteracted) return;
+    panel?.classList.add('open');
+    panel?.setAttribute('aria-hidden', 'false');
+  }, 15000);
 
   function escapeHtml(s: string): string {
     return s
