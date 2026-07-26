@@ -30,7 +30,7 @@
   --color-brand: #D55CE7;
   --color-brand-dark: #B844CC;
   --color-brand-light: #E8A0F0;
-  --color-brand-bg: #FBF0FD;
+  --color-brand-bg: #F5DFFA;
 
   --color-yellow: #F6E209;
   --color-yellow-dark: #D4C008;
@@ -46,9 +46,14 @@
 
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  /* Escala calibrada al redondeo real del isotipo: medido en píxel sobre el PNG
+     del logo (ambas esquinas, ambas variantes), el radio de esa forma es ~28.8%
+     del ancho del cuadrado del isotipo. Los chips de ícono (.card__icon,
+     .alq-card__icon, .info-item__icon) aplican ese 28.8% literal según su
+     tamaño real; estos tokens escalan el resto del sitio en la misma dirección. */
+  --radius-sm: 10px;
+  --radius-md: 15px;
+  --radius-lg: 24px;
 
   --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.08);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.10);
@@ -196,7 +201,7 @@ a {
 [data-theme="dark"] {
   --color-brand: #E070F0;
   --color-brand-dark: #D55CE7;
-  --color-brand-bg: #2D1A30;
+  --color-brand-bg: #3A2440;
 
   --color-white: #1a1a1a;
   --color-black: #f0f0f0;

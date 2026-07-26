@@ -131,7 +131,7 @@ Todas las secciones del one-pager están implementadas, con contenido real del c
 | 6 | Marcas        | 6 marcas reales, grid grayscale→color               |
 | 7 | Nosotros      | Foto real + texto real (historia, fundadores, diferenciales) |
 | 8 | Contacto      | Dirección, horarios, WhatsApp, mapa, dos cuentas de Instagram |
-| 9 | Asistente IA  | Widget flotante, calcula cantidades, arma mensaje WhatsApp, catálogo cerrado de chapas y caños/perfiles, políticas reales del negocio, disclaimer de IA — endpoint con validación de origen/input, rate limiting y sanitización de salida |
+| 9 | Asistente IA  | Widget flotante, se abre solo a los 15s de cargar la página (si el usuario no interactuó antes), calcula cantidades, arma mensaje WhatsApp, catálogo cerrado de chapas y caños/perfiles, políticas reales del negocio, disclaimer de IA — endpoint con validación de origen/input, rate limiting y sanitización de salida |
 
 ---
 
@@ -142,14 +142,14 @@ Todas las secciones del one-pager están implementadas, con contenido real del c
 | `--color-brand`        | `#D55CE7` | Fucsia principal           |
 | `--color-brand-dark`   | `#B844CC` | Hover / énfasis            |
 | `--color-brand-light`  | `#E8A0F0` | Bordes y acentos           |
-| `--color-brand-bg`     | `#FBF0FD` | Fondos suaves              |
+| `--color-brand-bg`     | `#F5DFFA` | Fondos suaves              |
 | `--color-yellow`       | `#F6E209` | Amarillo de marca (acentos)|
 | `--color-white`        | `#FFFFFF` | Fondo base (light mode)    |
 | `--color-black`        | `#111111` | Texto principal (light mode)|
 
 Todos los tokens tienen variante para `[data-theme="dark"]` en `global.css` (dark mode con toggle en el header, persistido en `localStorage`).
 
-**Tipografías de marca**: Impact (títulos y wordmark del footer), Calibri (cuerpo), Georgia Bold (logo).
+**Tipografías de marca**: Impact (títulos de sección), Calibri (cuerpo), Georgia Bold (logo).
 **Logo**: cuadrado redondeado fucsia con una "H" serif blanca y "HEFESTO" serif blanco debajo. El isotipo usado en el botón del Asistente (`src/assets/images/Hefesto_Isotipo.png`) es un recorte de la "H" sola, sin el wordmark.
 
 ---
