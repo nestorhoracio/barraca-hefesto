@@ -13,16 +13,51 @@
 }
 
 @font-face {
-  font-family: 'Calibri';
-  src: url('../assets/fonts/calibri.woff2') format('woff2');
+  font-family: 'Carlito';
+  src: url('../assets/fonts/carlito.woff2') format('woff2');
   font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Calibri';
-  src: url('../assets/fonts/calibrib.woff2') format('woff2');
+  font-family: 'Carlito';
+  src: url('../assets/fonts/carlitob.woff2') format('woff2');
   font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/inter/inter-400.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/inter/inter-500.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/inter/inter-600.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/inter/inter-700.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/inter/inter-900.woff2') format('woff2');
+  font-weight: 900;
   font-display: swap;
 }
 
@@ -61,7 +96,7 @@
   --max-w: 1100px;
   --section-py: 5rem;
   --font-impact: 'Impact', sans-serif;
-  --font-calibri: 'Calibri', 'Inter', sans-serif;
+  --font-carlito: 'Carlito', 'Inter', sans-serif;
 }
 
 *,
@@ -78,7 +113,7 @@ html {
 }
 
 body {
-  font-family: var(--font-calibri);
+  font-family: var(--font-carlito);
   color: var(--color-black);
   background: var(--color-white);
   line-height: 1.6;

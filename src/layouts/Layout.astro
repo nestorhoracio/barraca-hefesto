@@ -4,12 +4,14 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  preloadImage?: string;
 }
 
 const {
   title = 'Barraca Hefesto — Materiales de Construcción en Paso de los Toros',
   description = 'BARRACA, FERRETERÍA, ALQUILER DE HERRAMIENTAS, TALLER Y REPARACION DE MAQUINARIAS, VENTA DE REPUESTOS en Paso de los Toros, Uruguay.',
   ogImage = '/og-image.jpg',
+  preloadImage,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -54,6 +56,8 @@ const localBusinessJsonLd = {
   <meta name="description" content={description} />
   <link rel="canonical" href={canonicalURL} />
 
+  {preloadImage && <link rel="preload" as="image" fetchpriority="high" href={preloadImage} />}
+
   <!-- OG / Social -->
   <meta property="og:title"       content={title} />
   <meta property="og:description" content={description} />
@@ -71,12 +75,7 @@ const localBusinessJsonLd = {
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png" />
-  <link rel="apple-touch-icon" href="/favicon.png" />
-
-  <!-- Google Fonts: Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
   <title>{title}</title>
 </head>

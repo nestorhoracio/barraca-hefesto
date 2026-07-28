@@ -1,5 +1,6 @@
 ---
 // src/pages/index.astro
+import { getImage } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -14,15 +15,16 @@ import Nosotros from '../components/Nosotros.astro';
 import Asistente from '../components/Asistente.astro';
 
 const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
+const optimizedBanner = await getImage({ src: bannerImg, format: 'webp', quality: 75, width: 1600 });
 ---
 
-<Layout>
+<Layout preloadImage={optimizedBanner.src}>
   <Header />
 
   <main>
 
     <!-- ==================== HERO ==================== -->
-    <section id="hero" class="hero" style={`background-image: url(${bannerImg.src})`}>
+    <section id="hero" class="hero" style={`background-image: url(${optimizedBanner.src})`}>
       <div class="hero__overlay"></div>
       <div class="container hero__inner">
         <div class="hero__content">

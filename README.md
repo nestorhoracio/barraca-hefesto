@@ -23,7 +23,7 @@ Barraca Hefesto es una barraca de materiales de construcción ubicada en **18 de
 - **Framework**: [Astro](https://astro.build) v4
 - **Deploy**: [Netlify](https://netlify.com) (autodeploy al hacer push a `main`)
 - **CSS**: Vanilla CSS con custom properties (sin framework)
-- **Fuentes**: Inter (Google Fonts, cuerpo general) + Impact/Calibri locales (`src/assets/fonts/`, marca)
+- **Fuentes**: todas self-hosted en `src/assets/fonts/` (no Google Fonts) — Inter (cuerpo general), Impact (títulos de sección), Carlito (cuerpo de marca)
 - **Asistente IA**: Netlify Function v2 (`netlify/functions/asistente.js`) + `@anthropic-ai/sdk`, modelo `claude-haiku-4-5-20251001`
 - **SEO**: sitemap automático (`@astrojs/sitemap`), JSON-LD `LocalBusiness`, `robots.txt`, canonical dinámico — todo derivado de `site` en `astro.config.mjs`
 
@@ -80,7 +80,7 @@ El deploy es automático: Netlify está conectado directo al repo de GitHub y bu
 hefesto/
 ├── src/
 │   ├── assets/
-│   │   ├── fonts/            # impact.woff2, calibri.woff2, calibrib.woff2
+│   │   ├── fonts/            # impact.woff2, carlito.woff2, carlitob.woff2, inter/ (5 pesos)
 │   │   ├── icons/            # SVGs propios del cliente (?raw + set:html)
 │   │   └── images/           # Logo, isotipo, foto equipo, galería
 │   ├── components/
@@ -104,7 +104,8 @@ hefesto/
 │   └── functions/
 │       └── asistente.js      # Backend del Asistente IA (Anthropic SDK)
 ├── public/
-│   ├── favicon.png            # Favicon real (logo de Hefesto); favicon.svg queda sin usar
+│   ├── favicon.png            # Favicon real (logo de Hefesto), 48×48; favicon.svg queda sin usar
+│   ├── apple-touch-icon.png   # Logo real a 180×180 (icono iOS)
 │   ├── og-image.jpg           # Placeholder (banner del hero) para compartir en redes
 │   ├── robots.txt
 │   ├── _redirects             # 301 de barraca-hefesto.netlify.app → hefesto.com.uy
@@ -150,7 +151,7 @@ Todas las secciones del one-pager están implementadas, con contenido real del c
 
 Todos los tokens tienen variante para `[data-theme="dark"]` en `global.css` (dark mode con toggle en el header, persistido en `localStorage`).
 
-**Tipografías de marca**: Impact (títulos de sección), Calibri (cuerpo), Georgia Bold (logo).
+**Tipografías de marca**: Impact (títulos de sección), Carlito (cuerpo), Georgia Bold (logo).
 **Logo**: cuadrado redondeado fucsia con una "H" serif blanca y "HEFESTO" serif blanco debajo. El isotipo usado en el botón del Asistente (`src/assets/images/Hefesto_Isotipo.png`) es un recorte de la "H" sola, sin el wordmark.
 
 ---

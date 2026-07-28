@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import logoColor from '../assets/images/Hefesto_Logo.png';
 // src/components/Footer.astro
 const currentYear = new Date().getFullYear();
@@ -10,7 +11,7 @@ const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
 
     <div class="footer__brand">
       <div class="footer__logo">
-        <img src={logoColor.src} alt="Logo Barraca Hefesto" class="logo-img" width="64" height="64" />
+        <Image src={logoColor} alt="Logo Barraca Hefesto" class="logo-img" width={64} height={64} format="webp" quality={90} />
       </div>
       <p class="footer__tagline">
         Materiales de construcción,<br />alquiler y asesoramiento<br />en Paso de los Toros.

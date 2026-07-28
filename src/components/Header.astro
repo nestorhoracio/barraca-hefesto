@@ -1,5 +1,6 @@
 ---
 // src/components/Header.astro
+import { Image } from 'astro:assets';
 import logoColor from '../assets/images/Hefesto_Logo.png';
 import logoBlanco from '../assets/images/Hefesto_LogoBlanco.png';
 
@@ -19,7 +20,7 @@ const WA_URL   = `https://wa.me/${WHATSAPP}?text=Hola%20Hefesto%2C%20quisiera%20
   <div class="container header__inner">
 
     <a href="/" class="header__logo" aria-label="Barraca Hefesto — inicio">
-  <img src={logoColor.src} alt="Logo Barraca Hefesto" class="logo-img" width="80" height="80" />
+  <Image src={logoColor} alt="Logo Barraca Hefesto" class="logo-img" width={80} height={80} format="webp" quality={90} />
 </a>
     <nav class="header__nav" aria-label="Navegación principal">
       {navLinks.map(link => (
