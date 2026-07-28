@@ -107,6 +107,7 @@ hefesto/
 │   ├── favicon.png            # Favicon real (logo de Hefesto); favicon.svg queda sin usar
 │   ├── og-image.jpg           # Placeholder (banner del hero) para compartir en redes
 │   ├── robots.txt
+│   ├── _redirects             # 301 de barraca-hefesto.netlify.app → hefesto.com.uy
 │   └── marcas/                # Logos de marcas (pinturería, etc.)
 ├── .env.example
 ├── astro.config.mjs

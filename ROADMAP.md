@@ -4,7 +4,7 @@ Este archivo se actualiza al final de cada sesión de trabajo. Para stack/conven
 
 ## Estado actual
 
-One-pager completo: las 9 secciones del sitio están implementadas, con contenido real del cliente (entrevista a Alejandro Balsamo, julio 2026) y funcionando en producción (`barraca-hefesto.netlify.app`). Además del contenido, el sitio ya tiene un lote de mejoras técnicas de SEO/performance (JSON-LD, sitemap, robots.txt, `astro:assets`) y, desde el 25/7, el endpoint del Asistente IA tiene validación de origen/input, rate limiting nativo de Netlify y sanitización de salida — para llegar más preparado a la migración de dominio. Lo que queda son ajustes menores — ver "En curso / Pendiente" abajo.
+One-pager completo: las 9 secciones del sitio están implementadas, con contenido real del cliente (entrevista a Alejandro Balsamo, julio 2026) y funcionando en producción (`barraca-hefesto.netlify.app`). Además del contenido, el sitio ya tiene un lote de mejoras técnicas de SEO/performance (JSON-LD, sitemap, robots.txt, `astro:assets`) y, desde el 25/7, el endpoint del Asistente IA tiene validación de origen/input, rate limiting nativo de Netlify y sanitización de salida — para llegar más preparado a la migración de dominio. Desde el 27/7 la migración a `hefesto.com.uy` está en curso: código listo y dominio agregado en Netlify, DNS cargado por el cliente en nic.com.uy, propagación pendiente de confirmar. Lo que queda son ajustes menores — ver "En curso / Pendiente" abajo.
 
 ## Hecho
 
@@ -44,6 +44,7 @@ One-pager completo: las 9 secciones del sitio están implementadas, con contenid
 
 ## En curso / Pendiente
 
+- **Confirmar propagación DNS y SSL de `hefesto.com.uy`**: registros A/CNAME cargados por el cliente el 27/7 en nic.com.uy (ver detalle en "Conexión del dominio" abajo), dominio ya agregado como `custom_domain` en Netlify — al cierre de la sesión el DNS todavía no resolvía contra `8.8.8.8` y el SSL seguía en `false`. Verificar en una próxima sesión (`netlify api getSite --data '{"site_id":"8aeb14e9-bf61-492e-a082-629a370c51b3"}'` → campo `ssl`, o directo en el panel de Netlify) y recién ahí dar el Paso 5 por cerrado.
 - **Confirmar en producción que el rate limiting de `/api/asistente` corta una ráfaga real** — no se puede validar con `netlify dev` en local (Netlify solo lo activa en el post-processing del deploy, ver gotcha en `CLAUDE.md`). Probar después del próximo deploy con varios requests seguidos.
 - **Confirmar `WHATSAPP_NUMBER`** en Netlify Environment Variables (ya actualizado en el código a `59899096947`, falta verificar la variable en Netlify)
 - Confirmar con Alejandro algunos términos ambiguos del catálogo de herramientas transcriptos en la entrevista ("Isadora"→Lijadora, "Airness"→Equipo airless, "pistola froyeciar"→Pistola de proyectar, "pala pocear"→Pala poceadora) — se normalizaron a la interpretación más probable del rubro, fáciles de corregir si alguno no es correcto
@@ -52,13 +53,14 @@ One-pager completo: las 9 secciones del sitio están implementadas, con contenid
 
 ## Próximo (priorizado)
 
-1. **Conectar dominio `hefesto.com.uy`** cuando el cliente lo pida — ver instrucciones completas abajo
+1. **Confirmar propagación DNS y SSL de `hefesto.com.uy`** — ver "En curso / Pendiente" y detalle abajo
 2. **Confirmar `WHATSAPP_NUMBER`** en Netlify Environment Variables
 3. Reemplazar `foto-07.jpg` en la Galería (actualmente duplicada de `foto-06.jpg`) por una foto real de andamios
 
 ## Changelog (resumido)
 
 ### Julio 2026
+- **Sesión 27/7**: arranque de la migración de dominio a `hefesto.com.uy`. Código (con Claude Code): creado `public/_redirects` (301 forzado de `barraca-hefesto.netlify.app` a `hefesto.com.uy`), `site` en `astro.config.mjs` actualizado (propaga a canonical/JSON-LD/sitemap vía `Astro.site`), `Sitemap:` de `public/robots.txt` actualizado — verificado con `npm run build` que el HTML y el sitemap generado ya usan el dominio nuevo. Dominio agregado como `custom_domain` del sitio en Netlify vía `netlify link` + `netlify api updateSite`, sin pasar por el panel web. Del lado de nic.com.uy se descubrió que el dominio está en modo **"Alojado"** (no delegado) con correo activo vía Google Workspace (5 MX + SPF, no tocar) — el panel no tiene editor DNS a simple vista, hay que entrar a "Configuración avanzada" → "Agregar registro"; el formulario de CNAME usa los campos "Alias"/"Nombre real" (no "Nombre"/"Valor") y exige punto final para FQDN o concatena el dominio; el link "Delegar" no debe tocarse (gotchas completos en la sección "Conexión del dominio" arriba). Alan Balsamo (contacto técnico) cargó 2 registros A (`75.2.60.5`, `99.83.231.61`) y el CNAME `www` → `barraca-hefesto.netlify.app.`. Al cierre de la sesión la propagación seguía en curso (SSL en `false` en Netlify, DNS sin resolver contra `8.8.8.8`) — falta reconfirmar en una sesión futura.
 - **Sesión 26/7**: el cliente pidió que los border-radius del sitio (cards, botones, chips de ícono) quedaran "en consonancia" con el redondeo del logo — el equipo tenía dos estimaciones contradictorias (Gemini: 62px, community manager: 92px). En vez de arbitrar entre las dos a ojo, se midió el PNG del logo a nivel de píxel: se escribió un decodificador PNG manual en Python (`zlib`+`struct` de la librería estándar, sin Pillow instalada ni forma de instalarla en el entorno) para leer el canal alfa, se ajustó un círculo por mínimos cuadrados a la curva real de la esquina en las dos variantes del logo (`Hefesto_Logo.png` y `Hefesto_LogoBlanco.png`) y en ambas esquinas superiores — resultado consistente: ~28.8% del ancho del cuadrado del isotipo. Ninguno de los dos valores del equipo era exacto en términos absolutos (un px aislado no significa nada sin saber a qué tamaño se exportó), pero 92px se acercaba mucho más al ratio real; 62px probablemente confundió el segmento recto del borde superior con el radio de la curva. Con el ratio confirmado, se subió la escala de tokens de `global.css` y se recalculó el radio de los tres chips de ícono con fondo según su tamaño real (ver detalle en "Hecho" arriba). Al normalizar los botones tipo píldora (badges del hero, tags de carpas) se descubrió un gotcha real: pedir un radio grande (`--radius-lg`, 24px) no cambiaba nada visualmente en esas cajas chicas, porque el navegador clampea el radio a la mitad de la altura del elemento — cualquier valor por encima de ese límite rinde exactamente igual que `999px`. Se resolvió usando `--radius-sm` (10px), claramente por debajo de esa mitad. Todo verificado con capturas reales de Playwright (`npx playwright`, instalado localmente en el scratchpad de la sesión, no como dependencia del proyecto) en modo claro y oscuro, y `npm run build` sin errores.
 - **Sesión 25/7 (3ra vuelta)**: revisión previa al push de tres detalles visuales/UX. `h2` de sección: el plan original bajaba el `-webkit-text-stroke` de `1px` a `0.4px`, pero seguía viéndose grueso; se probó bajar aún más (`0.08px`, `0.01px`) sin ningún cambio visual perceptible — los navegadores redondean valores de stroke sub-píxel al renderizar, un número más chico no garantiza un trazo más fino. Se resolvió con transparencia real sobre el color en vez de seguir bajando el ancho: `-webkit-text-stroke: 0.5px color-mix(in srgb, var(--color-brand) 22%, transparent)` (gotcha documentado en `CLAUDE.md`). Footer: se sacó el `<span class="logo-text">HEFESTO</span>` (redundante con el logo) y se agrandó el logo de 40×40 a 64×64. Asistente: se agregó auto-apertura del panel a los 15 segundos de carga de página (`setTimeout` + guard `userInteracted` que cancela el auto-open si el usuario ya abrió/cerró el panel antes), sin persistencia entre visitas.
 - **Sesión 25/7 (2da vuelta)**: contenido completo de Caños y Perfiles de Hierro agregado al Asistente IA (relevamiento de Alejandro) — sinónimos, catálogo cerrado por tipo/medida (cuadrado, rectangular, redondo, Perfil C, ángulos, planchuela lisa/perforada, varilla lisa/tratada), venta solo por barra de 6m sin fraccionar, nunca da precio de hierro (a diferencia de pintura/portland/ladrillos). Pulido visual: `h2` con letter-spacing + contorno color marca, contador de años dinámico (calculado en cliente, sube cada febrero desde 2016), hover en foto del equipo, isotipo "H" nuevo (recortado programáticamente del logo blanco vía PowerShell/System.Drawing, sin agregar dependencias) reemplazando el ícono genérico del botón del Asistente, footer con fuente Impact + contorno blanco en "HEFESTO" (este último wordmark se sacó del footer en la 3ra vuelta, ver arriba). Hardening de `/api/asistente` antes de conectar el dominio real: validación de origen (403), validación/límite de input e historial (400, últimos 20 mensajes, 2000 caracteres por mensaje), XSS cerrado en el bloque de RESUMEN (`escapeHtml` antes del `innerHTML`), y rate limiting — primero se probó un limitador en memoria (`Map` a nivel de módulo), pero se descartó al confirmar con un diagnóstico que `netlify dev` recarga el módulo en cada request (nunca acumula estado local, ver gotcha en `CLAUDE.md`); se reemplazó por el rate limiting nativo de Netlify (`rateLimit` en el `config` de la function — 15 requests/180s por IP), que funciona en cualquier plan y no depende del estado del proceso. Evaluado y descartado (por ahora) el prompt caching: Haiku 4.5 exige un mínimo de 4096 tokens cacheables y el system prompt no llega ni a la mitad — revisar si crece mucho más adelante
@@ -94,30 +96,41 @@ One-pager completo: las 9 secciones del sitio están implementadas, con contenid
 - **Slogan**: "Construyendo ideas"
 - **Modelo de negocio**: Desarrollo USD 350 (acordado) + Mantenimiento USD 35/mes (incluye Claude API y actualizaciones)
 
-## Conexión del dominio hefesto.com.uy — cuando el cliente lo solicite
+## Conexión del dominio hefesto.com.uy — en curso (iniciada 27/7/2026)
 
-**Situación**: dominio registrado por el cliente en ANTEL. DNS actuales: `ns1.anteldata.com.uy` / `ns2.anteldata.com.uy`.
-**No cambiar nameservers** — el cliente usa correo `hefesto@hefesto.com.uy` (aún sin funcionar, se asesorará aparte).
+**Situación confirmada** (antes eran suposiciones; verificado en el panel real de nic.com.uy el 27/7): dominio registrado en ANTEL, en modo **"Alojado"** — no delegado a nameservers externos, sigue usando `ns1`/`ns2.anteldata.com.uy` como autoritativos. Correo activo vía **Google Workspace**: 5 registros MX (`ASPMX.L.GOOGLE.COM` + alternativos) más TXT de SPF, confirmados en el panel — o sea que el correo `@hefesto.com.uy` ya está funcionando (o a punto), no "sin funcionar" como se pensaba antes. **No tocar esos registros MX/TXT ni el link "Delegar"** del panel — pasar a modo delegado rompería esta configuración.
 
-**Paso 1 — En Netlify (NH)**:
-- Domain management → Add a domain → `hefesto.com.uy`
+**Paso 1 — Netlify: ✅ hecho (27/7)**
+Se agregó `hefesto.com.uy` como `custom_domain` del sitio vía CLI/API en vez del panel web (mismo resultado que "Domain management → Add a domain"):
+```bash
+netlify link --id 8aeb14e9-bf61-492e-a082-629a370c51b3
+netlify api updateSite --data '{"site_id":"8aeb14e9-bf61-492e-a082-629a370c51b3","body":{"custom_domain":"hefesto.com.uy"}}'
+```
+El proyecto local quedó linkeado — en sesiones futuras se puede usar `netlify api <método>` directo, sin repetir `netlify link`.
 
-**Paso 2 — En ANTEL (cliente, en nic.com.uy con sus credenciales)**:
+**Paso 2 — nic.com.uy (Alan Balsamo, contacto técnico): ✅ hecho (27/7)**
+El panel no tiene un editor DNS visible de entrada — hay que abrir **"Configuración avanzada"** (debajo de "Crear registro", sección "Web") y usar **"Agregar registro"** para elegir tipo A/CNAME/MX/TXT/NS/SRV. Se cargó:
 ```
 Tipo: A      | Nombre: @   | Valor: 75.2.60.5
 Tipo: A      | Nombre: @   | Valor: 99.83.231.61
-Tipo: CNAME  | Nombre: www | Valor: barraca-hefesto.netlify.app
+Tipo: CNAME  | Alias: www  | Nombre real: barraca-hefesto.netlify.app.
 ```
-Propagación DNS: 1 a 4 horas con ANTEL Uruguay.
+Gotchas del formulario (útil si hay que repetir esto en otro dominio con el mismo panel de nic.com.uy):
+- El formulario de CNAME no usa "Nombre"/"Valor" sino **"Alias"** (nombre del registro) y **"Nombre real"** (destino).
+- CNAME/MX/NS/SRV necesitan **punto final** para FQDN — sin el punto, el panel concatena `.hefesto.com.uy` al valor. Hay una vista previa en vivo ("Resultado: Alias resultante / Nombre resultante") para verificar antes de guardar.
+- Propagación estimada por ANTEL: 1 a 4 horas. Al cierre de esta sesión el DNS todavía no resolvía contra `8.8.8.8` (`nslookup`/`Resolve-DnsName`) — pendiente reconfirmar (ver "En curso / Pendiente").
 
-**Paso 3 — Redirección 301 (evitar contenido duplicado)**:
-Crear `public/_redirects` con una regla forzando 301 de `barraca-hefesto.netlify.app/*` → `https://hefesto.com.uy/:splat`.
+**Paso 3 — Redirección 301: ✅ hecho (27/7)**
+`public/_redirects`:
+```
+https://barraca-hefesto.netlify.app/* https://hefesto.com.uy/:splat 301!
+```
 
-**Paso 4 — Actualizar canonical**:
-Cambiar `site:` en `astro.config.mjs` de `https://barraca-hefesto.netlify.app` a `https://hefesto.com.uy`. El `<link rel="canonical">`, el JSON-LD `LocalBusiness` y el sitemap (`@astrojs/sitemap`) en `Layout.astro`/`astro.config.mjs` ya se generan a partir de `Astro.site`, así que ese es el único cambio de código necesario para que apunten al dominio nuevo — **excepto** `public/robots.txt`, que referencia el sitemap con la URL hardcodeada (no se genera dinámicamente); hay que actualizarla a mano al mismo tiempo.
+**Paso 4 — Canonical: ✅ hecho (27/7)**
+`site` en `astro.config.mjs` → `https://hefesto.com.uy` (propaga solo a `<link rel="canonical">`, JSON-LD `LocalBusiness` y sitemap vía `Astro.site`, verificado con `npm run build`). `public/robots.txt` actualizado a mano — es la única referencia al dominio que no se genera dinámicamente.
 
-**Paso 5 — SSL**:
-Confirmar en Netlify (Domain management → HTTPS) que el certificado Let's Encrypt se emitió automáticamente para `hefesto.com.uy` antes de dar la migración por cerrada.
+**Paso 5 — SSL: ⏳ pendiente**
+Confirmar en Netlify (Domain management → HTTPS, o `netlify api getSite` → campo `ssl`) que el certificado Let's Encrypt se emitió para `hefesto.com.uy` una vez que el DNS haya propagado. No dar la migración por cerrada hasta confirmar esto.
 
 ---
 
