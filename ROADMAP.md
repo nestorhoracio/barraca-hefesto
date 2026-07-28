@@ -54,6 +54,7 @@ One-pager completo: las 9 secciones del sitio están implementadas, con contenid
 
 1. **Confirmar `WHATSAPP_NUMBER`** en Netlify Environment Variables
 2. Reemplazar `foto-07.jpg` en la Galería (actualmente duplicada de `foto-06.jpg`) por una foto real de andamios
+3. **Revisar accesibilidad y rendimiento en Google Search Console** (sitemap ya enviado a Google y Bing el 27/7) — una vez que junte datos reales, chequear Core Web Vitals / informe de accesibilidad y ver si hay margen de mejora más allá de lo ya identificado (conversión a WebP del hero y el logo, ver gotcha de LCP en `CLAUDE.md`)
 
 ## Changelog (resumido)
 
