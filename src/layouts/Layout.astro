@@ -9,7 +9,7 @@ interface Props {
 
 const {
   title = 'Barraca Hefesto — Materiales de Construcción en Paso de los Toros',
-  description = 'BARRACA, FERRETERÍA, ALQUILER DE HERRAMIENTAS, TALLER Y REPARACION DE MAQUINARIAS, VENTA DE REPUESTOS en Paso de los Toros, Uruguay.',
+  description = 'Barraca y ferretería en Paso de los Toros: venta de materiales de construcción, chapas, perfiles y caños, pinturería y alquiler de herramientas, carpas y andamios.',
   ogImage = '/og-image.jpg',
   preloadImage,
 } = Astro.props;
@@ -21,6 +21,7 @@ const localBusinessJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'HardwareStore',
   name: 'Barraca Hefesto',
+  description: 'Venta de materiales de construcción, chapas, caños y perfiles de hierro, pinturería y alquiler de herramientas, carpas y andamios en Paso de los Toros, Uruguay.',
   image: absoluteOgImage.toString(),
   url: Astro.site?.toString(),
   telephone: '+59899096947',
@@ -44,6 +45,7 @@ const localBusinessJsonLd = {
     'https://www.instagram.com/barraca.hefesto/',
     'https://www.instagram.com/hefesto.alquileres/',
     'https://www.facebook.com/barracahefesto',
+    'https://www.google.com/maps?cid=5434458253880639823',
   ],
 };
 ---
