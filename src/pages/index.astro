@@ -230,10 +230,7 @@ Cotizá por WhatsApp
   if (heroVideo instanceof HTMLVideoElement) {
     const VIDEO_SRC = '/videos/hero-loop-light-v1.mp4';
     const mqDesktop = window.matchMedia('(min-width: 769px)');
-    const mqReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     let activated = false;
-
-    const shouldPlay = () => mqDesktop.matches && !mqReducedMotion.matches;
 
     function activate() {
       if (activated) return;
@@ -243,7 +240,7 @@ Cotizá por WhatsApp
     }
 
     function sync() {
-      if (shouldPlay()) {
+      if (mqDesktop.matches) {
         activate();
         heroVideo.play().catch(() => {});
       } else {
@@ -252,7 +249,6 @@ Cotizá por WhatsApp
     }
 
     mqDesktop.addEventListener('change', sync);
-    mqReducedMotion.addEventListener('change', sync);
 
     if (document.readyState === 'complete') sync();
     else window.addEventListener('load', sync, { once: true });
