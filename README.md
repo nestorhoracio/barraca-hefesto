@@ -110,7 +110,7 @@ hefesto/
 │   ├── robots.txt
 │   ├── _redirects             # 301 de barraca-hefesto.netlify.app → hefesto.com.uy
 │   ├── marcas/                # Logos de marcas (pinturería, etc.)
-│   └── videos/                # hero-loop-light-v1.mp4 (video de fondo del hero, solo desktop+tema claro)
+│   └── videos/                # hero-loop-light-v1.mp4 (video de fondo del hero, solo desktop)
 ├── .env.example
 ├── astro.config.mjs
 ├── netlify.toml
@@ -126,7 +126,7 @@ Todas las secciones del one-pager están implementadas, con contenido real del c
 
 | # | Sección       | Notas                                              |
 |---|---------------|-----------------------------------------------------|
-| 1 | Hero          | Video de fondo en desktop+tema claro (poster estático en mobile y tema oscuro, para no afectar el rendimiento) + overlay de marca, contenido centrado |
+| 1 | Hero          | Video de fondo en desktop, en ambos temas (poster estático en mobile, para no afectar el rendimiento) + overlay de marca, contenido centrado |
 | 2 | Servicios     | 7 cards, íconos SVG propios                         |
 | 3 | Calculadora   | Chapas (ancho/largo/dirección/empalme/inclinación), ladrillos, pintura (Sinteplast, ~10 m²/L/mano) |
 | 4 | Alquiler      | Herramientas, carpas, andamios + catálogo completo por categoría y condiciones reales |

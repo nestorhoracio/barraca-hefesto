@@ -233,8 +233,7 @@ Cotizá por WhatsApp
     const mqReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     let activated = false;
 
-    const isLightTheme = () => document.documentElement.getAttribute('data-theme') !== 'dark';
-    const shouldPlay = () => mqDesktop.matches && isLightTheme() && !mqReducedMotion.matches;
+    const shouldPlay = () => mqDesktop.matches && !mqReducedMotion.matches;
 
     function activate() {
       if (activated) return;
@@ -254,12 +253,6 @@ Cotizá por WhatsApp
 
     mqDesktop.addEventListener('change', sync);
     mqReducedMotion.addEventListener('change', sync);
-
-    // El toggle de tema (Header.astro) no dispara evento custom — se observa el atributo directamente.
-    new MutationObserver(sync).observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-theme'],
-    });
 
     if (document.readyState === 'complete') sync();
     else window.addEventListener('load', sync, { once: true });
