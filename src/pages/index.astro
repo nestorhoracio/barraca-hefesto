@@ -4,7 +4,7 @@ import { getImage } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import bannerImg from '../assets/images/banner.jpg';
+import heroPosterImg from '../assets/images/hero-poster.webp';
 import Servicios from '../components/Servicios.astro';
 import Calculadora from '../components/Calculadora.astro';
 import Alquiler from '../components/Alquiler.astro';
@@ -15,16 +15,27 @@ import Nosotros from '../components/Nosotros.astro';
 import Asistente from '../components/Asistente.astro';
 
 const WHATSAPP = import.meta.env.WHATSAPP_NUMBER ?? '59899096947';
-const optimizedBanner = await getImage({ src: bannerImg, format: 'webp', quality: 75, width: 1600 });
+const optimizedPoster = await getImage({ src: heroPosterImg, format: 'webp', quality: 75, width: 1600 });
 ---
 
-<Layout preloadImage={optimizedBanner.src}>
+<Layout preloadImage={optimizedPoster.src}>
   <Header />
 
   <main>
 
     <!-- ==================== HERO ==================== -->
-    <section id="hero" class="hero" style={`background-image: url(${optimizedBanner.src})`}>
+    <section id="hero" class="hero" style={`background-image: url(${optimizedPoster.src})`}>
+      <video
+        id="hero-video"
+        class="hero__video"
+        poster={optimizedPoster.src}
+        muted
+        loop
+        playsinline
+        preload="none"
+        aria-hidden="true"
+        tabindex="-1"
+      ></video>
       <div class="hero__overlay"></div>
       <div class="container hero__inner">
         <div class="hero__content">
@@ -99,9 +110,18 @@ Cotizá por WhatsApp
     padding: 6rem 0 7rem;
     overflow: hidden;
   }
+  .hero__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
   .hero__overlay {
     position: absolute;
     inset: 0;
+    z-index: 1;
     background: linear-gradient(
       135deg,
       rgba(160, 20, 160, 0.92) 0%,
@@ -119,7 +139,7 @@ Cotizá por WhatsApp
 }
   .hero__inner {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: 620px;
   margin: 0 auto;
   text-align: center;
@@ -197,8 +217,51 @@ Cotizá por WhatsApp
   }
 
   @media (max-width: 768px) {
+    .hero__video { display: none; }
     .hero { padding: 4rem 0 5rem; }
     .hero__actions { flex-direction: column; }
     .hero__actions .btn { justify-content: center; }
   }
 </style>
+
+<script>
+  const heroVideo = document.getElementById('hero-video');
+
+  if (heroVideo instanceof HTMLVideoElement) {
+    const VIDEO_SRC = '/videos/hero-loop-light-v1.mp4';
+    const mqDesktop = window.matchMedia('(min-width: 769px)');
+    const mqReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let activated = false;
+
+    const isLightTheme = () => document.documentElement.getAttribute('data-theme') !== 'dark';
+    const shouldPlay = () => mqDesktop.matches && isLightTheme() && !mqReducedMotion.matches;
+
+    function activate() {
+      if (activated) return;
+      activated = true;
+      heroVideo.src = VIDEO_SRC;
+      heroVideo.load();
+    }
+
+    function sync() {
+      if (shouldPlay()) {
+        activate();
+        heroVideo.play().catch(() => {});
+      } else {
+        heroVideo.pause();
+      }
+    }
+
+    mqDesktop.addEventListener('change', sync);
+    mqReducedMotion.addEventListener('change', sync);
+
+    // El toggle de tema (Header.astro) no dispara evento custom — se observa el atributo directamente.
+    new MutationObserver(sync).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+
+    if (document.readyState === 'complete') sync();
+    else window.addEventListener('load', sync, { once: true });
+  }
+</script>
