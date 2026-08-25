@@ -159,7 +159,7 @@ Todos los tokens tienen variante para `[data-theme="dark"]` en `global.css` (dar
 
 ## Más información
 
-Para el estado actual del proyecto, historial de cambios y próximos pasos, ver [`ROADMAP.md`](ROADMAP.md).
+Para el estado actual del proyecto, historial de cambios y próximos pasos, ver [`ROADMAP.md`](ROADMAP.md). Para el plan estratégico de SEO/posicionamiento orgánico, ver [`SEO.md`](SEO.md).
 
 ---
 

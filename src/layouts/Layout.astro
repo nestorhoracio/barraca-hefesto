@@ -26,6 +26,7 @@ const localBusinessJsonLd = {
   url: Astro.site?.toString(),
   telephone: '+59899096947',
   email: 'hefestobarraca@gmail.com',
+  priceRange: '$$',
   address: {
     '@type': 'PostalAddress',
     streetAddress: '18 de Julio 1097 esq. Pedro Mª Chiesa',
@@ -36,6 +37,23 @@ const localBusinessJsonLd = {
     '@type': 'GeoCoordinates',
     latitude: -32.81140958843197,
     longitude: -56.526744030475605,
+  },
+  areaServed: [
+    { '@type': 'City', name: 'Paso de los Toros' },
+    { '@type': 'City', name: 'Centenario' },
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Productos y servicios',
+    itemListElement: [
+      { '@type': 'OfferCatalog', name: 'Chapas, caños y perfiles' },
+      { '@type': 'OfferCatalog', name: 'Aberturas' },
+      { '@type': 'OfferCatalog', name: 'Pinturería' },
+      { '@type': 'OfferCatalog', name: 'Áridos, bloques y ticholos' },
+      { '@type': 'OfferCatalog', name: 'Alquiler de herramientas' },
+      { '@type': 'OfferCatalog', name: 'Alquiler de carpas' },
+      { '@type': 'OfferCatalog', name: 'Alquiler de andamios' },
+    ],
   },
   openingHoursSpecification: [
     { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '08:00', closes: '18:30' },
