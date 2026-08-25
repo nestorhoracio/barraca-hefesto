@@ -44,12 +44,22 @@ const fotos = [
     <h2 class="section-title">Galería</h2>
     <p class="section-subtitle">Productos y obras realizadas con materiales Hefesto.</p>
 
-    <div class="galeria__grid">
-      {fotos.map((foto, i) => (
-        <div class="galeria__item">
-          <Image src={foto.img} alt={foto.alt} loading="lazy" format="webp" quality={75} width={i === 0 ? 1100 : 600} />
-        </div>
-      ))}
+    <div class="galeria__carousel">
+      <button type="button" class="galeria__arrow galeria__arrow--prev" aria-label="Foto anterior">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 6 9 12 15 18"></polyline></svg>
+      </button>
+
+      <div class="galeria__grid" id="galeria-grid">
+        {fotos.map((foto, i) => (
+          <div class="galeria__item">
+            <Image src={foto.img} alt={foto.alt} loading="lazy" format="webp" quality={75} width={i === 0 ? 1100 : 600} />
+          </div>
+        ))}
+      </div>
+
+      <button type="button" class="galeria__arrow galeria__arrow--next" aria-label="Foto siguiente">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg>
+      </button>
     </div>
   </div>
 </section>
@@ -87,16 +97,122 @@ const fotos = [
     aspect-ratio: auto;
   }
 
-  @media (max-width: 768px) {
-    .galeria__grid { grid-template-columns: repeat(2, 1fr); }
-    .galeria__item:nth-child(1) {
-      grid-column: span 2;
-      grid-row: span 1;
-    }
+  .galeria__carousel {
+    position: relative;
   }
 
-  @media (max-width: 480px) {
-    .galeria__grid { grid-template-columns: 1fr; }
-    .galeria__item:nth-child(1) { grid-column: span 1; }
+  .galeria__arrow {
+    display: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: none;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--color-black) 45%, transparent);
+    color: var(--color-white);
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .galeria__arrow svg {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .galeria__arrow--prev { left: 0.5rem; }
+  .galeria__arrow--next { right: 0.5rem; }
+
+  @media (max-width: 768px) {
+    .galeria__grid {
+      display: flex;
+      grid-template-columns: unset;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+    }
+
+    .galeria__grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .galeria__item {
+      flex: 0 0 100%;
+      scroll-snap-align: center;
+    }
+
+    .galeria__item:nth-child(1) {
+      grid-column: unset;
+      grid-row: unset;
+      aspect-ratio: 1 / 1;
+    }
+
+    .galeria__arrow {
+      display: flex;
+    }
   }
 </style>
+<script>
+  function initGaleriaCarousel() {
+    const grid = document.getElementById('galeria-grid');
+    const prevBtn = document.querySelector('.galeria__arrow--prev');
+    const nextBtn = document.querySelector('.galeria__arrow--next');
+    if (!(grid instanceof HTMLElement) || !prevBtn || !nextBtn) return;
+
+    const total = grid.children.length;
+    const mq = window.matchMedia('(max-width: 768px)');
+    let autoplayId: ReturnType<typeof setInterval> | null = null;
+    let visible = false;
+    let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    function indiceActual() {
+      return Math.round(grid.scrollLeft / grid.clientWidth);
+    }
+
+    function irA(i: number) {
+      const n = ((i % total) + total) % total;
+      grid.scrollTo({ left: n * grid.clientWidth, behavior: 'smooth' });
+    }
+
+    function siguiente() { irA(indiceActual() + 1); }
+    function anterior() { irA(indiceActual() - 1); }
+
+    function detenerAutoplay() {
+      if (autoplayId !== null) {
+        clearInterval(autoplayId);
+        autoplayId = null;
+      }
+    }
+
+    function iniciarAutoplay() {
+      detenerAutoplay();
+      if (mq.matches && visible) {
+        autoplayId = setInterval(siguiente, 4000);
+      }
+    }
+
+    prevBtn.addEventListener('click', anterior);
+    nextBtn.addEventListener('click', siguiente);
+    grid.addEventListener('pointerdown', detenerAutoplay);
+
+    grid.addEventListener('scroll', () => {
+      if (scrollTimeout !== null) clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(iniciarAutoplay, 600);
+    });
+
+    new IntersectionObserver((entries) => {
+      visible = entries[0].isIntersecting;
+      if (visible) iniciarAutoplay();
+      else detenerAutoplay();
+    }, { threshold: 0.3 }).observe(grid);
+
+    mq.addEventListener('change', () => (mq.matches ? iniciarAutoplay() : detenerAutoplay()));
+  }
+
+  initGaleriaCarousel();
+</script>

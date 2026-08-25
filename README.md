@@ -130,7 +130,7 @@ Todas las secciones del one-pager están implementadas, con contenido real del c
 | 2 | Servicios     | 7 cards, íconos SVG propios                         |
 | 3 | Calculadora   | Chapas (ancho/largo/dirección/empalme/inclinación), ladrillos, pintura (Sinteplast, ~10 m²/L/mano) |
 | 4 | Alquiler      | Herramientas, carpas, andamios + catálogo completo por categoría y condiciones reales |
-| 5 | Galería       | Fotos reales, gestión estática                      |
+| 5 | Galería       | Fotos reales, gestión estática — grid en tablet/desktop, carousel con autoplay solo en mobile |
 | 6 | Marcas        | 6 marcas reales, grid grayscale→color               |
 | 7 | Nosotros      | Foto real + texto real (historia, fundadores, diferenciales) |
 | 8 | Contacto      | Dirección, horarios, WhatsApp, mapa, dos cuentas de Instagram |
