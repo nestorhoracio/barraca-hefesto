@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import equipoImg from '../assets/images/equipo.jpeg';
+import equipoImg from '../assets/images/equipo.webp';
 ---
 
 <section id="nosotros" class="section">
@@ -9,7 +9,7 @@ import equipoImg from '../assets/images/equipo.jpeg';
     <h2 class="section-title">¿Quiénes somos?</h2>
 
     <div class="nosotros__imagen">
-      <Image src={equipoImg} alt="Equipo Barraca Hefesto" class="equipo__foto" format="webp" quality={80} />
+      <Image src={equipoImg} alt="Equipo Barraca Hefesto" class="equipo__foto" format="webp" quality={80} width={1200} />
     </div>
 
     <div class="nosotros__texto">

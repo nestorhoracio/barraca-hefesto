@@ -106,7 +106,7 @@ hefesto/
 ├── public/
 │   ├── favicon.png            # Favicon real (logo de Hefesto), 48×48; favicon.svg queda sin usar
 │   ├── apple-touch-icon.png   # Logo real a 180×180 (icono iOS)
-│   ├── og-image.jpg           # Placeholder (banner del hero) para compartir en redes
+│   ├── og-image.jpg           # 1200×630, frame real del video del hero, para compartir en redes
 │   ├── robots.txt
 │   ├── _redirects             # 301 de barraca-hefesto.netlify.app → hefesto.com.uy
 │   ├── marcas/                # Logos de marcas (pinturería, etc.)
@@ -122,7 +122,7 @@ hefesto/
 
 ## Secciones del sitio
 
-Todas las secciones del one-pager están implementadas, con contenido real del cliente (entrevista a Alejandro Balsamo, julio 2026) — ver [`ROADMAP.md`](ROADMAP.md) para el estado actualizado y los próximos pasos (conexión de dominio, confirmación de variable de entorno en Netlify).
+Todas las secciones del one-pager están implementadas, con contenido real del cliente (entrevista a Alejandro Balsamo, julio 2026) — ver [`ROADMAP.md`](ROADMAP.md) para el estado actualizado y los próximos pasos.
 
 | # | Sección       | Notas                                              |
 |---|---------------|-----------------------------------------------------|

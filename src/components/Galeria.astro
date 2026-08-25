@@ -1,23 +1,41 @@
 ---
 import { Image } from 'astro:assets';
-import foto01 from '../assets/images/galeria/foto-01.jpg';
-import foto02 from '../assets/images/galeria/foto-02.jpg';
-import foto03 from '../assets/images/galeria/foto-03.jpg';
-import foto04 from '../assets/images/galeria/foto-04.jpg';
-import foto05 from '../assets/images/galeria/foto-05.jpg';
-import foto06 from '../assets/images/galeria/foto-06.jpg';
-import foto07 from '../assets/images/galeria/foto-07.jpg';
-import foto08 from '../assets/images/galeria/foto-08.jpg';
+import chapasOnduladas from '../assets/images/galeria/Chapas-onduladas.webp';
+import chapasTrapezoidales from '../assets/images/galeria/Chapas-trapezoidal-acanaladas.webp';
+import chapasTrapezoidales2 from '../assets/images/galeria/Chapas-trapezoidal-acanaladas-2.webp';
+import chapasOsb from '../assets/images/galeria/chapas-osb.webp';
+import chapasYeso from '../assets/images/galeria/chapas-yeso.webp';
+import chapasYeso2 from '../assets/images/galeria/chapas-yeso-2.webp';
+import perfiles from '../assets/images/galeria/Perfiles.webp';
+import perfilesYeso from '../assets/images/galeria/Perfiles-yeso.webp';
+import canosPvc from '../assets/images/galeria/Caños-pvc.webp';
+import varillasCorrugadas from '../assets/images/galeria/varillas-corrugadas.webp';
+import tejidoElectrosoldado from '../assets/images/galeria/tejido-electrosoldado.webp';
+import mallaHormigon from '../assets/images/galeria/malla-hormigon.webp';
+import alambreAtillo from '../assets/images/galeria/alambre-atillo.webp';
+import alambreRecocido from '../assets/images/galeria/alambre-recocido.webp';
+import bloquesHormigon from '../assets/images/galeria/bloques-hormigon.webp';
+import ticholo from '../assets/images/galeria/ticholo.webp';
+import arena from '../assets/images/galeria/arena.webp';
 
 const fotos = [
-  { img: foto01, alt: 'Materiales de construcción Hefesto' },
-  { img: foto02, alt: 'Venta de chapas y perfiles Hefesto, Paso de los Toros' },
-  { img: foto03, alt: 'Aberturas Hefesto' },
-  { img: foto04, alt: 'Pinturería Hefesto' },
-  { img: foto05, alt: 'Alquiler de herramientas Hefesto' },
-  { img: foto06, alt: 'Alquiler de carpas Hefesto' },
-  { img: foto07, alt: 'Andamios Hefesto' },
-  { img: foto08, alt: 'Barraca Hefesto' },
+  { img: chapasOnduladas, alt: 'Chapas onduladas Hefesto' },
+  { img: chapasTrapezoidales, alt: 'Chapas trapezoidales acanaladas Hefesto' },
+  { img: chapasTrapezoidales2, alt: 'Chapas trapezoidales acanaladas Hefesto, vista de detalle' },
+  { img: chapasOsb, alt: 'Chapas OSB Hefesto' },
+  { img: chapasYeso, alt: 'Chapas de yeso Hefesto' },
+  { img: chapasYeso2, alt: 'Chapas de yeso Hefesto, vista de detalle' },
+  { img: perfiles, alt: 'Perfiles de hierro Hefesto' },
+  { img: perfilesYeso, alt: 'Perfiles de yeso Hefesto' },
+  { img: canosPvc, alt: 'Caños de PVC Hefesto' },
+  { img: varillasCorrugadas, alt: 'Varillas corrugadas Hefesto' },
+  { img: tejidoElectrosoldado, alt: 'Tejido electrosoldado Hefesto' },
+  { img: mallaHormigon, alt: 'Malla para hormigón Hefesto' },
+  { img: alambreAtillo, alt: 'Alambre de atillo Hefesto' },
+  { img: alambreRecocido, alt: 'Alambre recocido Hefesto' },
+  { img: bloquesHormigon, alt: 'Bloques de hormigón Hefesto' },
+  { img: ticholo, alt: 'Ticholo Hefesto' },
+  { img: arena, alt: 'Arena Hefesto' },
 ];
 ---
 
@@ -27,9 +45,9 @@ const fotos = [
     <p class="section-subtitle">Productos y obras realizadas con materiales Hefesto.</p>
 
     <div class="galeria__grid">
-      {fotos.map(foto => (
+      {fotos.map((foto, i) => (
         <div class="galeria__item">
-          <Image src={foto.img} alt={foto.alt} loading="lazy" format="webp" quality={75} />
+          <Image src={foto.img} alt={foto.alt} loading="lazy" format="webp" quality={75} width={i === 0 ? 1100 : 600} />
         </div>
       ))}
     </div>
