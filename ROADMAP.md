@@ -74,6 +74,17 @@ Pendiente para una sesión futura si NH lo pide: `hero-poster.webp` es una image
 3. Nada urgente pendiente de rendimiento/accesibilidad — el único punto que sigue marcando PageSpeed (CSS bundleado render-blocking, ~1350ms estimados, creció de ~5.3KB a ~29KB desde la última medición del 28/7) es una decisión ya tomada de no perseguir en este one-pager (ver gotcha en `CLAUDE.md`), aunque valdría remedir con PageSpeed real dado el crecimiento
 4. Después de ver el resultado de las acciones de GBP/reseñas (2-4 semanas), retomar con NH la decisión abierta en `SEO.md` sobre expandir el sitio a multi-página o mantenerlo como one-pager reforzado
 
+## Decisiones tomadas
+
+- **Rate limiting de `/api/asistente`: nativo de Netlify, no `Map` en memoria** (25/7) — se probó primero un limitador casero con `Map` a nivel de módulo; se descartó al confirmar que `netlify dev` recarga el módulo en cada request y nunca acumula estado en local. Se usa el `rateLimit` nativo de Netlify (15 req/180s por IP), que funciona en cualquier plan sin depender del proceso.
+- **Prompt caching descartado (por ahora)** (25/7) — Haiku 4.5 exige un mínimo de 4096 tokens cacheables y el system prompt del Asistente no llega ni a la mitad. Revisar si el prompt crece mucho más adelante.
+- **Video del hero: solo desktop/tablet, en ambos temas, ignora `prefers-reduced-motion`** (1/8) — en mobile no se descarga ni un byte de video para no golpear el Rendimiento de PageSpeed. Se descartó respetar `prefers-reduced-motion` por defecto: NH probó con esa preferencia activada en Windows (por una config del sistema, no por sensibilidad al movimiento) y se decidió reproducir igual, tratándose de un video decorativo y mudo.
+- **Contraste de colores de PageSpeed: no se toca** (28/7) — señalado por el análisis de accesibilidad, dejado sin cambios a pedido explícito de NH; es una decisión de diseño del cliente, no un descuido.
+- **CSS bundleado en un solo archivo: no se separa en crítico/no-crítico** (28/7) — PageSpeed lo marca como render-blocking (~1350ms estimados), pero se descartó partirlo: es un one-pager, todo el CSS se necesita para pintar la página completa, no hay rutas con CSS no usado.
+- **`og-image.jpg`: JPG, no WebP** (25/8) — se priorizó compatibilidad universal en los crawlers de link preview (WhatsApp es el canal de venta principal) por sobre el ahorro de peso de WebP, sin soporte 100% garantizado en todas las apps.
+- **Schema `FAQPage`: no se agrega** (25/8) — no hay una sección de FAQ real y visible en el sitio que lo respalde; agregarlo sin contenido visible viola las guías de datos estructurados de Google. Condicionado en `SEO.md` a que exista contenido real primero.
+- **`robots.txt`: no se vuelve dinámico** (25/8) — ya es correcto tal cual (URL del sitemap hardcodeada a mano); no se justifica generarlo dinámicamente sin un cambio de dominio a la vista.
+
 ## Changelog (resumido)
 
 ### Agosto 2026

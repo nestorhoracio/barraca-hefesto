@@ -22,9 +22,33 @@ Contexto rápido para trabajar en este repo. Para estado actual y pendientes, ve
 
 Árbol completo en [README.md](README.md).
 
-## Modo de trabajo con NH
+## Modo de trabajo
 
-**Claude Code sugiere el código; NH lo revisa y aprueba antes de aplicarlo.** Los cambios son incrementales — priorizar diffs chicos y explicados por sobre reescrituras grandes.
+- Claude Code propone; NH revisa y aprueba antes de aplicar. Diffs chicos y explicados por sobre reescrituras grandes. Si una tarea toca muchos archivos, plantear el plan y esperar OK.
+- Español rioplatense en contenido y documentación. Nombres de archivo en minúsculas, con guiones, sin acentos.
+- Las decisiones de negocio o de cliente se preguntan, no se deducen.
+- Lo que está en "No tocar sin avisar" es intencional aunque parezca un error.
+
+### Arranque de sesión
+
+1. Leer ROADMAP.md → Estado actual y Próximo.
+2. Leer las secciones Gotchas y No tocar sin avisar de este archivo.
+3. `git status` y `git log --oneline -5`.
+4. Decir en una frase dónde está el proyecto y qué se propone hacer. Esperar confirmación antes de escribir código.
+
+Si el ROADMAP contradice el código, gana el código: avisar la discrepancia y corregir el ROADMAP en el cierre.
+
+### Cierre de sesión
+
+1. ROADMAP.md: actualizar Estado actual, agregar entrada fechada en Hecho (`### AAAA-MM-DD — Título corto`), mover lo resuelto fuera de En curso / Próximo.
+2. Gotcha nuevo descubierto → agregarlo acá con su evidencia (síntoma → causa → cómo se confirmó → patrón correcto → fecha).
+3. Cambió cómo funciona algo → actualizar la sección correspondiente del README.
+4. Lo que quedó a medias va a En curso, con qué falta exactamente.
+5. Proponer el mensaje de commit. No commitear sin OK.
+
+### Higiene de la documentación
+
+El ROADMAP es un changelog resumido, no una bitácora: el detalle de cómo funciona migra al README y en el ROADMAP queda el titular. Al pasar de ~150 líneas de changelog, condensar los meses viejos en un párrafo y conservar completo el último trimestre.
 
 ## Convenciones y gotchas técnicos
 
@@ -46,8 +70,8 @@ Contexto rápido para trabajar en este repo. Para estado actual y pendientes, ve
 - **Endpoint `/api/asistente` — validación server-side** (2026-07-25): chequea `Origin`/`Referer` contra un allowlist (403 si no matchea), valida forma y longitud de `mensajes` (400 si no cumple, corta el historial a los últimos 20 y cada mensaje a 2000 caracteres), y el frontend (`Asistente.astro`) escapa el HTML del bloque de RESUMEN antes de insertarlo con `innerHTML` (antes había un XSS acotado ahí). No sacar estos chequeos sin agregar un reemplazo — el endpoint queda expuesto públicamente en `hefesto.com.uy`.
 - **Regex de extracción del mensaje WhatsApp** en el cliente: `/MENSAJE_WA:\s*([\s\S]+)/` (greedy, captura hasta fin de string). Si falla, se muestra error al usuario — no hay fallback que mande el último mensaje tal cual.
 - **`-webkit-text-stroke` con valores sub-píxel no se afina de forma confiable**: bajar el ancho de `1px` a `0.4px`, `0.08px` o incluso `0.01px` (probado en `.section-title`, `global.css`, 2026-07-25) no tuvo ningún efecto visual perceptible — los navegadores redondean el stroke al renderizar en vez de interpolarlo, así que un número más chico no garantiza un trazo más fino. Para atenuar un contorno de texto de forma confiable, bajar la opacidad del color con `color-mix(in srgb, var(--color) X%, transparent)` en vez de (o además de) bajar el ancho — ej. `-webkit-text-stroke: 0.5px color-mix(in srgb, var(--color-brand) 22%, transparent)`.
-- **`@astrojs/sitemap` pinneado a `3.2.1` exacto (sin `^`)** en `package.json` — versiones más nuevas (3.3.0+) se compilan contra Astro 5/6 y usan el hook de integración `astro:routes:resolved`, que no dispara igual en Astro 4.16 (versión actual del proyecto): rompe el build en `astro:build:done` con `Cannot read properties of undefined (reading 'reduce')`. No correr `npm update`/`npm install @astrojs/sitemap` sin fijar la versión, salvo que se suba Astro a la vez.
-- **No mezclar `aspect-ratio` + `max-height` + `object-fit` en un elemento reemplazado (`<img>`/`<Image>`)**: en `Nosotros.astro` esa combinación en el mismo `<img>` causó que en mobile (ancho angosto) el navegador ignorara el `aspect-ratio` calculado (más chico) y forzara la altura hasta el `max-height` del media query, angostando la caja y haciendo que `object-fit:cover` recortara los costados de la foto — un `max-height` no debería nunca *aumentar* una altura ya menor, pero en este caso sí. Confirmado con medición real en Playwright (viewport mobile), no solo por inspección visual. Patrón correcto: poner `aspect-ratio`/`max-height`/`width:100%` en el `<div>` contenedor (no reemplazado, con `overflow:hidden`) y dejar el `<img>` solo con `width:100%; height:100%; object-fit:cover`.
+- **`@astrojs/sitemap` pinneado a `3.2.1` exacto (sin `^`)** (20/7/2026) en `package.json` — versiones más nuevas (3.3.0+) se compilan contra Astro 5/6 y usan el hook de integración `astro:routes:resolved`, que no dispara igual en Astro 4.16 (versión actual del proyecto): rompe el build en `astro:build:done` con `Cannot read properties of undefined (reading 'reduce')`. No correr `npm update`/`npm install @astrojs/sitemap` sin fijar la versión, salvo que se suba Astro a la vez.
+- **No mezclar `aspect-ratio` + `max-height` + `object-fit` en un elemento reemplazado (`<img>`/`<Image>`)** (20/7/2026): en `Nosotros.astro` esa combinación en el mismo `<img>` causó que en mobile (ancho angosto) el navegador ignorara el `aspect-ratio` calculado (más chico) y forzara la altura hasta el `max-height` del media query, angostando la caja y haciendo que `object-fit:cover` recortara los costados de la foto — un `max-height` no debería nunca *aumentar* una altura ya menor, pero en este caso sí. Confirmado con medición real en Playwright (viewport mobile), no solo por inspección visual. Patrón correcto: poner `aspect-ratio`/`max-height`/`width:100%` en el `<div>` contenedor (no reemplazado, con `overflow:hidden`) y dejar el `<img>` solo con `width:100%; height:100%; object-fit:cover`.
 - **`astro:assets` (`<Image>`) vs `<img>` plano**: usar `<Image>` para fotos importadas desde `src/assets/images/` (ya migrado en `Nosotros.astro`, `Galeria.astro`). **Excepción**: `Marcas.astro` usa logos en `public/marcas/` referenciados por string (`/marcas/x.png`) — `astro:assets` no optimiza archivos de `public/` (no pasan por el pipeline de build), así que ahí el fix de CLS es `width`/`height` explícitos por logo en vez de migrar a `<Image>`. No mover esos archivos a `src/` sin necesidad — son assets de marca provistos por terceros.
 - **`border-radius` grande no tiene ningún efecto visible en elementos chicos tipo píldora/badge/tag**: el navegador clampea (limita) el radio efectivo a la mitad de la altura de la caja — en una caja de ~36-40px de alto (badges del hero, tags de `.tamano` en Alquiler), pedir `border-radius: 24px` (`--radius-lg`) rinde exactamente igual que `999px`, porque ambos superan la mitad de la altura y quedan clampeados al mismo valor (una píldora completa). Confirmado el 26/7/2026 intentando "normalizar" esos elementos con `--radius-lg` sin cambio visual aparente. Para que un elemento chico se vea con esquinas redondeadas reales (no píldora), el radio pedido tiene que ser claramente menor a la mitad de su altura — en este proyecto se resolvió usando `--radius-sm` (10px) en esos casos.
 - **Escala de `--radius-sm/md/lg`** (`global.css`) calibrada el 26/7/2026 al redondeo real del logo: se midió el PNG del isotipo a nivel de píxel (decodificando manualmente con `zlib`/`struct` de Python, sin Pillow disponible) y el radio de la forma es ~28.8% del ancho del cuadrado del isotipo, consistente en las dos variantes del logo y ambas esquinas — valor bastante más alto que la escala anterior (6/10/16px). Los tres chips de ícono con fondo (`.card__icon`, `.alq-card__icon`, `.info-item__icon`) usan ese 28.8% de forma literal según su tamaño real (14px/15px/12px) en vez del token genérico, por precisión.
