@@ -98,9 +98,45 @@ const localBusinessJsonLd = {
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
   <title>{title}</title>
+
+  <!-- Google Analytics (GA4) -->
+  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-R2FQBCN7EW"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-R2FQBCN7EW');
+  </script>
 </head>
 <body>
   <slot />
+
+  <!-- Tracking de clicks de WhatsApp y redes sociales en todo el sitio -->
+  <script is:inline>
+    document.addEventListener('click', function (e) {
+      const link = e.target.closest('a[href]');
+      if (!link || typeof gtag !== 'function') return;
+
+      const href = link.href;
+
+      if (href.includes('wa.me') || href.includes('api.whatsapp.com')) {
+        gtag('event', 'contacto_whatsapp', {
+          ubicacion: link.dataset.waLocation || 'otro',
+        });
+        return;
+      }
+
+      let host = '';
+      try { host = new URL(href).hostname; } catch { return; }
+
+      if (host.includes('instagram.com') || host.includes('facebook.com')) {
+        gtag('event', 'click_red_social', {
+          red: host.includes('instagram.com') ? 'instagram' : 'facebook',
+          ubicacion: link.dataset.socialLocation || 'otro',
+        });
+      }
+    });
+  </script>
 </body>
 </html>
 

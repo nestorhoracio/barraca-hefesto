@@ -36,7 +36,7 @@ const WA_URL   = `https://wa.me/${WHATSAPP}?text=Hola%20Hefesto%2C%20quisiera%20
   </svg>
 </button>
     <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-       class="btn btn-primary header__cta">
+       class="btn btn-primary header__cta" data-wa-location="header">
       Cotizá ya
     </a>
 
@@ -52,7 +52,7 @@ const WA_URL   = `https://wa.me/${WHATSAPP}?text=Hola%20Hefesto%2C%20quisiera%20
       <a href={link.href} class="mobile-nav__link">{link.label}</a>
     ))}
     <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-       class="btn btn-primary mobile-nav__cta">
+       class="btn btn-primary mobile-nav__cta" data-wa-location="header-movil">
       Cotizá por WhatsApp
     </a>
   </div>
