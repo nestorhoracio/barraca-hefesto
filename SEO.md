@@ -62,5 +62,8 @@ Guías prácticas específicas sugeridas por las IAs, para cuando haya páginas 
 
 ## Changelog
 
+### Septiembre 2026
+- **Sesión 3/9/2026**: se instaló Google Analytics 4 en el sitio (detalle técnico completo en `ROADMAP.md` y `CLAUDE.md`) — no cambia el diagnóstico ni el plan de acción de este documento, pero da una herramienta de medición nueva que sirve para evaluar el impacto de las acciones de este plan: tráfico entrante real desde Instagram/Facebook (relevante para medir si la campaña de reseñas/GBP mueve la aguja) y en qué sección del sitio la gente termina escribiendo por WhatsApp. Al revisar ranking en 2-4 semanas (ver "Plan de acción priorizado"), conviene mirar también estos datos, no solo posiciones en Google.
+
 ### Agosto 2026
 - **Sesión 25/8/2026**: creación de este documento, consolidando el análisis de `respuestas-seo-IAs.md` (ChatGPT, Claude.ai, Gemini) con el diagnóstico ya existente en `ROADMAP.md`. Se amplió el JSON-LD de `Layout.astro` (`areaServed`, `priceRange`, `hasOfferCatalog`) con datos ya respaldados por contenido real del sitio. Se dejó documentada, sin resolver, la decisión sobre expandir el sitio a multi-página. Enlazado desde `CLAUDE.md`, `ROADMAP.md` y `README.md`.

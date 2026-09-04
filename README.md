@@ -26,6 +26,7 @@ Barraca Hefesto es una barraca de materiales de construcción ubicada en **18 de
 - **Fuentes**: todas self-hosted en `src/assets/fonts/` (no Google Fonts) — Inter (cuerpo general), Impact (títulos de sección), Carlito (cuerpo de marca)
 - **Asistente IA**: Netlify Function v2 (`netlify/functions/asistente.js`) + `@anthropic-ai/sdk`, modelo `claude-haiku-4-5-20251001`
 - **SEO**: sitemap automático (`@astrojs/sitemap`), JSON-LD `LocalBusiness`, `robots.txt`, canonical dinámico — todo derivado de `site` en `astro.config.mjs`
+- **Analytics**: Google Analytics 4 (`gtag.js`, propiedad "hefesto", ID `G-R2FQBCN7EW`) — eventos custom de clicks de WhatsApp por sección, clicks salientes a redes sociales y uso del Asistente IA (ver gotcha en `CLAUDE.md`)
 
 ---
 
